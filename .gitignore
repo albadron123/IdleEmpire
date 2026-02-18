@@ -10,6 +10,7 @@
 
 .vs/
 
+*.vsconfig
 *.csproj
 *.unityproj
 *.sln
