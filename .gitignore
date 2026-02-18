@@ -5,10 +5,14 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]serSettings/
+/[Rr]ecordings/
 
 *.stackdump
 
 .vs/
+
+
+/.idea/
 
 *.vsconfig
 *.csproj
