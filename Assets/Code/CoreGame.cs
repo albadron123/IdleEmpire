@@ -47,6 +47,7 @@ public class CoreGame : MonoBehaviour
     public static string TAG_BLOB_PLACE = "BlobPlace";
     public static string TAG_ENEMY = "Enemy";
     public static string TAG_PROJECTILE = "Projectile";
+    public static string TAG_BUILDING_PLACEMENT = "BuildingPlacement";
 
     public List<Building> allBuidlings = new List<Building>();
     public List<BuildingTag> allBuildingTags = new List<BuildingTag>();
@@ -62,6 +63,10 @@ public class CoreGame : MonoBehaviour
 
     public GameObject sliderPfb;
     public GameObject moreResourcePfb;
+
+
+    public BuildingObject selectedBuilding = null;
+
 
 
     public bool canDrag = true;
@@ -235,7 +240,7 @@ public class CoreGame : MonoBehaviour
 
     public bool CanBuildHere()
     {
-        Collider2D col = currentlyPlacingBuilding.GetComponent<Collider2D>();
+        Collider2D col = currentlyPlacingBuilding.transform.Find("BuildingCollider").GetComponent<Collider2D>();
 
         Vector2 colPosition = col.transform.position;
         if (colPosition.x > 8 || colPosition.x < -5 || colPosition.y > 4.5 || colPosition.y < -4.5)
@@ -243,15 +248,18 @@ public class CoreGame : MonoBehaviour
             return false;
         }
 
+        return !MaximUtils.DoIOverlapTag2D(col, TAG_BUILDING_PLACEMENT);
+        /*
         List<Collider2D> overlapped = new List<Collider2D>();
         Physics2D.OverlapCollider(col, new ContactFilter2D().NoFilter(), overlapped);
-
+        
         if (overlapped.Count > 0)
         {
             return false;
         }
 
         return true;
+        */
     }
 
     public void CancelBuilding()
@@ -365,6 +373,10 @@ public class CoreGame : MonoBehaviour
     {
         const float BUTTON_OFFSET = 0.1F;
         HideUpgrades();
+        // Outlining the building
+        selectedBuilding = buildingToUpgrade;
+        selectedBuilding.outline.SetActive(true);
+        // Showing buttons
         upgradeButtons = new List<GameObject>();
         for (int i = 0; i < upgradeTypes.Count; ++i)
         {
@@ -386,6 +398,11 @@ public class CoreGame : MonoBehaviour
     {
         if (upgradeButtons != null)
         {
+            if (selectedBuilding != null)
+            {
+                selectedBuilding.outline.SetActive(false);
+                selectedBuilding = null;
+            }
             for (int i = 0; i < upgradeButtons.Count; ++i)
             {
                 Destroy(upgradeButtons[i]);

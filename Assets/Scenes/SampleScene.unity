@@ -4076,6 +4076,11 @@ Transform:
   - {fileID: 539598261}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1882028075 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6394377674043695164, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
+  m_PrefabInstance: {fileID: 5427691965894070913}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1909998887
 GameObject:
   m_ObjectHideFlags: 0
@@ -4635,6 +4640,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3415197366082961856, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
+      propertyPath: outline
+      value: 
+      objectReference: {fileID: 1882028075}
     - target: {fileID: 6784931032043712049, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_Name
       value: Cubo
@@ -4752,6 +4761,10 @@ PrefabInstance:
     - target: {fileID: 6996129902443490374, guid: f7dcf09064531d0459f023bd3d24e588, type: 3}
       propertyPath: m_Name
       value: MajorTower
+      objectReference: {fileID: 0}
+    - target: {fileID: 8429205623214935263, guid: f7dcf09064531d0459f023bd3d24e588, type: 3}
+      propertyPath: m_Color.a
+      value: 0.14117648
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

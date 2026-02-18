@@ -21,6 +21,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
     private Coroutine process;
 
 
+    public GameObject outline;
+
     // tower variables
     float towerAngle = 0;
 
@@ -194,8 +196,14 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     private void OnMouseDown()
     {
-        //Show upgrade possibilities
-        CoreGame.inst.ShowUpgrades(upgradeTypes, this);
+        if (CoreGame.inst.selectedBuilding == this)
+        {
+            CoreGame.inst.HideUpgrades();
+        }
+        else
+        {
+            CoreGame.inst.ShowUpgrades(upgradeTypes, this);
+        }
     }
 
     public int GetProductionAmount()
