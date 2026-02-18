@@ -46,4 +46,18 @@ public class MaximUtils
         }
         return false;
     }
+
+    public static Collider2D GetAnyOverlappedWithTag2D(Collider2D col, string tag)
+    {
+        List<Collider2D> overlapped = new List<Collider2D>();
+        Physics2D.OverlapCollider(col, new ContactFilter2D().NoFilter(), overlapped);
+        foreach (Collider2D other in overlapped)
+        {
+            if (other.gameObject.CompareTag(tag))
+            {
+                return other;
+            }
+        }
+        return null;
+    }
 }

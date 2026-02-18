@@ -6,19 +6,17 @@ using DG.Tweening;
 
 public class BuildingObject : MonoBehaviour, IDestructable
 {
-    [SerializeField]
-    List<Blob> blobs;
-
-
-    List<GameObject> sliders = new List<GameObject>();
 
     Transform t;
 
-    Vector3 initilaScale;
-
     public Building b;
 
-    private Coroutine process;
+
+    public List<GameObject> blobPlaces;
+
+    private Coroutine[] processes;
+    private GameObject[] sliders;
+    private Blob[] blobs;
 
 
     public GameObject outline;
@@ -46,7 +44,10 @@ public class BuildingObject : MonoBehaviour, IDestructable
     void Start()
     {
         t = transform;
-        initilaScale = t.localScale;
+
+        processes = new Coroutine[blobPlaces.Count];
+        sliders = new GameObject[blobPlaces.Count];
+        blobs = new Blob[blobPlaces.Count];
     }
 
     // Update is called once per frame
@@ -83,21 +84,31 @@ public class BuildingObject : MonoBehaviour, IDestructable
         }
     }
 
-    public void StartFunctioning()
+    public void StartFunctioning(Blob blob, GameObject blobPlace)
     {
-        process = StartCoroutine(FunctionCoroutine());
+        int processId = blobPlaces.LastIndexOf(blobPlace);
+        blobs[processId] = blob;
+        processes[processId] = StartCoroutine(FunctionCoroutine(processId));
     }
 
-    public void StopFunctioning()
+    public void StopFunctioning(Blob blob, GameObject blobPlace)
     {
-        if (process != null)
+        int processId = blobPlaces.LastIndexOf(blobPlace);
+        blobs[processId] = null;
+
+        if (processes[processId] != null)
+        {   
+            StopCoroutine(processes[processId]);
+            processes[processId] = null;
+        }
+        if (sliders[processId] != null)
         {
-            StopCoroutine(process);
-            process = null;
+            Destroy(sliders[processId]);
+            sliders[processId] = null;
         }
     }
 
-    public IEnumerator FunctionCoroutine()
+    public IEnumerator FunctionCoroutine(int processId)
     {
         if (b.myType == Building.BuildingType.CubeProduction)
         {
@@ -111,22 +122,18 @@ public class BuildingObject : MonoBehaviour, IDestructable
                     .Append(t.DOScale(new Vector3(1.1f, 1.1f, 1), 0.25f*productionTime))
                     .Append(t.DOScale(new Vector3(1f, 1f, 1), 0.25f*productionTime)).SetLoops(2);
 
-                for (int i = 0; i < blobs.Count; ++i)
-                {
-                    GameObject inst = Instantiate(CoreGame.inst.sliderPfb, blobs[i].transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
-                    inst.transform.GetChild(0).transform.DOLocalMove(new Vector3(0, 0, 0), productionTime);
-                    Destroy(inst, productionTime);
-                }
-
+                GameObject sliderInst = Instantiate(CoreGame.inst.sliderPfb, blobs[processId].transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                sliderInst.transform.GetChild(0).transform.DOLocalMove(new Vector3(0, 0, 0), productionTime);
+                sliders[processId] = sliderInst;
 
                 yield return new WaitForSeconds(productionTime);
+
+                Destroy(sliderInst);
+                sliders[processId] = null;
+
                 CoreGame.inst.ChangeResource(Resource.ResourceType.cubes, productionAmount);
 
-                //Create popups
-                for (int i = 0; i < blobs.Count; ++i)
-                {
-                    CoreGame.inst.CreateIconPopUp(blobs[i].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[0].icon);
-                }
+                CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[0].icon);
             }
         }
         else if (b.myType == Building.BuildingType.BlahProduction)
@@ -141,21 +148,18 @@ public class BuildingObject : MonoBehaviour, IDestructable
                     .Append(t.DOScale(new Vector3(1.1f, 1.1f, 1), 0.25f * productionTime))
                     .Append(t.DOScale(new Vector3(1f, 1f, 1), 0.25f * productionTime)).SetLoops(2);
 
-                for (int i = 0; i < blobs.Count; ++i)
-                {
-                    GameObject inst = Instantiate(CoreGame.inst.sliderPfb, blobs[i].transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
-                    inst.transform.GetChild(0).transform.DOLocalMove(new Vector3(0, 0, 0), productionTime);
-                    Destroy(inst, productionTime);
-                }
-
+                GameObject sliderInst = Instantiate(CoreGame.inst.sliderPfb, blobs[processId].transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                sliderInst.transform.GetChild(0).transform.DOLocalMove(new Vector3(0, 0, 0), productionTime);
+                sliders[processId] = sliderInst;
 
                 yield return new WaitForSeconds(productionTime);
+
+                Destroy(sliderInst);
+                sliders[processId] = null;
+
                 CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
 
-                for (int i = 0; i < blobs.Count; ++i)
-                {
-                    CoreGame.inst.CreateIconPopUp(blobs[i].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
-                }
+                CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
         }
         else if (b.myType == Building.BuildingType.Tower)
@@ -167,7 +171,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 float projectileSize = GetProjectileSize();
                 int damage = GetProjectileDamage();
                     
-                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, blobs[0].transform.position, Quaternion.identity);
+                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, blobs[processId].transform.position, Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
                 pr.damage = damage;
@@ -231,53 +235,25 @@ public class BuildingObject : MonoBehaviour, IDestructable
         return baseProjectileSize + projectileSizeLevel * 0.1f;   
     }
     
-    
 
 
-    public void AddBlob(Blob b)
+    public void AddBlob(Blob b, GameObject blobPlace)
     {
+
+        //REDOOOOOO!
         towerAngle++;
         if (towerAngle > 3)
         {
             towerAngle = 0;
         }
-        blobs.Add(b);
-        if (blobs.Count == 1)
-        {
-            StartFunctioning();
-        }
+
+        StartFunctioning(b, blobPlace);
     }
 
-    public void RemoveBlob(Blob b)
+    public void RemoveBlob(Blob b, GameObject blobPlace)
     {
-        blobs.Remove(b);
-        if (blobs.Count == 0)
-        {
-            StopFunctioning();
-        }
+        StopFunctioning(b, blobPlace);
     }
 
 
-
-
-
-    /*
-    private void OnMouseDown()
-    {
-        CoreGame.inst.ChangeResource(Resource.ResourceType.Wood, 1);
-        DOTween.Sequence()
-            .Append(t.DOScale(0.9f * initilaScale, 0.05f))
-            .Append(t.DOScale(1.1f * initilaScale, 0.05f));
-    }
-
-    private void OnMouseEnter()
-    {
-        t.DOScale(1.1f * initilaScale, 0.1f);
-    }
-
-    private void OnMouseExit()
-    {
-        t.DOScale(initilaScale, 0.1f);
-    }
-    */
 }

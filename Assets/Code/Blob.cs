@@ -6,7 +6,7 @@ public class Blob : MonoBehaviour, IDragInteraction
 {
     Transform t;
 
-    public float intialZPosition;
+    public float initialZPosition;
 
     Collider2D myCollider;
 
@@ -17,13 +17,17 @@ public class Blob : MonoBehaviour, IDragInteraction
 
     Creature meCreature;
 
+    [SerializeField]
+    GameObject outline;
+
+
 
 
 
     void Start()
     {
         t = transform;
-        intialZPosition = t.position.z;
+        initialZPosition = t.position.z;
         myCollider = GetComponent<Collider2D>();
         meCreature = GetComponent<Creature>();
         GetComponent<DragObject>().dragInteraction = this;
@@ -37,12 +41,13 @@ public class Blob : MonoBehaviour, IDragInteraction
     public void StartDrag()
     {
         meCreature.StopSimulation();
+        outline.SetActive(true);
 
         if (currentBuilding != null)
         {
             CoreGame.inst.canBuild = false;    
 
-            currentBuilding.RemoveBlob(this);
+            currentBuilding.RemoveBlob(this, currentPlace);
             currentPlace.GetComponent<SpriteRenderer>().enabled = true;
             currentPlace = null;
             currentBuilding = null;
@@ -60,8 +65,12 @@ public class Blob : MonoBehaviour, IDragInteraction
     {
         CoreGame.inst.canBuild = true;
 
-        GameObject foundPlace = null;
+
+        /*
         List<Collider2D> results = new List<Collider2D>();
+        
+        GameObject foundPlace = null;
+        
         Physics2D.OverlapCollider(myCollider, new ContactFilter2D().NoFilter(), results);
         foreach(Collider2D res in results)
         {
@@ -71,20 +80,40 @@ public class Blob : MonoBehaviour, IDragInteraction
                 break;
             }
         }
+        */
+
+        Collider2D foundPlaceCol = MaximUtils.GetAnyOverlappedWithTag2D(myCollider, CoreGame.TAG_BLOB_PLACE);
+        GameObject foundPlace = null;
+        if (foundPlaceCol != null)
+        {
+            foundPlace = foundPlaceCol.gameObject;    
+        }
 
         if (foundPlace != null)
         {
-            foundPlace.GetComponent<SpriteRenderer>().enabled = false;
-            t.position = foundPlace.transform.position + new Vector3(0, 0.25f, -1);
-            currentPlace = foundPlace;
-            currentBuilding = currentPlace.transform.parent.GetComponent<BuildingObject>();
-            currentBuilding.AddBlob(this);
-            GetComponent<DestructableObject>().sliderContainer.SetActive(false);
+            SpriteRenderer foundPlaceSr = foundPlace.GetComponent<SpriteRenderer>();
+            if (foundPlaceSr.enabled)
+            {
+                foundPlace.GetComponent<SpriteRenderer>().enabled = false;
+                t.position = foundPlace.transform.position + new Vector3(0, 0.25f, -1);
+                currentPlace = foundPlace;
+                currentBuilding = currentPlace.transform.parent.GetComponent<BuildingObject>();
+                currentBuilding.AddBlob(this, currentPlace);
+                GetComponent<DestructableObject>().sliderContainer.SetActive(false);
+            }
+            else
+            {
+                //Make a displacement
+                t.position = new Vector3(t.position.x + Random.Range(-0.25f, 0.25f), t.position.y + Random.Range(-0.25f, 0.25f), initialZPosition);
+                meCreature.StartSimulation();
+            }
         }
         else
         {
-            t.position = new Vector3(t.position.x, t.position.y, intialZPosition);
+            t.position = new Vector3(t.position.x, t.position.y, initialZPosition);
             meCreature.StartSimulation();
         }
+
+        outline.SetActive(false);
     }
 }

@@ -563,10 +563,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9b23a436b14158469a88b698d0e4bf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blobs: []
   b:
     myType: 2
     buildingPfb: {fileID: 0}
+  blobPlaces:
+  - {fileID: 2294802544568611431}
   outline: {fileID: 3700940302479778908}
   baseProjectileSize: 1.15
   baseShootingSpeed: 0.9
