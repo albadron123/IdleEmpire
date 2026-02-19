@@ -5,9 +5,20 @@ using DG.Tweening;
 
 public class Node : MonoBehaviour
 {
+    [SerializeField] Color defaultColor = Color.white;
+    [SerializeField] Color selectColor = Color.yellow;
+
+
     Transform t;
     Vector3 initialPosition;
     Vector3 initialScale;
+
+    [SerializeField]
+    SpriteRenderer outlineSr;
+    [SerializeField]
+    TMPro.TMP_Text titleTe;
+    [SerializeField]
+    TMPro.TMP_Text priceTe;
 
 
     float[] omega = new float[8];
@@ -69,6 +80,8 @@ public class Node : MonoBehaviour
         Meta.inst.currentNode = this;
         t.DOKill();
         t.DOScale(1.1f * initialScale, 0.15f);
+        outlineSr.color = selectColor;
+        titleTe.color = selectColor;
     }
 
     void DeselectNode()
@@ -76,6 +89,8 @@ public class Node : MonoBehaviour
         Meta.inst.currentNode = null;
         t.DOKill();
         t.DOScale(1f*initialScale, 0.15f);
+        outlineSr.color = defaultColor;
+        titleTe.color = defaultColor;
     }
 
     void AquireUpgade()

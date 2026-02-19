@@ -866,6 +866,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 334c35181592bd44c829cdb6471416ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineSr: {fileID: 8818752265593379948}
+  titleTe: {fileID: 5988088963900697794}
+  priceTe: {fileID: 4519604447207100757}
 --- !u!61 &894362959935341103
 BoxCollider2D:
   m_ObjectHideFlags: 0
