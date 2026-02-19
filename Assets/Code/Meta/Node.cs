@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Node : MonoBehaviour
 {
     Transform t;
     Vector3 initialPosition;
+    Vector3 initialScale;
+
+
     float[] omega = new float[8];
     float[] phi = new float[8];
     float[] alpha = new float[8];
@@ -15,6 +19,7 @@ public class Node : MonoBehaviour
     {
         t = transform;
         initialPosition = t.position;
+        initialScale = t.localScale;
         for (int i = 0; i < 8; ++i)
         {
             omega[i] = Random.Range(0.1f * Mathf.PI, 0.2f * Mathf.PI);
@@ -36,4 +41,46 @@ public class Node : MonoBehaviour
                         alpha[7] * Mathf.Sin(omega[7] * Time.time + phi[7]);
         t.position = initialPosition + new Vector3(offsetX, offsetY, 0);
     }
+
+    private void OnMouseDown()
+    {
+        if (Meta.inst.currentNode == this)
+        {
+            DeselectNode();
+        }
+        else
+        {
+            SelectNode();
+        }
+    }
+
+
+    void InitNode()
+    {
+        
+    }
+
+    void SelectNode()
+    {
+        if (Meta.inst.currentNode != null)
+        {
+            Meta.inst.currentNode.DeselectNode();
+        }
+        Meta.inst.currentNode = this;
+        t.DOKill();
+        t.DOScale(1.1f * initialScale, 0.15f);
+    }
+
+    void DeselectNode()
+    {
+        Meta.inst.currentNode = null;
+        t.DOKill();
+        t.DOScale(1f*initialScale, 0.15f);
+    }
+
+    void AquireUpgade()
+    {
+        
+    }
+
 }
