@@ -304,8 +304,8 @@ GameObject:
   - component: {fileID: 398872244}
   - component: {fileID: 398872243}
   - component: {fileID: 398872246}
-  - component: {fileID: 398872247}
   - component: {fileID: 398872248}
+  - component: {fileID: 398872249}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -431,19 +431,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!114 &398872247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 398872242}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bcbefb1f109f5446b012d5fd85bf005, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  te: {fileID: 715563309}
 --- !u!114 &398872248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,6 +444,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentNode: {fileID: 0}
+--- !u!114 &398872249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398872242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceebd0e906740ee4eb4882d7c02b4427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bonesTe: {fileID: 715563309}
+  bones: 0
+  record: 0
 --- !u!1 &715563308
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,7 +471,7 @@ GameObject:
   - component: {fileID: 715563310}
   - component: {fileID: 715563309}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: BonesTe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -497,7 +499,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'BONES:
 
-    RECORD:'
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 494df778aee0b2a4d9d3a38899143c58, type: 2}
   m_sharedMaterial: {fileID: -7239975052848558036, guid: 494df778aee0b2a4d9d3a38899143c58, type: 2}
@@ -531,7 +533,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -627,8 +629,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.79}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: 6.5878, y: -3.44}
+  m_SizeDelta: {x: 3.1499, y: 0.4884}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &887341872
 GameObject:
@@ -1142,10 +1144,10 @@ MonoBehaviour:
   e:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CoreGame, Assembly-CSharp
-        m_MethodName: PressBuildingButton
-        m_Mode: 3
+      - m_Target: {fileID: 398872248}
+        m_TargetAssemblyTypeName: Meta, Assembly-CSharp
+        m_MethodName: StartAgain
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1154,6 +1156,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  mouseEnterCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  mouseExitCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
   initialScale: {x: 1, y: 1, z: 1}
 --- !u!212 &1534416541
 SpriteRenderer:

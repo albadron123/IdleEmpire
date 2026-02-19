@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Meta : MonoBehaviour
 {
@@ -22,14 +23,9 @@ public class Meta : MonoBehaviour
             inst = this;
         }
     }
-    
-    void Update()
+
+    public void StartAgain()
     {
-        
-    }
-
-    public void ShowNodeInfo()
-    { 
-
+        SceneManager.LoadScene("SampleScene");
     }
 }

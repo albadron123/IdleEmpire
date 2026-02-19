@@ -156,6 +156,12 @@ public class Node : MonoBehaviour
 
     public void AquireUpgade()
     {
+        if(!MetaEconomy.inst.UpdateBones(-CalculateCurrentPrice()))
+        {
+            Debug.Log("Upgrade not equired");
+            return;
+        }
+
         Debug.Log("Upgrade Aquired!");
         ++lvl;
         if (lvl == maxLvls)
