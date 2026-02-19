@@ -120,6 +120,18 @@ public class Node : MonoBehaviour
 
     void SelectNode()
     {
+        if (lvl >= maxLvls)
+        {
+            t.DOKill();
+            Sequence seq = DOTween.Sequence();
+            seq.Append(t.DORotate(new Vector3(0, 0, 5), 0.04f));
+            seq.Append(t.DORotate(new Vector3(0, 0, -5), 0.08f));
+            seq.Append(t.DORotate(new Vector3(0, 0, 0), 0.04f));
+            seq.SetLoops(2);
+            seq.OnKill(()=> { t.rotation = Quaternion.identity; });
+            return;
+        }
+
         if (Meta.inst.currentNode != null)
         {
             Meta.inst.currentNode.DeselectNode();
@@ -129,10 +141,7 @@ public class Node : MonoBehaviour
         t.DOScale(1.1f * initialScale, 0.15f);
         outlineSr.color = selectColor;
         titleTe.color = selectColor;
-        if (lvl < maxLvls)
-        {
-            purchaseButton.SetActive(true);
-        }
+        purchaseButton.SetActive(true);
     }
 
     void DeselectNode()
@@ -145,9 +154,37 @@ public class Node : MonoBehaviour
         purchaseButton.SetActive(false);
     }
 
-    void AquireUpgade()
+    public void AquireUpgade()
     {
-        
+        Debug.Log("Upgrade Aquired!");
+        ++lvl;
+        if (lvl == maxLvls)
+        {
+            // Fully upgraded
+            purchaseButton.SetActive(false);
+
+            // TODO: inf symbol later
+            priceTe.text = "inf";
+
+            DeselectNode();
+
+            outlineSr.color = selectColor;
+            titleTe.color = selectColor;
+        }
+        else
+        {
+            priceTe.text = CalculateCurrentPrice().ToString();
+        }
+        ColorUpgradePoints();
     }
 
+    public void EnterPurchaseButton() 
+    {
+        purchaseButton.GetComponent<SpriteRenderer>().color = selectColor;
+    }
+    
+    public void ExitPurchaseButton() 
+    {
+        purchaseButton.GetComponent<SpriteRenderer>().color = defaultColor;
+    }
 }

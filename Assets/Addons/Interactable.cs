@@ -11,6 +11,12 @@ public class Interactable : MonoBehaviour
     [SerializeField]
     UnityEvent e;
 
+    [SerializeField]
+    UnityEvent mouseEnterCustomEvent;
+    [SerializeField]
+    UnityEvent mouseExitCustomEvent;
+
+
     Transform t;
 
     [HideInInspector]
@@ -40,7 +46,9 @@ public class Interactable : MonoBehaviour
             lastTween.Kill();
         }
         lastTween = DOTween.Sequence();
-        lastTween.Append(t.DOScale(1.03f * initialScale, 0.2f));       
+        lastTween.Append(t.DOScale(1.03f * initialScale, 0.2f));
+
+        mouseEnterCustomEvent.Invoke();
     }
 
     private void OnMouseExit()
@@ -51,6 +59,8 @@ public class Interactable : MonoBehaviour
         }
         lastTween = DOTween.Sequence();
         lastTween.Append(t.DOScale(1f * initialScale, 0.2f));
+
+        mouseExitCustomEvent.Invoke();
     }
 
 
