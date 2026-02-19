@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 [System.Serializable]
@@ -422,5 +423,33 @@ public class CoreGame : MonoBehaviour
     }
 
 
+    public void EndRun()
+    {
+        int lastRecord = 0;
+        int bones = allResources[2].value;
+        int totalBones = 0;
 
+        if (PlayerPrefs.HasKey("recordBones"))
+        {
+            lastRecord = PlayerPrefs.GetInt("recordBones");
+        }
+
+        PlayerPrefs.SetInt("currentBones", bones);
+
+        if (bones > lastRecord)
+        {
+            PlayerPrefs.SetInt("recordBones", bones);
+        }
+
+        if (PlayerPrefs.HasKey("totalBones"))
+        {
+            totalBones += PlayerPrefs.GetInt("totalBones");
+        }
+        totalBones += bones;
+        PlayerPrefs.SetInt("totalBones", totalBones);
+
+        PlayerPrefs.Save();
+
+        SceneManager.LoadScene("End");
+    }
 }

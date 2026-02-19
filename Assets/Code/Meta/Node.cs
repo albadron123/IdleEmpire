@@ -91,7 +91,6 @@ public class Node : MonoBehaviour
         }
     }
 
-
     void InitNode()
     {
         //Figure out the levels

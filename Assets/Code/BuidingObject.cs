@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class BuildingObject : MonoBehaviour, IDestructable
@@ -69,18 +68,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
     {
         if (b.myType == Building.BuildingType.MajorTower)
         {
-            int lastRecord = 0;
-            int bones = CoreGame.inst.allResources[2].value;
-            if (PlayerPrefs.HasKey("recordBones"))
-            {
-                lastRecord = PlayerPrefs.GetInt("recordBones");
-            }
-            PlayerPrefs.SetInt("currentBones", bones);
-            if (bones > lastRecord)
-            {
-                PlayerPrefs.SetInt("recordBones", bones);
-            }
-            SceneManager.LoadScene("End");
+            CoreGame.inst.EndRun();
         }
     }
 

@@ -10,6 +10,7 @@ public class MetaEconomy : MonoBehaviour
     public static MetaEconomy inst = null;
     public int bones = 0;
     public int record = 0;
+    public int lastRound = 0;
 
     void Start()
     {
@@ -20,14 +21,17 @@ public class MetaEconomy : MonoBehaviour
         }
         inst = this;
 
-
+        if (PlayerPrefs.HasKey("totalBones"))
+        {
+            bones = PlayerPrefs.GetInt("totalBones");
+        }
         if (PlayerPrefs.HasKey("recordBones"))
         {
             record = PlayerPrefs.GetInt("recordBones");
         }
         if (PlayerPrefs.HasKey("currentBones"))
         {
-            bones = PlayerPrefs.GetInt("currentBones");
+            lastRound = PlayerPrefs.GetInt("currentBones");
         }
         bonesTe.text = $"BONES: {bones}";
     }
@@ -51,7 +55,7 @@ public class MetaEconomy : MonoBehaviour
         bones += delta;
         bonesTe.text = $"BONES: {bones}";
 
-        PlayerPrefs.SetInt("currentBones", bones);
+        PlayerPrefs.SetInt("totalBones", bones);
         PlayerPrefs.Save();
 
         return true;
