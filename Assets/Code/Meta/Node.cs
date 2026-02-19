@@ -8,6 +8,9 @@ public class Node : MonoBehaviour
     [Header("UpgradeModel")]
     [SerializeField] int maxLvls;
     [SerializeField] int lvl;
+    [SerializeField] int basePrice;
+    [SerializeField] float pricePower;
+
 
     //Updrade View
     [Header("UpgradeView")]
@@ -19,6 +22,9 @@ public class Node : MonoBehaviour
     GameObject upgradePointContainer;
     [SerializeField]
     GameObject purchaseButton;
+
+
+    List<GameObject> upgradePoints;
 
 
 
@@ -88,8 +94,28 @@ public class Node : MonoBehaviour
     void InitNode()
     {
         //Draw updrades
-        List<GameObject> upgrades = MaximUtils.DrawCenteredListHor(upgradePointPrefab, upgradePointContainer.transform, Vector3.zero, updradePointDistance, maxLvls, 0.1f);
-        
+        upgradePoints = MaximUtils.DrawCenteredListHor(upgradePointPrefab, upgradePointContainer.transform, Vector3.zero, updradePointDistance, maxLvls, 0.1f);
+        ColorUpgradePoints();
+        priceTe.text = CalculateCurrentPrice().ToString();
+    }
+
+    int CalculateCurrentPrice()
+    {
+        int powerPart = lvl > 0 ? (int)Mathf.Pow(pricePower, lvl) : 0;
+        return basePrice + powerPart;
+    }
+
+    void ColorUpgradePoints()
+    {
+        // Not optimal but ok as there should not be a lot of upgrades
+        for (int i = 0; i < lvl; ++i)
+        {
+            upgradePoints[i].GetComponent<SpriteRenderer>().color = selectColor;
+        }
+        for (int i = lvl; i < maxLvls; ++i)
+        {
+            upgradePoints[i].GetComponent<SpriteRenderer>().color = defaultColor;
+        }
     }
 
     void SelectNode()

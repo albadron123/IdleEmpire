@@ -617,6 +617,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLvls: 3
   lvl: 0
+  basePrice: 3
+  pricePower: 2
   upgradePointPrefab: {fileID: 3687822870886319214, guid: b964cd2f9eb8f7b4ea8d29928da3d4c9, type: 3}
   updradePointDistance: 0.07
   upgradePointContainer: {fileID: 7965842264000173771}

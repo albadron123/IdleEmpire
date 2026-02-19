@@ -285,9 +285,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6074899453123636591, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 3922219217411524101, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -769,9 +766,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6074899453123636591, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 3922219217411524101, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -1034,6 +1028,10 @@ PrefabInstance:
       value: item (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: lvl
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       propertyPath: maxLvls
       value: 4
       objectReference: {fileID: 0}
@@ -1057,9 +1055,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6074899453123636591, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 3922219217411524101, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
