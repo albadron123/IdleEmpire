@@ -11,10 +11,13 @@ public class Building
         Tower, 
         CubeProduction,
         BlahProduction,
-        MajorTower
+        MajorTower,
+
+        Count
     };
     public BuildingType myType;
     public GameObject buildingPfb;
+    public int myLvl;
 }
 
 [System.Serializable]
@@ -48,6 +51,9 @@ public class CoreGame : MonoBehaviour
     public static string TAG_ENEMY = "Enemy";
     public static string TAG_PROJECTILE = "Projectile";
     public static string TAG_BUILDING_PLACEMENT = "BuildingPlacement";
+
+
+    public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] {"Tawa","Cubo","Bubil","Major"};
 
     public List<Building> allBuidlings = new List<Building>();
     public List<BuildingTag> allBuildingTags = new List<BuildingTag>();
@@ -204,9 +210,13 @@ public class CoreGame : MonoBehaviour
         canBuild = false;
 
         //Instantiate building
+        string buildingName = BUILDING_NAMES[(int)buildingTag.type];
+        
+        int buildingLevel = PlayerPrefs.HasKey(buildingName)?PlayerPrefs.GetInt(buildingName):0;
+
         currentlyBuildingTag = buildingTag;
         currentlyPlacingBuilding =
-            Instantiate(allBuidlings.Find(x => x.myType == currentlyBuildingTag.type).buildingPfb,
+            Instantiate(allBuidlings.Find(x => x.myType == currentlyBuildingTag.type && x.myLvl == buildingLevel).buildingPfb,
                 new Vector3(mousePosition.x, mousePosition.y, -5), Quaternion.identity);
         lastPlacementSquare = currentlyPlacingBuilding.transform.GetChild(0).GetComponent<SpriteRenderer>();
     }

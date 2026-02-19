@@ -497,6 +497,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  mouseEnterCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  mouseExitCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
   initialScale: {x: 1, y: 1, z: 1}
 --- !u!61 &363423202
 BoxCollider2D:
@@ -1448,6 +1454,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  mouseEnterCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  mouseExitCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
   initialScale: {x: 1, y: 1, z: 1}
 --- !u!212 &680267658
 SpriteRenderer:
@@ -3432,10 +3444,31 @@ MonoBehaviour:
   allBuidlings:
   - myType: 1
     buildingPfb: {fileID: 6784931032043712049, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
+    myLvl: 0
   - myType: 2
     buildingPfb: {fileID: 7097252096923523686, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
+    myLvl: 0
   - myType: 0
     buildingPfb: {fileID: 6921129094441651834, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+    myLvl: 0
+  - myType: 1
+    buildingPfb: {fileID: 9078750257822671703, guid: a70b36bd9eee6ad41b17eb4fffce18b7, type: 3}
+    myLvl: 1
+  - myType: 1
+    buildingPfb: {fileID: 4843124885884323175, guid: 1f8bb19728e739541b7273b75deb9c04, type: 3}
+    myLvl: 2
+  - myType: 0
+    buildingPfb: {fileID: 6921129094441651834, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+    myLvl: 1
+  - myType: 0
+    buildingPfb: {fileID: 6921129094441651834, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+    myLvl: 2
+  - myType: 2
+    buildingPfb: {fileID: 6921129094441651834, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+    myLvl: 1
+  - myType: 2
+    buildingPfb: {fileID: 6921129094441651834, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+    myLvl: 2
   allBuildingTags:
   - sr: {fileID: 774836043}
     price: 5
@@ -3467,6 +3500,7 @@ MonoBehaviour:
   draggedObject: {fileID: 0}
   sliderPfb: {fileID: 3068080253284211682, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
   moreResourcePfb: {fileID: 8743555260964106640, guid: 9c30bc179617cac4ba3ae79de591f14b, type: 3}
+  selectedBuilding: {fileID: 0}
   canDrag: 1
   canBuild: 1
   attackTe: {fileID: 1252822644}
@@ -3588,6 +3622,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  mouseEnterCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  mouseExitCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
   initialScale: {x: 1, y: 1, z: 1}
 --- !u!212 &1537384912
 SpriteRenderer:
@@ -4004,6 +4044,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  mouseEnterCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  mouseExitCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
   initialScale: {x: 1, y: 1, z: 1}
 --- !u!212 &1768525886
 SpriteRenderer:

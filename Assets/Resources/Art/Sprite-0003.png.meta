@@ -660,6 +660,153 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Sprite-0003_25
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 280
+        width: 94
+        height: 98
+      alignment: 9
+      pivot: {x: 0.47733095, y: 0.07599033}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51d3a231db15e0449b3c08b37685c890
+      internalID: -1874097882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite-0003_26
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 284
+        width: 92
+        height: 137
+      alignment: 9
+      pivot: {x: 0.46525708, y: 0.052817687}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c06a651fa944fc147ae09748c00862ff
+      internalID: -1880178599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite-0003_27
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 147
+        width: 102
+        height: 107
+      alignment: 9
+      pivot: {x: 0.47477123, y: 0.10318749}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a34b2cbfe4f26e5458cce14ac5e05f0a
+      internalID: -351529815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite-0003_28
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 143
+        width: 106
+        height: 126
+      alignment: 9
+      pivot: {x: 0.48323435, y: 0.105065726}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76b6c62cb10faac4b9ee72d6c3991ba6
+      internalID: -971994941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite-0003_29
+      rect:
+        serializedVersion: 2
+        x: 525
+        y: 7
+        width: 104
+        height: 116
+      alignment: 9
+      pivot: {x: 0.5313292, y: 0.06335928}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15dbaa361be44104cbf5b93a2a1504ba
+      internalID: 1590893602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite-0003_30
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 5
+        width: 59
+        height: 111
+      alignment: 9
+      pivot: {x: 0.47991893, y: 0.07838101}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f2beea2cc6d5084285e52d8f455c1c7
+      internalID: 542917543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite-0003_31
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 454
+        width: 101
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98c397f9f42209d4692e674c45a9044f
+      internalID: 930161216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -689,7 +836,14 @@ TextureImporter:
       Sprite-0003_22: -1461039860
       Sprite-0003_23: -910670991
       Sprite-0003_24: -249630266
+      Sprite-0003_25: -1874097882
+      Sprite-0003_26: -1880178599
+      Sprite-0003_27: -351529815
+      Sprite-0003_28: -971994941
+      Sprite-0003_29: 1590893602
       Sprite-0003_3: -628315583
+      Sprite-0003_30: 542917543
+      Sprite-0003_31: 930161216
       Sprite-0003_4: 1629890750
       Sprite-0003_5: -1442016356
       Sprite-0003_6: 530242438

@@ -281,6 +281,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: item
       objectReference: {fileID: 0}
+    - target: {fileID: 4500962862563676597, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: maxLvls
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: upgradeName
+      value: Cubo
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -752,9 +764,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: item (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4500962862563676597, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       propertyPath: maxLvls
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: upgradeName
+      value: Tawa
       objectReference: {fileID: 0}
     - target: {fileID: 5988088963900697794, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       propertyPath: m_text
@@ -1029,13 +1049,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: item (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4500962862563676597, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       propertyPath: lvl
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       propertyPath: maxLvls
-      value: 4
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: upgradeName
+      value: Bubil
       objectReference: {fileID: 0}
     - target: {fileID: 5988088963900697794, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       propertyPath: m_text

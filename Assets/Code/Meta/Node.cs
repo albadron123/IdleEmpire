@@ -10,6 +10,7 @@ public class Node : MonoBehaviour
     [SerializeField] int lvl;
     [SerializeField] int basePrice;
     [SerializeField] float pricePower;
+    [SerializeField] string upgradeName;
 
 
     //Updrade View
@@ -93,6 +94,8 @@ public class Node : MonoBehaviour
 
     void InitNode()
     {
+        //Figure out the levels
+        lvl = PlayerPrefs.HasKey(upgradeName) ? PlayerPrefs.GetInt(upgradeName) : 0;
         //Draw updrades
         upgradePoints = MaximUtils.DrawCenteredListHor(upgradePointPrefab, upgradePointContainer.transform, Vector3.zero, updradePointDistance, maxLvls, 0.1f);
         ColorUpgradePoints();
@@ -164,6 +167,7 @@ public class Node : MonoBehaviour
 
         Debug.Log("Upgrade Aquired!");
         ++lvl;
+        PlayerPrefs.SetInt(upgradeName, lvl);
         if (lvl == maxLvls)
         {
             // Fully upgraded
