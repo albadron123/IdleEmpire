@@ -285,6 +285,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6074899453123636591, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 3922219217411524101, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -750,10 +753,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: item (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: maxLvls
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5988088963900697794, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: m_text
+      value: tawa
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281948050582364709, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1775859747, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6074899453123636591, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 3922219217411524101, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -1015,10 +1033,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: item (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5121207794592558503, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: maxLvls
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5988088963900697794, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: m_text
+      value: bubil
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281948050582364709, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1629890750, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
+    - target: {fileID: 9084427690147385130, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 9084427690147385130, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6074899453123636591, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 3922219217411524101, guid: 3b722e145e23efb47bec1ac1c7e3258a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}

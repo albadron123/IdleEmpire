@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MaximUtils
+public class MaximUtils : MonoBehaviour
 {
     public static List<int> RandomIndicesUnique(int indexMax, int count)
     {
@@ -59,5 +59,24 @@ public class MaximUtils
             }
         }
         return null;
+    }
+
+
+    public static List<GameObject> DrawCenteredListHor(GameObject obj, Transform container, Vector3 center, float delta, int count, float widthMult)
+    {
+        List<GameObject> instances = new List<GameObject>();
+
+        float width = obj.transform.localScale.x * widthMult;
+        float length = count * width + (count - 1) * delta;
+        Vector3 begin = center + new Vector3(-length / 2f + width / 2f, 0, 0);
+        Vector3 diff = new Vector3(width + delta, 0, 0);
+
+        for (int i = 0; i < count; ++i)
+        {
+            GameObject inst = Instantiate(obj, Vector3.zero, Quaternion.identity, container);
+            inst.transform.localPosition = begin + diff * i;
+            instances.Add(inst);
+        }
+        return instances;
     }
 }

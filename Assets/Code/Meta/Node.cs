@@ -5,6 +5,23 @@ using DG.Tweening;
 
 public class Node : MonoBehaviour
 {
+    [Header("UpgradeModel")]
+    [SerializeField] int maxLvls;
+    [SerializeField] int lvl;
+
+    //Updrade View
+    [Header("UpgradeView")]
+    [SerializeField]
+    GameObject upgradePointPrefab;
+    [SerializeField]
+    float updradePointDistance = 0.1f;
+    [SerializeField]
+    GameObject upgradePointContainer;
+    [SerializeField]
+    GameObject purchaseButton;
+
+
+
     [SerializeField] Color defaultColor = Color.white;
     [SerializeField] Color selectColor = Color.yellow;
 
@@ -37,6 +54,8 @@ public class Node : MonoBehaviour
             phi[i] = Random.Range(0, 2 * Mathf.PI);
             alpha[i] = Random.Range(0.1f, 0.2f);
         }
+
+        InitNode();
     }
 
     // Update is called once per frame
@@ -68,6 +87,8 @@ public class Node : MonoBehaviour
 
     void InitNode()
     {
+        //Draw updrades
+        List<GameObject> upgrades = MaximUtils.DrawCenteredListHor(upgradePointPrefab, upgradePointContainer.transform, Vector3.zero, updradePointDistance, maxLvls, 0.1f);
         
     }
 
@@ -82,6 +103,10 @@ public class Node : MonoBehaviour
         t.DOScale(1.1f * initialScale, 0.15f);
         outlineSr.color = selectColor;
         titleTe.color = selectColor;
+        if (lvl < maxLvls)
+        {
+            purchaseButton.SetActive(true);
+        }
     }
 
     void DeselectNode()
@@ -91,6 +116,7 @@ public class Node : MonoBehaviour
         t.DOScale(1f*initialScale, 0.15f);
         outlineSr.color = defaultColor;
         titleTe.color = defaultColor;
+        purchaseButton.SetActive(false);
     }
 
     void AquireUpgade()
