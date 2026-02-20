@@ -76,6 +76,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.03699994
       objectReference: {fileID: 0}
+    - target: {fileID: 3415197366082961856, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
+      propertyPath: baseProductionTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4159218624827584173, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -94,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6784931032043712049, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_Name
-      value: CuboLvl2
+      value: CuboLvl1
       objectReference: {fileID: 0}
     - target: {fileID: 8534595610195519360, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_LocalScale.x

@@ -98,7 +98,18 @@ public class Node : MonoBehaviour
         //Draw updrades
         upgradePoints = MaximUtils.DrawCenteredListHor(upgradePointPrefab, upgradePointContainer.transform, Vector3.zero, updradePointDistance, maxLvls, 0.1f);
         ColorUpgradePoints();
-        priceTe.text = CalculateCurrentPrice().ToString();
+        if (lvl < maxLvls)
+        {
+            priceTe.text = CalculateCurrentPrice().ToString();
+        }
+        else
+        {
+            priceTe.text = "inf";
+            outlineSr.color = selectColor;
+            titleTe.color = selectColor;
+        }
+
+
     }
 
     int CalculateCurrentPrice()

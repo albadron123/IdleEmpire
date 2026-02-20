@@ -21,7 +21,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
     public GameObject outline;
 
     // tower variables
-    float towerAngle = 0;
+    float[] towerAnglePerPlace;
 
     public float baseProjectileSize = 1.15f;
     public float baseShootingSpeed = 0.9f;
@@ -47,6 +47,12 @@ public class BuildingObject : MonoBehaviour, IDestructable
         processes = new Coroutine[blobPlaces.Count];
         sliders = new GameObject[blobPlaces.Count];
         blobs = new Blob[blobPlaces.Count];
+
+        towerAnglePerPlace = new float[blobPlaces.Count];
+        for (int i = 0; i < towerAnglePerPlace.Length; ++i)
+        {
+            towerAnglePerPlace[i] = 0;
+        }
     }
 
     // Update is called once per frame
@@ -76,6 +82,15 @@ public class BuildingObject : MonoBehaviour, IDestructable
     {
         int processId = blobPlaces.LastIndexOf(blobPlace);
         blobs[processId] = blob;
+
+        //TOWER SPECIFIC : REDOOOOOO!
+        towerAnglePerPlace[processId]++;
+        if (towerAnglePerPlace[processId] > 3)
+        {
+            towerAnglePerPlace[processId] = 0;
+        }
+        //
+
         processes[processId] = StartCoroutine(FunctionCoroutine(processId));
     }
 
@@ -163,15 +178,15 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
                 pr.damage = damage;
-                if (towerAngle == 0)
+                if (towerAnglePerPlace[processId] == 0)
                 {
                     pr.direction = Vector3.right;
                 }
-                else if (towerAngle == 1)
+                else if (towerAnglePerPlace[processId] == 1)
                 {
                     pr.direction = Vector3.up;
                 }
-                else if (towerAngle == 2)
+                else if (towerAnglePerPlace[processId] == 2)
                 {
                     pr.direction = Vector3.left;
                 }
@@ -228,12 +243,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
     public void AddBlob(Blob b, GameObject blobPlace)
     {
 
-        //REDOOOOOO!
-        towerAngle++;
-        if (towerAngle > 3)
-        {
-            towerAngle = 0;
-        }
+        
 
         StartFunctioning(b, blobPlace);
     }

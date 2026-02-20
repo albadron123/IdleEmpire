@@ -82,7 +82,7 @@ public class Blob : MonoBehaviour, IDragInteraction
         }
         */
 
-        Collider2D foundPlaceCol = MaximUtils.GetAnyOverlappedWithTag2D(myCollider, CoreGame.TAG_BLOB_PLACE);
+        Collider2D foundPlaceCol = MaximUtils.GetNearestOverlappedWithTag2D(myCollider, CoreGame.TAG_BLOB_PLACE);
         GameObject foundPlace = null;
         if (foundPlaceCol != null)
         {

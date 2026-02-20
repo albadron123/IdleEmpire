@@ -61,6 +61,35 @@ public class MaximUtils : MonoBehaviour
         return null;
     }
 
+    public static Collider2D GetNearestOverlappedWithTag2D(Collider2D col, string tag)
+    {
+        List<Collider2D> overlapped = new List<Collider2D>();
+        Physics2D.OverlapCollider(col, new ContactFilter2D().NoFilter(), overlapped);
+        Collider2D nearest = null;
+        float shortestDistance = float.MaxValue;
+        foreach (Collider2D other in overlapped)
+        {
+            if (other.gameObject.CompareTag(tag))
+            {
+                if (nearest == null)
+                {
+                    nearest = other;
+                    shortestDistance = Vector2.Distance(col.transform.position, other.transform.position);
+                }
+                else
+                {
+                    float currentDistance = Vector2.Distance(col.transform.position, other.transform.position);
+                    if (currentDistance < shortestDistance)
+                    {
+                        nearest = other;
+                        shortestDistance = currentDistance;
+                    }
+                }
+            }
+        }
+        return nearest;
+    }
+
 
     public static List<GameObject> DrawCenteredListHor(GameObject obj, Transform container, Vector3 center, float delta, int count, float widthMult)
     {
