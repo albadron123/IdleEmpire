@@ -356,10 +356,10 @@ public class CoreGame : MonoBehaviour
     }
 
 
-    public void CreateIconPopUp(Vector3 initialPosition, string text, Sprite icon)
+    public void CreateIconPopUp(Vector2 initialPosition, string text, Sprite icon)
     {
 
-        GameObject inst = Instantiate(moreResourcePfb, initialPosition + new Vector3(-1.2f, 0.7f, 0), Quaternion.identity);
+        GameObject inst = Instantiate(moreResourcePfb, (Vector3)initialPosition + new Vector3(-1.2f, 0.7f, -9), Quaternion.identity);
         TMPro.TMP_Text te = inst.GetComponent<TMPro.TMP_Text>();
         te.text = text;
         SpriteRenderer sr = inst.transform.GetChild(0).GetComponent<SpriteRenderer>();

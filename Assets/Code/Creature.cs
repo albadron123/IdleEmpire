@@ -65,7 +65,7 @@ public class Creature : MonoBehaviour, IDestructable
         {
             if (damage < 0)
             {
-                CoreGame.inst.CreateIconPopUp(t.position, $"{damage} hp".Color("red").Bold(), null);
+                CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"{damage} hp".Color("red").Bold(), null);
             }
         }
     }

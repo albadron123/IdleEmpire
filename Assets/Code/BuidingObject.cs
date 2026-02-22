@@ -66,7 +66,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
     {
         if (damage < 0)
         {
-            CoreGame.inst.CreateIconPopUp(t.position, $"{damage} hp", null);
+            CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"{damage} hp".Bold(), null);
         }
     }
 
@@ -78,7 +78,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
         }
     }
 
-    public void StartFunctioning(Blob blob, GameObject blobPlace)
+    public void AddBlob(Blob blob, GameObject blobPlace)
     {
         int processId = blobPlaces.LastIndexOf(blobPlace);
         blobs[processId] = blob;
@@ -94,7 +94,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
         processes[processId] = StartCoroutine(FunctionCoroutine(processId));
     }
 
-    public void StopFunctioning(Blob blob, GameObject blobPlace)
+    public void RemoveBlob(Blob blob, GameObject blobPlace)
     {
         int processId = blobPlaces.LastIndexOf(blobPlace);
         blobs[processId] = null;
@@ -174,7 +174,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 float projectileSize = GetProjectileSize();
                 int damage = GetProjectileDamage();
                     
-                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, blobs[processId].transform.position, Quaternion.identity);
+                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0,0,-9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
                 pr.damage = damage;
@@ -236,22 +236,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
     public float GetProjectileSize()
     {
         return baseProjectileSize + projectileSizeLevel * 0.1f;   
-    }
-    
-
-
-    public void AddBlob(Blob b, GameObject blobPlace)
-    {
-
-        
-
-        StartFunctioning(b, blobPlace);
-    }
-
-    public void RemoveBlob(Blob b, GameObject blobPlace)
-    {
-        StopFunctioning(b, blobPlace);
-    }
+    }    
 
 
 }
