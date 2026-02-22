@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class MaximUtils : MonoBehaviour
 {
     public static List<int> RandomIndicesUnique(int indexMax, int count)
@@ -90,6 +92,7 @@ public class MaximUtils : MonoBehaviour
         return nearest;
     }
 
+    
 
     public static List<GameObject> DrawCenteredListHor(GameObject obj, Transform container, Vector3 center, float delta, int count, float widthMult)
     {
@@ -107,5 +110,24 @@ public class MaximUtils : MonoBehaviour
             instances.Add(inst);
         }
         return instances;
+    }
+}
+
+// ===String extention methods===
+public static class StringUtils
+{
+    public static string Bold(this string s)
+    {
+        return $"<b>{s}</b>";
+    }
+
+    public static string Italic(this string s)
+    {
+        return $"<i>{s}</i>";
+    }
+
+    public static string Color(this string s, string color)
+    {
+        return $"<color={color}>{s}</color>";
     }
 }
