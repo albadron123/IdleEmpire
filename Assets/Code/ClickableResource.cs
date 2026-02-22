@@ -23,8 +23,7 @@ public class ClickableResource : MonoBehaviour
         
     }
 
-
-    private void OnMouseDown()
+    public void Click()
     {
         if (!clicked)
         {

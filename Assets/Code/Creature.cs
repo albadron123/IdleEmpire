@@ -107,6 +107,7 @@ public class Creature : MonoBehaviour, IDestructable
 
 
     float idleVelocity = 1f;
+    [SerializeField] 
     int damage = 1;
     Vector3 destination;
     DestructableObject target;

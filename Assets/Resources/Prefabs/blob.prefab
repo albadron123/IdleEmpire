@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myType: 0
+  damage: 7
 --- !u!95 &7883150363378630851
 Animator:
   serializedVersion: 5

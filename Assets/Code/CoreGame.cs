@@ -50,6 +50,7 @@ public class CoreGame : MonoBehaviour
 {
     public static string TAG_BLOB_PLACE = "BlobPlace";
     public static string TAG_ENEMY = "Enemy";
+    public static string TAG_CLICKABLE_RESOURCE = "ClickableResource";
     public static string TAG_PROJECTILE = "Projectile";
     public static string TAG_BUILDING_PLACEMENT = "BuildingPlacement";
 
@@ -313,6 +314,24 @@ public class CoreGame : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 CancelBuilding();
+            }
+        }
+
+        if (currentlyPlacingBuilding == null && draggedObject==null)
+        {
+            // perform clicking activities
+            if(Input.GetMouseButtonDown(0))
+            {
+                Collider2D enemyCol = MaximUtils.GetNearestOverlappedWithTag2D(mousePosition, 0.1f, TAG_ENEMY);
+                if (enemyCol != null)
+                {
+                    enemyCol.GetComponent<DestructableObject>().ChangeHealth(-1);
+                }
+                Collider2D resourseCol = MaximUtils.GetNearestOverlappedWithTag2D(mousePosition, 0.1f, TAG_CLICKABLE_RESOURCE);
+                if (resourseCol != null)
+                {
+                    resourseCol.GetComponent<ClickableResource>().Click();
+                }
             }
         }
 

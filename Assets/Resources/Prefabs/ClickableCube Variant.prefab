@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClickableCube Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7885454952647103902, guid: 62cc6c441d34ed9488b720207baa4247, type: 3}
+      propertyPath: m_TagString
+      value: ClickableResource
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

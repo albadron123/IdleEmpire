@@ -134,8 +134,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 Destroy(sliderInst);
                 sliders[processId] = null;
 
+                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_PRODUCE_CUBO);
                 CoreGame.inst.ChangeResource(Resource.ResourceType.cubes, productionAmount);
-
                 CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[0].icon);
             }
         }
@@ -160,8 +160,9 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 Destroy(sliderInst);
                 sliders[processId] = null;
 
-                CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
 
+                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_PRODUCE_BUBIL);
+                CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
                 CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
         }
@@ -230,7 +231,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     public int GetProjectileDamage()
     {
-        return projectileDamageLevel + 1;
+        return (projectileDamageLevel + 1) * 10;
     }
 
     public float GetProjectileSize()

@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  maxHealth: 2
+  maxHealth: 10
   sliderMinX: -0.63
   sliderMaxX: 0
   sliderContainer: {fileID: 6734491300001301973}

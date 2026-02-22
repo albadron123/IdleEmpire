@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Projectile
   - BuildingPlacement
+  - ClickableResource
   layers:
   - Default
   - TransparentFX
@@ -50,4 +51,7 @@ TagManager:
     locked: 0
   - name: Slider
     uniqueID: 4282641081
+    locked: 0
+  - name: FORWARD
+    uniqueID: 3883634759
     locked: 0
