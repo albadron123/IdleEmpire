@@ -14,7 +14,7 @@ public class Blob : MonoBehaviour, IDragInteraction
     BuildingObject currentBuilding = null;
     GameObject currentPlace = null;
 
-
+    [SerializeField]
     Creature meCreature;
 
     [SerializeField]

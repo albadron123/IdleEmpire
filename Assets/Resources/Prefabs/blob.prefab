@@ -180,10 +180,10 @@ GameObject:
   - component: {fileID: 4886776788062913818}
   - component: {fileID: 2453006614855220510}
   - component: {fileID: 2649454412288557387}
-  - component: {fileID: 5429536372864490633}
   - component: {fileID: 7883150363378630851}
   - component: {fileID: 2830018964193525237}
   - component: {fileID: 8085549926922520373}
+  - component: {fileID: 2648771898266249679}
   m_Layer: 0
   m_Name: blob
   m_TagString: Untagged
@@ -233,21 +233,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialZPosition: 0
+  meCreature: {fileID: 2648771898266249679}
   outline: {fileID: 6883667957360578570}
---- !u!114 &5429536372864490633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3314464552146828137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f32bc1a0344e79458901140fd8b822e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myType: 0
-  damage: 7
 --- !u!95 &7883150363378630851
 Animator:
   serializedVersion: 5
@@ -322,6 +309,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
+--- !u!114 &2648771898266249679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3314464552146828137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42cee1e531e9d64282a2a483c59f424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myType: 0
+  idleVelocity: 1
+  activeVelocity: 2
+  myDamage: 7
 --- !u!1 &6883667957360578570
 GameObject:
   m_ObjectHideFlags: 0

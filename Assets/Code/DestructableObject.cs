@@ -69,7 +69,7 @@ public class DestructableObject : MonoBehaviour
         // Display health on the slider
         sliderT.transform.DOKill();
         sliderT.transform.DOLocalMove(new Vector3(GetSliderDestinationX(), 0, sliderT.transform.localPosition.z), 0.5f);
-        //Hisplay the hit damage
+        //Display the hit damage
         specificDestruction.ChangeHealth(delta);
     }
 
@@ -85,9 +85,6 @@ public class DestructableObject : MonoBehaviour
     {
         float fraction = (float)health / maxHealth;
         float result = sliderMinX + fraction * (sliderMaxX - sliderMinX);
-        Debug.Log(result);
-        Debug.Log(fraction);
-        Debug.Log(health);
         return result;
     }
 

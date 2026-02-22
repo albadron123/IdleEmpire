@@ -140,6 +140,12 @@ public class MaximUtils : MonoBehaviour
         }
         return instances;
     }
+
+
+    public static Vector2 RandomVector2(float maxMagnitude)
+    {
+        return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized * Random.Range(-maxMagnitude, maxMagnitude);
+    }
 }
 
 // ===String extention methods===
