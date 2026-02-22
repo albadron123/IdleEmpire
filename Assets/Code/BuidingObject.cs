@@ -174,7 +174,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 float shootingSpeed = GetShootingSpeed();
                 float projectileSize = GetProjectileSize();
                 int damage = GetProjectileDamage();
-                    
+
+                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch:0.95f, maxPitch:1.05f);
                 GameObject inst = Instantiate(CoreGame.inst.projectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0,0,-9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
