@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9082132591133364323}
-  - component: {fileID: 625199781344948276}
   - component: {fileID: 3434529825214130355}
   - component: {fileID: 4264027193516490597}
   - component: {fileID: 7411778755575679770}
+  - component: {fileID: -2269121305536704900}
   m_Layer: 0
   m_Name: tinyEnemyBlob
   m_TagString: Enemy
@@ -38,19 +38,6 @@ Transform:
   - {fileID: 3547526626727674023}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &625199781344948276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1008407526824223830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f32bc1a0344e79458901140fd8b822e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myType: 1
 --- !u!114 &3434529825214130355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,6 +122,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &-2269121305536704900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008407526824223830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02c3c9b4230ff104bb88aa45034cb705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myType: 0
+  idleVelocity: 1
+  activeVelocity: 1.5
+  myDamage: 1
+  rewardBones: 1
+  rewardBonesCritical: 2
+  criticalChance: 0.1
 --- !u!1 &6507854710140734524
 GameObject:
   m_ObjectHideFlags: 0

@@ -52,6 +52,7 @@ public class CoreGame : MonoBehaviour
     public static string TAG_ENEMY = "Enemy";
     public static string TAG_CLICKABLE_RESOURCE = "ClickableResource";
     public static string TAG_PROJECTILE = "Projectile";
+    public static string TAG_ENEMY_PROJECTILE = "EnemyProjectile";
     public static string TAG_BUILDING_PLACEMENT = "BuildingPlacement";
 
 
@@ -87,8 +88,10 @@ public class CoreGame : MonoBehaviour
 
     float attackTimer = 0;
     float attackCount = 1;
+    float attackTimeScale = 1;
 
     [SerializeField] TMPro.TMP_Text attackTe;
+    [SerializeField] TMPro.TMP_Text attantionTe;
 
     public GameObject projectilePfb;
 
@@ -102,8 +105,12 @@ public class CoreGame : MonoBehaviour
     [SerializeField] Transform upgradesContainer;
     [SerializeField] GameObject upgradeButtonPfb;
 
-    void Start()
+    [SerializeField] GameObject clickableBlockPfb;
+    [SerializeField] GameObject clickableBlobPfb;
+
+    private void Awake()
     {
+        // We are booting the game here. 
 
         if (inst != null)
         {
@@ -112,56 +119,78 @@ public class CoreGame : MonoBehaviour
 
         inst = this;
 
+
         // Show all resources
         for (int i = 0; i < (int)Resource.ResourceType.Count; ++i)
         {
             ChangeResource((Resource.ResourceType)i, 0);
         }
 
-        builtObjects = new List<BuildingObject>();
-        builtObjects.Add(mainTower);
+        if (builtObjects == null)
+        {
+            builtObjects = new List<BuildingObject>();
+        }
+    }
 
 
-        StartCoroutine(AttackLogic());
+    void Start()
+    {
+        StartCoroutine(WaitForAttack());
         StartCoroutine(ResourceGenerationLogic());
+        
     }
 
     [SerializeField] List<GameObject> enemyGroups = new List<GameObject>();
 
 
 
-    float timeScale = 1;
+    
 
-    IEnumerator AttackLogic()
+
+    IEnumerator WaitForAttack()
     {
-        while (true)
+        attackTimer = 30;
+        do
         {
-            //plan attack    
-            attackTimer = 30;
-            do
-            {
-                attackTe.text = $"Next attack in {attackTimer} seconds";
-                yield return new WaitForSeconds(1f / timeScale);
-                --attackTimer;
-            } while (attackTimer >= 0);
-
-            attackTe.text = "Attack starts!";
-            //Generate army
-            for (int i = 0; i < attackCount; ++i)
-            {
-                float angle = Random.Range(0, Mathf.PI * 2);
-                Instantiate(enemyGroups[Random.Range(0, enemyGroups.Count)],
-                    mainTower.transform.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 6f,
-                    Quaternion.identity);
-                yield return new WaitForSeconds(0.5f);
-            }
-
-            ++attackCount;
-        }
+            attackTe.text = $"Next attack in {attackTimer} seconds";
+            yield return new WaitForSeconds(1f / attackTimeScale);
+            --attackTimer;
+        } while (attackTimer >= 0);
+        StartCoroutine(StartAttack());
     }
 
-    [SerializeField] GameObject clickableBlockPfb;
-    [SerializeField] GameObject clickableBlobPfb;
+    IEnumerator StartAttack()
+    {
+        //Notify all
+        attackTe.text = "";
+        StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, "NEW WAVE BEGINS!!!", 0.05f, 1, 0.5f));
+
+        for (int i = 0; i < attackCount; ++i)
+        {
+            float angle = Random.Range(0, Mathf.PI * 2);
+            Instantiate(enemyGroups[Random.Range(0, enemyGroups.Count)],
+                mainTower.transform.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 6f,
+                Quaternion.identity);
+            yield return new WaitForSeconds(0.5f);
+        }
+        ++attackCount;
+        StartCoroutine(PrepareTheNextAttack());
+    }
+
+    IEnumerator PrepareTheNextAttack()
+    {
+        const int EXTRA_TIME_FOR_DEFENCE_SEC = 10;
+        for (int i = 0; i < EXTRA_TIME_FOR_DEFENCE_SEC; ++i)
+        {
+            if (MaximUtils.CountGameObjectsWithTag(TAG_ENEMY) <= 0)
+            {
+                break;
+            }
+            yield return new WaitForSecondsRealtime(1);
+        }
+        StartCoroutine(WaitForAttack());
+    }
+
 
     IEnumerator ResourceGenerationLogic()
     {
@@ -242,8 +271,6 @@ public class CoreGame : MonoBehaviour
                 currentlyPlacingBuilding.transform.position.y, currentlyPlacingBuilding.transform.position.y);
 
             lastPlacementSquare.gameObject.SetActive(false);
-
-            builtObjects.Add(currentlyPlacingBuilding.GetComponent<BuildingObject>());
 
             currentlyBuildingTag = null;
             currentlyPlacingBuilding = null;
@@ -339,12 +366,12 @@ public class CoreGame : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            timeScale = 10f;
+            attackTimeScale = 10f;
         }
 
         if (Input.GetKeyUp(KeyCode.Q))
         {
-            timeScale = 1f;
+            attackTimeScale = 1f;
         }
 
         if (Input.GetKeyDown(KeyCode.Z))

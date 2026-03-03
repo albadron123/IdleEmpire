@@ -65,7 +65,9 @@ public class EnemyCreature : Creature
 
     public override void StartSimulation()
     {
+        /*
         GameObject targetObj = CoreGame.inst.builtObjects.Find(x => x.b.myType == Building.BuildingType.MajorTower).gameObject;
         simulation = StartCoroutine(MoveToAttackTarget(targetObj));
+        */
     }
 }

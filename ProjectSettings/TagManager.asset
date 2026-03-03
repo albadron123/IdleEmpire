@@ -9,6 +9,7 @@ TagManager:
   - Projectile
   - BuildingPlacement
   - ClickableResource
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX

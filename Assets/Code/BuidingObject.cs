@@ -39,9 +39,19 @@ public class BuildingObject : MonoBehaviour, IDestructable
     [SerializeField]
     List<UpgradeType> upgradeTypes;
 
+    void RegisterBuilding()
+    {
+        if (CoreGame.inst.builtObjects == null)
+        {
+            CoreGame.inst.builtObjects = new List<BuildingObject>();
+        }
+        CoreGame.inst.builtObjects.Add(this);
+    }
 
     void Start()
     {
+        RegisterBuilding();
+
         t = transform;
 
         processes = new Coroutine[blobPlaces.Count];
@@ -53,12 +63,29 @@ public class BuildingObject : MonoBehaviour, IDestructable
         {
             towerAnglePerPlace[i] = 0;
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // TODO: Here is some code duplication to be fixed later (also in friend and enemy creature updates)
+        List<Collider2D> cols = new List<Collider2D>();
+        Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), cols);
+        foreach (Collider2D col in cols)
+        {
+            if (col.gameObject.tag == CoreGame.TAG_ENEMY_PROJECTILE)
+            {
+                int damage = col.gameObject.GetComponent<Projectile>().damage;
+                Destroy(col.gameObject);
+                DestructableObject dObj = GetComponent<DestructableObject>();
+                dObj.ChangeHealth(-damage);
+                if (dObj.health <= 0)
+                {
+                    break;
+                }
+            }
+        }
     }
 
 
@@ -72,6 +99,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     public void Die()
     {
+        CoreGame.inst.builtObjects.Remove(this);
         if (b.myType == Building.BuildingType.MajorTower)
         {
             CoreGame.inst.EndRun();

@@ -17,7 +17,30 @@ public class FriendCreature : Creature
             simulation = StartCoroutine(IdleWalking());
         }
     }
-    
+
+
+    protected override void Update()
+    {
+        base.Update();
+
+        List<Collider2D> cols = new List<Collider2D>();
+        Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), cols);
+        foreach (Collider2D col in cols)
+        {
+            if (col.gameObject.tag == CoreGame.TAG_ENEMY_PROJECTILE)
+            {
+                int damage = col.gameObject.GetComponent<Projectile>().damage;
+                Destroy(col.gameObject);
+                DestructableObject dObj = GetComponent<DestructableObject>();
+                dObj.ChangeHealth(-damage);
+                if (dObj.health <= 0)
+                {
+                    break;
+                }
+            }
+        }
+    }
+
 
     protected override IEnumerator IdleWalking()
     {

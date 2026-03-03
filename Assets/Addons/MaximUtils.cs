@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 
 
 public class MaximUtils : MonoBehaviour
@@ -121,6 +121,12 @@ public class MaximUtils : MonoBehaviour
         return nearest;
     }
 
+    // USE ONLY WHEN YOU DONT NEED OBJECTS ANYMORE! CAN BE INEFFICIENT!
+    public static int CountGameObjectsWithTag(string tag)
+    {
+        return GameObject.FindGameObjectsWithTag(tag).Length;
+    }
+
 
 
     public static List<GameObject> DrawCenteredListHor(GameObject obj, Transform container, Vector3 center, float delta, int count, float widthMult)
@@ -146,6 +152,91 @@ public class MaximUtils : MonoBehaviour
     {
         return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized * Random.Range(-maxMagnitude, maxMagnitude);
     }
+
+    public static Vector2 RandomVector2FixMagnitude(float magnitude)
+    {
+        return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized * magnitude * ((Random.value > 0.5f)?1:-1);
+    }
+
+    public static void RenderWavyText(TMPro.TMP_Text te, float amplitude)
+    {
+        te.ForceMeshUpdate(); // Ensure the mesh is updated
+        TMP_TextInfo teInfo = te.textInfo;
+        for (int i = 0; i < teInfo.characterCount; ++i)
+        {
+            TMP_CharacterInfo charInfo = teInfo.characterInfo[i];
+            if (!charInfo.isVisible)
+            {
+                continue;
+            }
+            Vector3[] verts = teInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
+            for (int j = 0; j < 4; ++j)
+            {
+                verts[charInfo.vertexIndex + j] += new Vector3(0, amplitude * Mathf.Sin(Time.time * 10f + i * 5), 0);
+            }
+        }
+
+        for (int i = 0; i < teInfo.meshInfo.Length; ++i)
+        {
+            teInfo.meshInfo[i].mesh.vertices = teInfo.meshInfo[i].vertices;
+            te.UpdateGeometry(teInfo.meshInfo[i].mesh, i);
+        }
+    }
+
+    public static IEnumerator AppearAndClearWavyText(TMPro.TMP_Text te, string s, float appearVelocity, float timeToWait, float amplitude)
+    {
+        te.gameObject.SetActive(true);
+        te.text = "";
+        int lettersCount = s.Length;
+
+        float timer = 0;
+
+        for (int i = 0; i < lettersCount; ++i)
+        {
+            te.text = s.Substring(0, i);
+            
+            for (; timer < appearVelocity; timer += Time.fixedDeltaTime)
+            { 
+                RenderWavyText(te, amplitude);
+                yield return new WaitForFixedUpdate();
+            }
+            timer -= appearVelocity;
+            if (timer > appearVelocity)
+            {
+                i += (int)(timer / appearVelocity);
+                timer -= (int)(timer / appearVelocity);
+            }
+        }
+        te.text = s;
+
+        for (timer = 0; timer < timeToWait; timer += Time.fixedDeltaTime)
+        {
+            RenderWavyText(te, amplitude);
+            yield return new WaitForFixedUpdate();
+        }
+
+        timer = 0;
+        for (int i = 0; i < lettersCount; ++i)
+        {
+            te.text = s.Substring(0, lettersCount-i);
+
+            for (; timer < appearVelocity; timer += Time.fixedDeltaTime)
+            {
+                RenderWavyText(te, amplitude);
+                yield return new WaitForFixedUpdate();
+            }
+            timer -= appearVelocity;
+            if (timer > appearVelocity)
+            {
+                i += (int)(timer / appearVelocity);
+                timer -= (int)(timer / appearVelocity);
+            }
+        }
+        te.text = "";
+
+        te.gameObject.SetActive(false);
+    }
+
 }
 
 // ===String extention methods===

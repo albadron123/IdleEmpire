@@ -40,7 +40,13 @@ public class Creature : MonoBehaviour, IDestructable
     {
         t = transform;
         a = GetComponent<Animator>();
-        Invoke("StartSimulation", 0.05f);
+        StartCoroutine(StartSimDelayed());
+    }
+
+    IEnumerator StartSimDelayed()
+    {
+        yield return new WaitForEndOfFrame();
+        StartSimulation();
     }
 
     
@@ -161,12 +167,13 @@ public class Creature : MonoBehaviour, IDestructable
         if (target == null)
         {
             StartCoroutine(IdleWalking());
+            a.SetBool("attack", false);
             yield break;
         }
             
         target.ChangeHealth(-myDamage);
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.25f);
             
         a.SetBool("attack", false);
 
