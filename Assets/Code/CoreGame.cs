@@ -59,8 +59,7 @@ public class CoreGame : MonoBehaviour
     public static string TAG_ENEMY_PROJECTILE = "EnemyProjectile";
     public static string TAG_BUILDING_PLACEMENT = "BuildingPlacement";
 
-
-    public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] {"Tawa","Cubo","Bubil","Major"};
+    public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] {"Tawa","Cubo","Bubil","Major", "Tumba", "Flawa", "Magnik", "Plomo", "Bombik"};
 
     public List<Building> allBuidlings = new List<Building>();
     public List<BuildingTag> allBuildingTags = new List<BuildingTag>();
