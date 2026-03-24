@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 8429205623214935263}
   - component: {fileID: 5475672499653268911}
   - component: {fileID: 2918769264548051349}
+  - component: {fileID: 7703826252450033335}
   m_Layer: 0
   m_Name: MajorTower
   m_TagString: Untagged
@@ -113,7 +114,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -1723378346, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.14117648}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -168,6 +169,51 @@ MonoBehaviour:
   productionTimeLevel: 0
   productionAmountLevel: 0
   upgradeTypes: 
+--- !u!61 &7703826252450033335
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6996129902443490374}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.032786876, y: 0.55}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5356379, y: 0.04890534}
+    oldSize: {x: 0.92, y: 1.49}
+    newSize: {x: 1.2777778, y: 2.0694444}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.59, y: 1.01}
+  m_EdgeRadius: 0
 --- !u!1 &7261557023623038524
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,6 +598,10 @@ PrefabInstance:
     - target: {fileID: 3068080253284211682, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504354232951079662, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7687400540308977224, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
       propertyPath: m_Color.b

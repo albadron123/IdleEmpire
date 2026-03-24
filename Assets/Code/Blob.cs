@@ -57,13 +57,6 @@ public class Blob : MonoBehaviour, IDragInteraction
             currentPlace.GetComponent<SpriteRenderer>().enabled = true;
             currentPlace = null;
             currentBuilding = null;
-
-
-            DestructableObject dObj = GetComponent<DestructableObject>();
-            if (dObj.health < dObj.maxHealth)
-            {
-                dObj.sliderContainer.SetActive(true);
-            }
         }
     }
 
@@ -112,7 +105,6 @@ public class Blob : MonoBehaviour, IDragInteraction
                 currentPlace = foundPlace;
                 currentBuilding = currentPlace.transform.parent.GetComponent<BuildingObject>();
                 currentBuilding.AddBlob(this, currentPlace);
-                GetComponent<DestructableObject>().sliderContainer.SetActive(false);
             }
             else
             {

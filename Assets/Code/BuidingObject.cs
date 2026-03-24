@@ -20,6 +20,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     public GameObject outline;
 
+    public GameObject rotationPart = null;
+
     // tower variables
     float[] towerAnglePerPlace;
 
@@ -64,6 +66,11 @@ public class BuildingObject : MonoBehaviour, IDestructable
             towerAnglePerPlace[i] = 0;
         }
 
+
+        if (b.myType == Building.BuildingType.Tree)
+        {
+            StartCoroutine(FunctionCoroutine(0));
+        }
     }
 
     // Update is called once per frame
@@ -111,11 +118,18 @@ public class BuildingObject : MonoBehaviour, IDestructable
         int processId = blobPlaces.LastIndexOf(blobPlace);
         blobs[processId] = blob;
 
-        //TOWER SPECIFIC : REDOOOOOO!
+        
+        //TOWER SPECIFIC
         towerAnglePerPlace[processId]++;
         if (towerAnglePerPlace[processId] > 3)
         {
             towerAnglePerPlace[processId] = 0;
+            
+        }
+
+        if (rotationPart != null)
+        {
+            rotationPart.transform.rotation = Quaternion.Euler(0, 0, 90 * towerAnglePerPlace[processId]);
         }
         //
 
@@ -150,8 +164,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 int productionAmount = GetProductionAmount();
 
                 DOTween.Sequence()
-                    .Append(t.DOScale(new Vector3(1.1f, 1.1f, 1), 0.25f*productionTime))
-                    .Append(t.DOScale(new Vector3(1f, 1f, 1), 0.25f*productionTime)).SetLoops(2);
+                    .Append(t.DOScale(new Vector3(1.1f, 1.1f, 1), 0.25f * productionTime))
+                    .Append(t.DOScale(new Vector3(1f, 1f, 1), 0.25f * productionTime)).SetLoops(2);
 
                 GameObject sliderInst = Instantiate(CoreGame.inst.sliderPfb, blobs[processId].transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
                 sliderInst.transform.GetChild(0).transform.DOLocalMove(new Vector3(0, 0, 0), productionTime);
@@ -169,7 +183,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
         }
         else if (b.myType == Building.BuildingType.BlahProduction)
         {
-            
+
             while (true)
             {
                 float productionTime = GetProductionTime();
@@ -203,8 +217,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 float projectileSize = GetProjectileSize();
                 int damage = GetProjectileDamage();
 
-                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch:0.95f, maxPitch:1.05f);
-                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0,0,-9), Quaternion.identity);
+                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
+                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
                 pr.damage = damage;
@@ -220,7 +234,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 {
                     pr.direction = Vector3.left;
                 }
-                else 
+                else
                 {
                     pr.direction = Vector3.down;
                 }
@@ -235,17 +249,17 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 float shootingSpeed = GetShootingSpeed();
                 float projectileSize = GetProjectileSize();
                 int damage = GetProjectileDamage();
-                
+
                 GameObject nearestEnemy = MaximUtils.GetNearestWithTag(t.position, CoreGame.TAG_ENEMY);
-                if(nearestEnemy == null)
+                if (nearestEnemy == null)
                 {
                     yield return new WaitForSeconds(shootingSpeed);
-                    continue;   
+                    continue;
                 }
 
 
-                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch:0.95f, maxPitch:1.05f);
-                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0,0,-9), Quaternion.identity);
+                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
+                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
                 pr.damage = damage;
@@ -253,6 +267,40 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 Destroy(inst, 2.1f);
                 yield return new WaitForSeconds(shootingSpeed);
             }
+        }
+        else if (b.myType == Building.BuildingType.Tree)
+        {
+            while (true)
+            {
+                float productionTime = baseProductionTime;
+                int productionAmount = GetProductionAmount();
+
+                GameObject sliderInst = Instantiate(CoreGame.inst.sliderPfb, transform.position + new Vector3(0, 1.4f, 0), Quaternion.identity);
+                sliderInst.transform.GetChild(0).transform.DOLocalMove(new Vector3(0, 0, 0), productionTime);
+                sliders[processId] = sliderInst;
+
+                yield return new WaitForSeconds(productionTime);
+
+                Destroy(sliderInst);
+                sliders[processId] = null;
+
+
+                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_PRODUCE_BUBIL);
+                CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
+                CoreGame.inst.CreateIconPopUp(transform.position + new Vector3(0, 1.4f, 0), $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
+            }
+        }
+        else if (b.myType == Building.BuildingType.Flower)
+        {
+
+        }
+        else if (b.myType == Building.BuildingType.Magnet)
+        {
+
+        }
+        else if (b.myType == Building.BuildingType.BombProduction)
+        {
+            
         }
     }
 
