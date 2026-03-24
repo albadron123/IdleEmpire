@@ -1,9 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class FriendCreature : Creature
 {
+    [SerializeField]
+    Sprite shokedSprite;
+    [SerializeField]
+    TMPro.TMP_Text shokedTe;
+    [SerializeField]
+    SpriteRenderer imageSr;
+
+    public bool shoked = false;
+
 
     public override void StartSimulation()
     {
@@ -22,25 +32,46 @@ public class FriendCreature : Creature
     protected override void Update()
     {
         base.Update();
-
-        List<Collider2D> cols = new List<Collider2D>();
-        Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), cols);
-        foreach (Collider2D col in cols)
+        if(!shoked)
         {
-            if (col.gameObject.tag == CoreGame.TAG_ENEMY_PROJECTILE)
+            List<Collider2D> cols = new List<Collider2D>();
+            Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), cols);
+            foreach (Collider2D col in cols)
             {
-                int damage = col.gameObject.GetComponent<Projectile>().damage;
-                Destroy(col.gameObject);
-                DestructableObject dObj = GetComponent<DestructableObject>();
-                dObj.ChangeHealth(-damage);
-                if (dObj.health <= 0)
+                if (col.gameObject.tag == CoreGame.TAG_ENEMY_PROJECTILE)
                 {
-                    break;
+                    int damage = col.gameObject.GetComponent<Projectile>().damage;
+                    Destroy(col.gameObject);
+                    Shock();
                 }
             }
         }
     }
 
+    void Shock()
+    {
+        StopAllCoroutines();
+        a.enabled = false;
+        shoked = true;
+        imageSr.sprite = shokedSprite;
+        shokedTe.enabled = true;   
+    }
+
+    void RemoveShock()
+    {
+        a.enabled = true;
+        shoked = false;
+        shokedTe.enabled = false;
+        StartSimulation();      
+    }
+
+    void OnMouseDown()
+    {
+        if(shoked)
+        {
+            RemoveShock();
+        }
+    }
 
     protected override IEnumerator IdleWalking()
     {
@@ -71,7 +102,7 @@ public class FriendCreature : Creature
             while (Vector3.Distance(t.position, destination) >= 0.05f);
 
             a.SetBool("walk", false);
-            yield return new WaitForSeconds(Random.Range(0.9f, 2f));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.9f, 2f));
         }
 
     }

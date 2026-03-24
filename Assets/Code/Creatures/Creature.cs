@@ -124,7 +124,7 @@ public class Creature : MonoBehaviour, IDestructable
         a.SetBool("walk", true);
         
         target = targetObj.GetComponent<DestructableObject>();
-        Vector3 destinationDelta = MaximUtils.RandomVector2(0.5f);
+        Vector3 destinationDelta = MaximUtils.RandomVector2RandomMagnitudeRange(0.5f, 1f);
 
         do
         {

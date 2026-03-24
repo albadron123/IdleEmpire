@@ -13,7 +13,11 @@ public class Building
         CubeProduction,
         BlahProduction,
         MajorTower,
-
+        Archery,
+        Flower,
+        Magnet,
+        Tree,
+        BombProduction,
         Count
     };
     public BuildingType myType;

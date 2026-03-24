@@ -20,6 +20,9 @@ public class DragObject : MonoBehaviour
 
     private void OnMouseDown()
     {
+        FriendCreature fc = GetComponent<FriendCreature>();
+        if(fc != null && fc.shoked) return;
+        
         if (CoreGame.inst.canDrag)
         {
             if (CoreGame.inst.draggedObject == null)

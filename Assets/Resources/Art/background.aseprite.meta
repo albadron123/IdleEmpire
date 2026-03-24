@@ -8,6 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  importerVersion: 2
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -244,54 +245,65 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1978471590
+    uuid:
+      value0: 297084606
+      value1: 0
+      value2: 0
+      value3: 0
+    guid: 297084606
     name: background
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: background_Frame_0
+    - name: Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 563
         y: 0
         width: 234
         height: 486
       spriteId: de995ca0862dead4da09313f1fefb1fa
-    - name: background_Frame_1
+    - name: Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 563
         y: 0
         width: 234
         height: 486
       spriteId: cb74e7dba50724842903e88af8282341
-    - name: background_Frame_2
+    - name: Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 563
         y: 0
         width: 234
         height: 486
       spriteId: 33e36c06ed2aaf5468eca3b4175d4950
-    - name: background_Frame_3
+    - name: Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 563
         y: 0
         width: 234
         height: 486
       spriteId: 345fb4b2cf49716459414f3660a875fe
-    - name: background_Frame_4
+    - name: Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 563
         y: 0
         width: 234
         height: 486
       spriteId: e588700c26b97844b9110e5421626c37
-    - name: background_Frame_5
+    - name: Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 563
         y: 0
@@ -305,3 +317,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 1280, y: 720}
+  previousTextureSize: {x: 1024, y: 1024}

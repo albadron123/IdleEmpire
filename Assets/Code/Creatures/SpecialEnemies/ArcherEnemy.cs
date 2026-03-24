@@ -9,6 +9,7 @@ public class ArcherEnemy : EnemyCreature
 
     float shootingDistance = 3f;
 
+
     public override void StartSimulation()
     {
         GameObject targetObj = CoreGame.inst.builtObjects[Random.Range(0,CoreGame.inst.builtObjects.Count)].gameObject;
@@ -21,6 +22,7 @@ public class ArcherEnemy : EnemyCreature
         {
             targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
         }
+
         Vector2 targetPosition = (Vector2)targetObj.transform.position + MaximUtils.RandomVector2FixMagnitude(2f) + MaximUtils.RandomVector2(0.25f);
 
         a.SetBool("walk", true);
@@ -38,7 +40,7 @@ public class ArcherEnemy : EnemyCreature
             t.position = Vector2.MoveTowards(t.position, targetPosition, Time.fixedDeltaTime * activeVelocity);
             t.position = new Vector3(t.position.x, t.position.y, t.position.y);
             float d = Vector2.Distance(t.position, targetPosition);
-        } while (Vector2.Distance(t.position, targetPosition) >= 0.25f);
+        } while (Vector2.Distance(t.position, targetPosition) >= 0.1f);
 
         a.SetBool("walk", false);
         
@@ -47,27 +49,38 @@ public class ArcherEnemy : EnemyCreature
 
     protected IEnumerator ShootInTarget(GameObject targetObj)
     {
-        if (targetObj == null)
+        //For now let the archers just to shoot from one point most of the time
+        while (Random.value < 0.8f)
         {
-            targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
-            StartCoroutine(GetOnDistanceFromTarget(targetObj));
+            if (targetObj == null)
+            {
+                a.SetBool("attack", false);
+                targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
+                StartCoroutine(GetOnDistanceFromTarget(targetObj));
+            }
+            //Shoot projectile 
+            // TODO: get rid of this magic constant later !!! (and of any magic constants in the code where it is in WaitForSeconds & replace with actual animation velocities
+            a.SetBool("attack", true);
+            yield return new WaitForSeconds(0.3f);
+
+            GameObject projectileInst = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            Projectile projectile = projectileInst.GetComponent<Projectile>();
+            projectile.direction =  (Vector3)((Vector2)targetObj.transform.position - (Vector2)t.position);
+            projectile.damage = myDamage;
+            projectile.velocity = arrorVelocity;
+            Destroy(projectileInst,1.2f);
+
+            a.SetBool("attack", false);
+            a.SetBool("walk", false);
+            // Pause and stay
+            yield return new WaitForSeconds(3);
+            
         }
-        //Shoot projectile 
-        a.SetBool("attack", true);
-        GameObject projectileInst = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        Projectile projectile = projectileInst.GetComponent<Projectile>();
-        projectile.direction =  (Vector3)((Vector2)targetObj.transform.position - (Vector2)t.position);
-        projectile.damage = myDamage;
-        projectile.velocity = arrorVelocity;
-        Destroy(projectileInst,1.2f);
-        // TODO: get rid of this magic constant later !!! (and of any magic constants in the code where it is in WaitForSeconds & replace with actual animation velocities
-        yield return new WaitForSeconds(0.3f);
 
         if (targetObj == null)
         {
             targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
             StartCoroutine(GetOnDistanceFromTarget(targetObj));
-            a.SetBool("attack", false);
         }
         StartCoroutine(GetOnDistanceFromTarget(targetObj));
     }

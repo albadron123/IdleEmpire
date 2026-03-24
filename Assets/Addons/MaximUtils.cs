@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
+using System.Numerics;
 
 
 public class MaximUtils : MonoBehaviour
@@ -76,11 +78,11 @@ public class MaximUtils : MonoBehaviour
                 if (nearest == null)
                 {
                     nearest = other;
-                    shortestDistance = Vector2.Distance(col.transform.position, other.transform.position);
+                    shortestDistance = UnityEngine.Vector2.Distance(col.transform.position, other.transform.position);
                 }
                 else
                 {
-                    float currentDistance = Vector2.Distance(col.transform.position, other.transform.position);
+                    float currentDistance = UnityEngine.Vector2.Distance(col.transform.position, other.transform.position);
                     if (currentDistance < shortestDistance)
                     {
                         nearest = other;
@@ -92,7 +94,7 @@ public class MaximUtils : MonoBehaviour
         return nearest;
     }
 
-    public static Collider2D GetNearestOverlappedWithTag2D(Vector2 point, float radius, string tag)
+    public static Collider2D GetNearestOverlappedWithTag2D(UnityEngine.Vector2 point, float radius, string tag)
     {
         Collider2D[] overlapped;
         overlapped = Physics2D.OverlapCircleAll(point, radius);
@@ -105,11 +107,11 @@ public class MaximUtils : MonoBehaviour
                 if (nearest == null)
                 {
                     nearest = other;
-                    shortestDistance = Vector2.Distance(point, other.transform.position);
+                    shortestDistance = UnityEngine.Vector2.Distance(point, other.transform.position);
                 }
                 else
                 {
-                    float currentDistance = Vector2.Distance(point, other.transform.position);
+                    float currentDistance = UnityEngine.Vector2.Distance(point, other.transform.position);
                     if (currentDistance < shortestDistance)
                     {
                         nearest = other;
@@ -121,6 +123,23 @@ public class MaximUtils : MonoBehaviour
         return nearest;
     }
 
+    public static GameObject GetNearestWithTag(UnityEngine.Vector2 point, string tag)
+    {
+        List<GameObject> objs = GameObject.FindGameObjectsWithTag(tag).ToList<GameObject>();
+        if(objs == null)
+        {
+            return null;
+        }
+        objs.Sort(
+            (GameObject x, GameObject y) =>  
+                UnityEngine.Vector2.Distance(x.transform.position, point)>
+                UnityEngine.Vector2.Distance(x.transform.position, point)?
+                1:-1);
+        return objs[0];
+    }
+
+
+
     // USE ONLY WHEN YOU DONT NEED OBJECTS ANYMORE! CAN BE INEFFICIENT!
     public static int CountGameObjectsWithTag(string tag)
     {
@@ -129,18 +148,18 @@ public class MaximUtils : MonoBehaviour
 
 
 
-    public static List<GameObject> DrawCenteredListHor(GameObject obj, Transform container, Vector3 center, float delta, int count, float widthMult)
+    public static List<GameObject> DrawCenteredListHor(GameObject obj, Transform container, UnityEngine.Vector3 center, float delta, int count, float widthMult)
     {
         List<GameObject> instances = new List<GameObject>();
 
         float width = obj.transform.localScale.x * widthMult;
         float length = count * width + (count - 1) * delta;
-        Vector3 begin = center + new Vector3(-length / 2f + width / 2f, 0, 0);
-        Vector3 diff = new Vector3(width + delta, 0, 0);
+        UnityEngine.Vector3 begin = center + new UnityEngine.Vector3(-length / 2f + width / 2f, 0, 0);
+        UnityEngine.Vector3 diff = new UnityEngine.Vector3(width + delta, 0, 0);
 
         for (int i = 0; i < count; ++i)
         {
-            GameObject inst = Instantiate(obj, Vector3.zero, Quaternion.identity, container);
+            GameObject inst = Instantiate(obj, UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity, container);
             inst.transform.localPosition = begin + diff * i;
             instances.Add(inst);
         }
@@ -148,14 +167,20 @@ public class MaximUtils : MonoBehaviour
     }
 
 
-    public static Vector2 RandomVector2(float maxMagnitude)
+    public static UnityEngine.Vector2 RandomVector2(float maxMagnitude)
     {
-        return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized * Random.Range(-maxMagnitude, maxMagnitude);
+        return new UnityEngine.Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized * Random.Range(-maxMagnitude, maxMagnitude);
     }
 
-    public static Vector2 RandomVector2FixMagnitude(float magnitude)
+    public static UnityEngine.Vector2 RandomVector2RandomMagnitudeRange(float minMagitude, float maxMagnitude)
     {
-        return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized * magnitude * ((Random.value > 0.5f)?1:-1);
+        float magnitude = Random.Range(minMagitude, maxMagnitude);
+        return new UnityEngine.Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)).normalized * magnitude * ((Random.value > 0.5f)?1:-1);
+    }
+
+    public static UnityEngine.Vector2 RandomVector2FixMagnitude(float magnitude)
+    {
+        return new UnityEngine.Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)).normalized * magnitude * ((Random.value > 0.5f)?1:-1);
     }
 
     public static void RenderWavyText(TMPro.TMP_Text te, float amplitude)
@@ -169,10 +194,10 @@ public class MaximUtils : MonoBehaviour
             {
                 continue;
             }
-            Vector3[] verts = teInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
+            UnityEngine.Vector3[] verts = teInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
             for (int j = 0; j < 4; ++j)
             {
-                verts[charInfo.vertexIndex + j] += new Vector3(0, amplitude * Mathf.Sin(Time.time * 10f + i * 5), 0);
+                verts[charInfo.vertexIndex + j] += new UnityEngine.Vector3(0, amplitude * Mathf.Sin(Time.time * 10f + i * 5), 0);
             }
         }
 

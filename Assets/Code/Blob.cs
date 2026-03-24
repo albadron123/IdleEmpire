@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Blob : MonoBehaviour, IDragInteraction
@@ -9,7 +10,6 @@ public class Blob : MonoBehaviour, IDragInteraction
     public float initialZPosition;
 
     Collider2D myCollider;
-
 
     BuildingObject currentBuilding = null;
     GameObject currentPlace = null;
@@ -26,6 +26,12 @@ public class Blob : MonoBehaviour, IDragInteraction
 
     void Start()
     {
+        for(int i = 0; i < 100; ++i)
+        {
+            Debug.Log(MaximUtils.RandomVector2FixMagnitude(2).magnitude);
+        }
+
+
         t = transform;
         initialZPosition = t.position.z;
         myCollider = GetComponent<Collider2D>();
@@ -64,7 +70,14 @@ public class Blob : MonoBehaviour, IDragInteraction
     public void FinishDrag()
     {
         CoreGame.inst.canBuild = true;
-
+        
+        FriendCreature fc = GetComponent<FriendCreature>();
+        if(fc.shoked)
+        {
+            t.position = new Vector3(t.position.x, t.position.y, initialZPosition);
+            outline.SetActive(false);
+            return;
+        }
 
         /*
         List<Collider2D> results = new List<Collider2D>();

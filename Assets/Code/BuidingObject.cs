@@ -228,6 +228,32 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 yield return new WaitForSeconds(shootingSpeed);
             }
         }
+        else if (b.myType == Building.BuildingType.Archery)
+        {
+            while (true)
+            {
+                float shootingSpeed = GetShootingSpeed();
+                float projectileSize = GetProjectileSize();
+                int damage = GetProjectileDamage();
+                
+                GameObject nearestEnemy = MaximUtils.GetNearestWithTag(t.position, CoreGame.TAG_ENEMY);
+                if(nearestEnemy == null)
+                {
+                    yield return new WaitForSeconds(shootingSpeed);
+                    continue;   
+                }
+
+
+                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch:0.95f, maxPitch:1.05f);
+                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0,0,-9), Quaternion.identity);
+                inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
+                Projectile pr = inst.GetComponent<Projectile>();
+                pr.damage = damage;
+                pr.direction = ((Vector2)(nearestEnemy.transform.position - t.position)).normalized;
+                Destroy(inst, 2.1f);
+                yield return new WaitForSeconds(shootingSpeed);
+            }
+        }
     }
 
 

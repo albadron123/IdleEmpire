@@ -52,6 +52,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1996502503253223403, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599692647601253792, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_Size.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599692647601253792, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_Size.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599692647601253792, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599692647601253792, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599692647601253792, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599692647601253792, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 1.2802734
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599692647601253792, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599692647601253792, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.2802734
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599692647601253792, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3547405494021740342, guid: 38f81df19685793499c40618fefb9e42, type: 3}
       propertyPath: m_Name
       value: ArcherEnemyBlob
@@ -59,7 +99,7 @@ PrefabInstance:
     - target: {fileID: 4167802946811502550, guid: 38f81df19685793499c40618fefb9e42, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1811014088, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
+      objectReference: {fileID: 986572741, guid: f5560c5bc1e44cd429f3b5ac04aa17a2, type: 3}
     - target: {fileID: 4167802946811502550, guid: 38f81df19685793499c40618fefb9e42, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -72,14 +112,22 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4167802946811502550, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5261581699964226905, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+    - {fileID: 6684723902191415757, guid: 38f81df19685793499c40618fefb9e42, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3547405494021740342, guid: 38f81df19685793499c40618fefb9e42, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6531085909558027006}
+    - targetCorrespondingSourceObject: {fileID: 3547405494021740342, guid: 38f81df19685793499c40618fefb9e42, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4725195835590532819}
   m_SourcePrefab: {fileID: 100100000, guid: 38f81df19685793499c40618fefb9e42, type: 3}
 --- !u!1 &763708329495800166 stripped
 GameObject:
@@ -99,11 +147,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myType: 1
-  idleVelocity: 1
-  activeVelocity: 2
-  myDamage: 5
+  idleVelocity: 0.6
+  activeVelocity: 1
+  myDamage: 2
   rewardBones: 2
   rewardBonesCritical: 3
   criticalChance: 0.15
   projectilePrefab: {fileID: 8832960570407501365, guid: a4ff3b03fc2d6cf41b946b26a94e5466, type: 3}
-  arrorVelocity: 2.5
+  arrorVelocity: 1.5
+--- !u!95 &4725195835590532819
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763708329495800166}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 81e45dffe9d359333994a2621eb27f35, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
