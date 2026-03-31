@@ -44,8 +44,11 @@ public class Resource
 public class BuildingTag
 {
     public SpriteRenderer sr;
-    public int price;
+    public int[] prices;
+    public Sprite[] sprites;
+    public int buidlingLvl;
     public TMPro.TMP_Text priceTe;
+    public TMPro.TMP_Text[] otherPricesTe;
     public TMPro.TMP_Text titleTe;
     public Building.BuildingType type;
 }
@@ -211,10 +214,10 @@ public class CoreGame : MonoBehaviour
         }
     }
 
-    public void PressBuildingButton(int btId)
+    public void PressBuildingButton(BuildingButton bb)
     {
-        BuildingTag bt = allBuildingTags[btId];
-        if (bt.price <= allResources[(int)Resource.ResourceType.cubes].value)
+        BuildingTag bt = bb.myBuildingTag;
+        if (bt.prices[bt.buidlingLvl] <= allResources[(int)Resource.ResourceType.cubes].value)
         {
             StartBuilding(bt);
         }
@@ -242,13 +245,14 @@ public class CoreGame : MonoBehaviour
     {
         canDrag = false;
         canBuild = false;
+        currentlyBuildingTag = buildingTag;
 
         //Instantiate building
         string buildingName = BUILDING_NAMES[(int)buildingTag.type];
-        
-        int buildingLevel = PlayerPrefs.HasKey(buildingName)?PlayerPrefs.GetInt(buildingName):0;
 
-        currentlyBuildingTag = buildingTag;
+        int buildingLevel = currentlyBuildingTag.buidlingLvl;
+        //PlayerPrefs.HasKey(buildingName)?PlayerPrefs.GetInt(buildingName):0;
+
         currentlyPlacingBuilding =
             Instantiate(allBuidlings.Find(x => x.myType == currentlyBuildingTag.type && x.myLvl == buildingLevel).buildingPfb,
                 new Vector3(mousePosition.x, mousePosition.y, -5), Quaternion.identity);
@@ -265,10 +269,11 @@ public class CoreGame : MonoBehaviour
             canDrag = true;
             canBuild = true;
             // Aquire
-            ChangeResource(Resource.ResourceType.cubes, -currentlyBuildingTag.price);
-            // Upgrade price
-            currentlyBuildingTag.price *= 2;
-            currentlyBuildingTag.priceTe.text = currentlyBuildingTag.price.ToString();
+            ChangeResource(Resource.ResourceType.cubes, -currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl]);
+            // Upgrade price of the level we places ONLY
+            currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl] = (int)(currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl] * 1.3f);
+            currentlyBuildingTag.otherPricesTe[currentlyBuildingTag.buidlingLvl].text = $"{currentlyBuildingTag.buidlingLvl+1}<size=2.2>(={currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl]}cubo)</size>";
+            currentlyBuildingTag.priceTe.text = currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl].ToString();
             // Build
             currentlyPlacingBuilding.transform.position = new Vector3(currentlyPlacingBuilding.transform.position.x,
                 currentlyPlacingBuilding.transform.position.y, currentlyPlacingBuilding.transform.position.y);
