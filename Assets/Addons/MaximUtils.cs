@@ -126,7 +126,7 @@ public class MaximUtils : MonoBehaviour
     public static GameObject GetNearestWithTag(UnityEngine.Vector2 point, string tag)
     {
         List<GameObject> objs = GameObject.FindGameObjectsWithTag(tag).ToList<GameObject>();
-        if(objs == null)
+        if(objs == null || objs.Count == 0)
         {
             return null;
         }

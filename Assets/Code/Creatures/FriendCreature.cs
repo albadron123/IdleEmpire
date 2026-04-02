@@ -40,9 +40,13 @@ public class FriendCreature : Creature
             {
                 if (col.gameObject.tag == CoreGame.TAG_ENEMY_PROJECTILE)
                 {
-                    int damage = col.gameObject.GetComponent<Projectile>().damage;
-                    Destroy(col.gameObject);
-                    Shock();
+                    Projectile proj = col.gameObject.GetComponent<Projectile>();
+                    if (proj.doAffectBlobs && !proj.ignoreList.Contains(gameObject))
+                    {
+                        int damage = proj.damage;
+                        Destroy(col.gameObject);
+                        Shock();
+                    }
                 }
             }
         }

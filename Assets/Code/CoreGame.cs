@@ -18,6 +18,7 @@ public class Building
         Magnet,
         Tree,
         BombProduction,
+        Cacti,
         Count
     };
     public BuildingType myType;
@@ -61,8 +62,10 @@ public class CoreGame : MonoBehaviour
     public static string TAG_PROJECTILE = "Projectile";
     public static string TAG_ENEMY_PROJECTILE = "EnemyProjectile";
     public static string TAG_BUILDING_PLACEMENT = "BuildingPlacement";
+    public static string TAG_BOMB = "Bomb";
+    public static string TAG_BUILDING = "Building";
 
-    public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] {"Tawa","Cubo","Bubil","Major", "Tumba", "Flawa", "Magnik", "Plomo", "Bombik"};
+    public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] { "Tawa", "Cubo", "Bubil", "Major", "Tumba", "Flawa", "Magnik", "Plomo", "Bombik", "Cacti"};
 
     public List<Building> allBuidlings = new List<Building>();
     public List<BuildingTag> allBuildingTags = new List<BuildingTag>();
@@ -99,7 +102,12 @@ public class CoreGame : MonoBehaviour
     [SerializeField] TMPro.TMP_Text attackTe;
     [SerializeField] TMPro.TMP_Text attantionTe;
 
+    [Header("Projectiles")]
     public GameObject projectilePfb;
+    public GameObject healingProjectilePfb;
+    public GameObject arrowProjectilePfb;
+    public GameObject bombPfb;
+
 
     //Remove later
     float personPrice = 20;
@@ -113,6 +121,13 @@ public class CoreGame : MonoBehaviour
 
     [SerializeField] GameObject clickableBlockPfb;
     [SerializeField] GameObject clickableBlobPfb;
+
+    [Header("Cursor")]
+    [SerializeField] GameObject cursorInst;
+    [SerializeField] Sprite basicCursorSpr;
+    [SerializeField] Sprite handCursorSpr;
+    SpriteRenderer cursorSr;
+
 
     private void Awake()
     {
@@ -136,6 +151,11 @@ public class CoreGame : MonoBehaviour
         {
             builtObjects = new List<BuildingObject>();
         }
+
+
+        Cursor.visible = false;
+        cursorSr = cursorInst.GetComponent<SpriteRenderer>();
+        cursorSr.sprite = basicCursorSpr;
     }
 
 
@@ -147,8 +167,6 @@ public class CoreGame : MonoBehaviour
     }
 
     [SerializeField] List<GameObject> enemyGroups = new List<GameObject>();
-
-
 
     
 
@@ -320,13 +338,37 @@ public class CoreGame : MonoBehaviour
         currentlyPlacingBuilding = null;
     }
 
+    
+
 
     void Update()
     {
-        Vector2 mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        cursorInst.transform.position = new Vector3(mousePosition.x, mousePosition.y, -9.6f);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            cursorInst.transform.localScale = new Vector3(0.85f, 0.85f, 1);
+        }
+        if(Input.GetMouseButtonUp(0))
+        {
+            cursorInst.transform.localScale = new Vector3(1f, 1f, 1);
+            cursorSr.color = Color.white;
+        }
+
         if (draggedObject != null)
         {
+            cursorSr.sprite = handCursorSpr;
+
             draggedObject.transform.position = new Vector3(mousePosition.x, mousePosition.y, -5);
+            cursorSr.color = Color.yellow;
+        }
+        else
+        {
+            
+
+            cursorSr.sprite = basicCursorSpr;
         }
 
         if (currentlyPlacingBuilding != null)

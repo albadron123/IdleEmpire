@@ -5,6 +5,10 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
 
+
+    public List<GameObject> ignoreList = new List<GameObject>();
+    public bool doAffectBlobs = true;
+
     public Vector3 direction = Vector3.right;
     public float velocity = 2;
     public int damage = 1;

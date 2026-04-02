@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BuildingButton : MonoBehaviour
 {
@@ -13,13 +14,10 @@ public class BuildingButton : MonoBehaviour
     SpriteRenderer backgroundSr;
 
 
-    void Start()
-    {
-        
-    }
+    const float minLevelButtonX = 1.55f;
+    const float maxLevelButtonX = 1.7f;
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
         
     }
@@ -28,6 +26,7 @@ public class BuildingButton : MonoBehaviour
     {
         if (myBuildingTag.buidlingLvl != level)
         {
+            int prevLevel = myBuildingTag.buidlingLvl;
             myBuildingTag.buidlingLvl = level;
             myBuildingTag.priceTe.text = myBuildingTag.prices[level].ToString();
             backgroundSr.color = levelColors[level];
@@ -38,6 +37,8 @@ public class BuildingButton : MonoBehaviour
                 changeButtons[i].transform.localPosition = new Vector3(changeButtons[i].transform.localPosition.x, changeButtons[i].transform.localPosition.y, 1);
             }
             changeButtons[level].transform.localPosition = new Vector3(changeButtons[level].transform.localPosition.x, changeButtons[level].transform.localPosition.y, -1);
+            changeButtons[level].transform.DOLocalMoveX(maxLevelButtonX, 0.2f);
+            changeButtons[prevLevel].transform.DOLocalMoveX(minLevelButtonX, 0.2f);
         }
     }
 }

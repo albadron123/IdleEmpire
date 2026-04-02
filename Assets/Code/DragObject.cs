@@ -28,7 +28,10 @@ public class DragObject : MonoBehaviour
             if (CoreGame.inst.draggedObject == null)
             {
                 CoreGame.inst.draggedObject = this;
-                dragInteraction.StartDrag();
+                if (dragInteraction != null)
+                {
+                    dragInteraction.StartDrag();
+                }
             }
         }
     }
@@ -39,8 +42,11 @@ public class DragObject : MonoBehaviour
         {
             CoreGame.inst.draggedObject = null;
 
-            //Finish dragging
-            dragInteraction.FinishDrag();
+            if (dragInteraction != null)
+            {
+                //Finish dragging
+                dragInteraction.FinishDrag();
+            }
         }
     }
 }

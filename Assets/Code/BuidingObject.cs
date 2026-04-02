@@ -17,12 +17,16 @@ public class BuildingObject : MonoBehaviour, IDestructable
     private GameObject[] sliders;
     private Blob[] blobs;
 
+    private SpriteRenderer sr;
+
 
     public GameObject outline;
 
     public GameObject rotationPart = null;
 
-    // tower variables
+    
+    [Header("Attack Variables")]
+
     float[] towerAnglePerPlace;
 
     public float baseProjectileSize = 1.15f;
@@ -32,11 +36,21 @@ public class BuildingObject : MonoBehaviour, IDestructable
     public int shootingSpeedLevel = 0;
     public int projectileSizeLevel = 0;
 
-    // bubil & cubo variables
+    [Header("Production Variables")]
+    
     public float baseProductionTime = 2;
 
     public int productionTimeLevel = 0;
     public int productionAmountLevel = 0;
+
+
+    [Header("Cacti Variables")]
+
+    [SerializeField] Sprite cacti1Spr;
+    [SerializeField] Sprite cacti2Spr;
+    [SerializeField] Sprite cacti3Spr;
+    [SerializeField] Collider2D specialPurposeCol;
+    List<GameObject> inCollision = new List<GameObject>();
 
     [SerializeField]
     List<UpgradeType> upgradeTypes;
@@ -52,6 +66,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
+
         RegisterBuilding();
 
         t = transform;
@@ -77,22 +93,59 @@ public class BuildingObject : MonoBehaviour, IDestructable
     void Update()
     {
         // TODO: Here is some code duplication to be fixed later (also in friend and enemy creature updates)
-        List<Collider2D> cols = new List<Collider2D>();
-        Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), cols);
-        foreach (Collider2D col in cols)
+        //Collision with projectiles
         {
-            if (col.gameObject.tag == CoreGame.TAG_ENEMY_PROJECTILE)
+            List<Collider2D> cols = new List<Collider2D>();
+            Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), cols);
+            foreach (Collider2D col in cols)
             {
-                int damage = col.gameObject.GetComponent<Projectile>().damage;
-                Destroy(col.gameObject);
-                DestructableObject dObj = GetComponent<DestructableObject>();
-                dObj.ChangeHealth(-damage);
-                if (dObj.health <= 0)
+                if (col.gameObject.tag == CoreGame.TAG_ENEMY_PROJECTILE)
                 {
-                    break;
+                    Projectile proj = col.gameObject.GetComponent<Projectile>();
+                    if (!proj.ignoreList.Contains(gameObject))
+                    {
+                        int damage = proj.damage;
+                        Destroy(col.gameObject);
+                        DestructableObject dObj = GetComponent<DestructableObject>();
+                        dObj.ChangeHealth(-damage);
+                        if (dObj.health <= 0)
+                        {
+                            break;
+                        }
+                    }
                 }
             }
         }
+
+        if(b.myType == Building.BuildingType.Cacti)
+        {
+            List<Collider2D> cols = new List<Collider2D>();
+            Physics2D.OverlapCollider(specialPurposeCol, new ContactFilter2D().NoFilter(), cols);
+            foreach (Collider2D col in cols)
+            {
+                if (col.gameObject.tag == CoreGame.TAG_ENEMY)
+                {
+                    int myDamage = GetDamage();
+                    if (col.gameObject.tag == CoreGame.TAG_ENEMY && !inCollision.Contains(col.gameObject))
+                    {
+                        inCollision.Add(col.gameObject);
+                        StartCoroutine(CactiReload(col.gameObject));
+                        
+                        col.gameObject.GetComponent<DestructableObject>().ChangeHealth(-myDamage);
+                        DestructableObject dObj = GetComponent<DestructableObject>();
+                        dObj.ChangeHealth(-3);
+
+                    }
+                }
+            }
+
+        }
+    }
+
+    IEnumerator CactiReload(GameObject o)
+    {
+        yield return new WaitForSeconds(1);
+        inCollision.Remove(o);
     }
 
 
@@ -101,6 +154,28 @@ public class BuildingObject : MonoBehaviour, IDestructable
         if (damage < 0)
         {
             CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"{damage} hp".Bold(), null);
+        }
+        else
+        {
+            CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"+{damage} hp".Bold().Color("#559F52"), null);
+        }
+
+        if (b.myType == Building.BuildingType.Cacti)
+        {
+            DestructableObject dObj = GetComponent<DestructableObject>();
+            float healthPortion = (float)dObj.health / dObj.maxHealth;
+            if (healthPortion >= 0.67f)
+            {
+                sr.sprite = cacti1Spr;
+            }
+            if (healthPortion < 0.67f)
+            {
+                sr.sprite = cacti2Spr;
+            }
+            if (healthPortion < 0.2f)
+            {
+                sr.sprite = cacti3Spr;
+            }
         }
     }
 
@@ -208,20 +283,39 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
         }
-        else if (b.myType == Building.BuildingType.Tower)
+        else if (b.myType == Building.BuildingType.Tower || b.myType == Building.BuildingType.Flower)
         {
+            GameObject myProjectilePfb = null;
+            if (b.myType == Building.BuildingType.Tower)
+            {
+                myProjectilePfb = CoreGame.inst.projectilePfb;
+            }
+            else
+            {
+                myProjectilePfb = CoreGame.inst.healingProjectilePfb;
+            }
             while (true)
             {
                 //REDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
                 float shootingSpeed = GetShootingSpeed();
                 float projectileSize = GetProjectileSize();
-                int damage = GetProjectileDamage();
+                int damage = GetDamage();
 
                 SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
-                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
+                GameObject inst = Instantiate(myProjectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
                 pr.damage = damage;
+                pr.ignoreList.Add(gameObject);
+                if (b.myType == Building.BuildingType.Flower)
+                {
+                    pr.doAffectBlobs = false;    
+                }
+                else
+                {
+                    pr.doAffectBlobs = true;
+                }
+
                 if (towerAnglePerPlace[processId] == 0)
                 {
                     pr.direction = Vector3.right;
@@ -248,7 +342,13 @@ public class BuildingObject : MonoBehaviour, IDestructable
             {
                 float shootingSpeed = GetShootingSpeed();
                 float projectileSize = GetProjectileSize();
-                int damage = GetProjectileDamage();
+                int damage = GetDamage();
+
+
+                GameObject sliderInst = Instantiate(CoreGame.inst.sliderPfb, blobs[processId].transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                sliderInst.transform.GetChild(0).transform.DOLocalMove(new Vector3(0, 0, 0), shootingSpeed);
+                yield return new WaitForSeconds(shootingSpeed);
+
 
                 GameObject nearestEnemy = MaximUtils.GetNearestWithTag(t.position, CoreGame.TAG_ENEMY);
                 if (nearestEnemy == null)
@@ -257,15 +357,17 @@ public class BuildingObject : MonoBehaviour, IDestructable
                     continue;
                 }
 
+                Destroy(sliderInst);
+
 
                 SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
-                GameObject inst = Instantiate(CoreGame.inst.projectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
+                GameObject inst = Instantiate(CoreGame.inst.arrowProjectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
                 pr.damage = damage;
                 pr.direction = ((Vector2)(nearestEnemy.transform.position - t.position)).normalized;
-                Destroy(inst, 2.1f);
-                yield return new WaitForSeconds(shootingSpeed);
+                inst.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(pr.direction.y, pr.direction.x)*Mathf.Rad2Deg);
+                Destroy(inst, 0.75f);
             }
         }
         else if (b.myType == Building.BuildingType.Tree)
@@ -290,20 +392,40 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 CoreGame.inst.CreateIconPopUp(transform.position + new Vector3(0, 1.4f, 0), $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
         }
-        else if (b.myType == Building.BuildingType.Flower)
-        {
-
-        }
         else if (b.myType == Building.BuildingType.Magnet)
         {
 
         }
         else if (b.myType == Building.BuildingType.BombProduction)
         {
-            
+            while (true)
+            {
+                while(MaximUtils.GetAnyOverlappedWithTag2D(specialPurposeCol, CoreGame.TAG_BOMB) != null) {
+                    //wait for the bomb to be taken
+                    yield return new WaitForSeconds(0.2f);
+                }
+
+                float productionTime = GetProductionTime();
+
+                DOTween.Sequence()
+                    .Append(t.DOScale(new Vector3(1.1f, 1.1f, 1), 0.25f * productionTime))
+                    .Append(t.DOScale(new Vector3(1f, 1f, 1), 0.25f * productionTime)).SetLoops(2);
+
+                GameObject sliderInst = Instantiate(CoreGame.inst.sliderPfb, blobs[processId].transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                sliderInst.transform.GetChild(0).transform.DOLocalMove(new Vector3(0, 0, 0), productionTime);
+                sliders[processId] = sliderInst;
+
+                yield return new WaitForSeconds(productionTime);
+
+                Destroy(sliderInst);
+                sliders[processId] = null;
+
+
+                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_PRODUCE_BUBIL);
+                Instantiate(CoreGame.inst.bombPfb, specialPurposeCol.gameObject.transform.position + Vector3.back, Quaternion.identity);
+            }
         }
     }
-
 
     private void OnMouseDown()
     {
@@ -329,12 +451,44 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     public float GetShootingSpeed()
     {
-        return baseShootingSpeed - shootingSpeedLevel * 0.15f;
+        if (b.myType == Building.BuildingType.Tower)
+        {
+            return baseShootingSpeed - shootingSpeedLevel * 0.15f;
+        }
+        if (b.myType == Building.BuildingType.Archery)
+        {
+            return baseShootingSpeed - shootingSpeedLevel * 0.15f;
+        }
+        if (b.myType == Building.BuildingType.Flower)
+        {
+            return baseShootingSpeed - shootingSpeedLevel * 0.15f;
+        }
+        //Unreachable
+        Debug.LogError("Unreachable area of code!");
+        return 0;
     }
 
-    public int GetProjectileDamage()
+    public int GetDamage()
     {
-        return (projectileDamageLevel + 1) * 10;
+        if (b.myType == Building.BuildingType.Tower)
+        {
+            return (projectileDamageLevel + 1) * 10;
+        }
+        if (b.myType == Building.BuildingType.Archery)
+        {
+            return (projectileDamageLevel + 1) * 10;
+        }
+        if (b.myType == Building.BuildingType.Flower)
+        {
+            return (projectileDamageLevel + 1) * (-1);
+        }
+        if (b.myType == Building.BuildingType.Cacti)
+        {
+            return (projectileDamageLevel + 1)*3;
+        }
+        //Unreachable
+        Debug.LogError("Unreachable area of code!");
+        return 0;
     }
 
     public float GetProjectileSize()
