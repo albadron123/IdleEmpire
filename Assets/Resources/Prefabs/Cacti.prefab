@@ -183,10 +183,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   maxHealth: 17
-  sliderMinX: -0.63
-  sliderMaxX: 0
   sliderContainer: {fileID: 6042004982407790961}
   sliderT: {fileID: 1490829672306411270}
+  srList:
+  - {fileID: 5754873498803581006}
 --- !u!1 &853304542741677831
 GameObject:
   m_ObjectHideFlags: 0

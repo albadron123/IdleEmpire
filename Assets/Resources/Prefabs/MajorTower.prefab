@@ -138,10 +138,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   maxHealth: 30
-  sliderMinX: -0.63
-  sliderMaxX: 0
   sliderContainer: {fileID: 1763176840991162668}
   sliderT: {fileID: 6850522366390847323}
+  srList:
+  - {fileID: 1079454770581708189}
 --- !u!114 &2918769264548051349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +160,7 @@ MonoBehaviour:
     myLvl: 0
   blobPlaces: []
   outline: {fileID: 4945381147944390948}
+  rotationPart: {fileID: 0}
   baseProjectileSize: 1.15
   baseShootingSpeed: 0.9
   projectileDamageLevel: 0
@@ -168,6 +169,10 @@ MonoBehaviour:
   baseProductionTime: 2
   productionTimeLevel: 0
   productionAmountLevel: 0
+  cacti1Spr: {fileID: 0}
+  cacti2Spr: {fileID: 0}
+  cacti3Spr: {fileID: 0}
+  specialPurposeCol: {fileID: 0}
   upgradeTypes: 
 --- !u!61 &7703826252450033335
 BoxCollider2D:

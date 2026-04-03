@@ -102,6 +102,9 @@ public class CoreGame : MonoBehaviour
     [SerializeField] TMPro.TMP_Text attackTe;
     [SerializeField] TMPro.TMP_Text attantionTe;
 
+    [Header("Stuff")]
+    public Material allWhiteMaterial;
+    public Material spriteDefaultMaterial;
     [Header("Projectiles")]
     public GameObject projectilePfb;
     public GameObject healingProjectilePfb;

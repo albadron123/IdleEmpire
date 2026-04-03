@@ -9,10 +9,9 @@ public class DestructableObject : MonoBehaviour
     public int health;
     public int maxHealth;
 
-    [SerializeField]
-    float sliderMinX;
-    [SerializeField]
-    float sliderMaxX;
+    
+    float sliderMinX = -0.63f;
+    float sliderMaxX = 0;
 
 
     IDestructable specificDestruction;
@@ -20,6 +19,9 @@ public class DestructableObject : MonoBehaviour
     public GameObject sliderContainer;
     [SerializeField]
     Transform sliderT;
+
+    [SerializeField]
+    List<SpriteRenderer> srList = new List<SpriteRenderer>();
 
 
     void Start()
@@ -51,6 +53,11 @@ public class DestructableObject : MonoBehaviour
 
     public void ChangeHealth(int delta)
     {
+        if(delta < 0)
+        {
+            StopCoroutine(BlinkWhite());
+            StartCoroutine(BlinkWhite());
+        }
         health += delta;
         if (health <= 0)
         {
@@ -71,6 +78,23 @@ public class DestructableObject : MonoBehaviour
         sliderT.transform.DOLocalMove(new Vector3(GetSliderDestinationX(), 0, sliderT.transform.localPosition.z), 0.5f);
         //Display the hit damage
         specificDestruction.ChangeHealth(delta);
+    }
+
+
+    IEnumerator BlinkWhite()
+    {
+        if (srList.Count > 0)
+        {
+            for (int i = 0; i < srList.Count; ++i)
+            {
+                srList[i].material = CoreGame.inst.allWhiteMaterial;
+            }
+            yield return new WaitForSeconds(0.05f);
+            for (int i = 0; i < srList.Count; ++i)
+            {
+                srList[i].material = CoreGame.inst.spriteDefaultMaterial;
+            }
+        }
     }
 
 
