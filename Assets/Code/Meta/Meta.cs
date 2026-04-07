@@ -26,9 +26,17 @@ public class Meta : MonoBehaviour
     [SerializeField]
     const int DOTS_IN_EDGE = 10;
 
+    [SerializeField]
+    float scrollMinY;
+    [SerializeField]
+    float scrollMaxY;
+
+    Transform t;
+
 
     void Start()
     {
+        t = transform;
         PlayerPrefs.DeleteAll();
         if (inst != null)
         {
@@ -102,5 +110,23 @@ public class Meta : MonoBehaviour
     public void StartAgain()
     {
         SceneManager.LoadScene("SampleScene");
+    }
+
+
+
+    private void Update()
+    {
+        float mousePositionYClamped = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).y, t.position.y - 5f, t.position.y + 5f);
+        if (mousePositionYClamped > t.position.y + 4f)
+        {
+            float dist = Mathf.Abs(t.position.y + 4f - mousePositionYClamped);
+            t.position = Vector3.Lerp(t.position, new Vector3(t.position.x, mousePositionYClamped, t.position.z), 2f*Time.deltaTime * Mathf.Pow(dist, 2));
+        }
+        if (mousePositionYClamped < t.position.y - 4.5f)
+        {
+            float dist = Mathf.Abs(t.position.y - 4.5f - mousePositionYClamped);
+            t.position = Vector3.Lerp(t.position, new Vector3(t.position.x, mousePositionYClamped, t.position.z), 6f*Time.deltaTime * Mathf.Pow(dist, 2));
+        }
+        t.position = new Vector3(t.position.x, Mathf.Clamp(t.position.y, scrollMinY, scrollMaxY), t.position.z);
     }
 }

@@ -3505,6 +3505,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Magno
       objectReference: {fileID: 0}
+    - target: {fileID: 346650942622582641, guid: 42af42b392a2fc54e925d76c258631ac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 467351654520011563, guid: 42af42b392a2fc54e925d76c258631ac, type: 3}
       propertyPath: b.myType
       value: 6
