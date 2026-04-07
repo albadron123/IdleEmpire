@@ -620,15 +620,20 @@ MonoBehaviour:
   basePrice: 3
   pricePower: 2
   upgradeName: 
+  upgraded: 1
+  visible: 1
   upgradePointPrefab: {fileID: 3687822870886319214, guid: b964cd2f9eb8f7b4ea8d29928da3d4c9, type: 3}
   updradePointDistance: 0.07
   upgradePointContainer: {fileID: 7965842264000173771}
   purchaseButton: {fileID: 8282577787904939875}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   selectColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  disabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   outlineSr: {fileID: 8818752265593379948}
   titleTe: {fileID: 5988088963900697794}
   priceTe: {fileID: 4519604447207100757}
+  spriteSr: {fileID: 7281948050582364709}
+  backgroundSr: {fileID: 187110311204934894}
 --- !u!61 &894362959935341103
 BoxCollider2D:
   m_ObjectHideFlags: 0

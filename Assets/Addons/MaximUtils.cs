@@ -8,6 +8,29 @@ using System.Numerics;
 
 public class MaximUtils : MonoBehaviour
 {
+
+    public static List<int> RandomPermutations(int from, int to)
+    {
+        //Shuffles a list of numbers [from, from+1, ..., to-1, to]
+
+
+        List<int> permutations = new List<int>();
+        for (int i = from; i <= to; ++i)
+        {
+            permutations.Add(i);
+        }
+
+        //Shuffle (fisher-yates shuffle)
+        for (int i = permutations.Count-1; i > 0; i--)
+        {
+            int j = Random.Range(0, i);
+            int t = permutations[i];
+            permutations[i] = permutations[j];
+            permutations[j] = t;
+        }
+
+        return permutations;
+    }
     public static List<int> RandomIndicesUnique(int indexMax, int count)
     {
         List<int> randomIds = new List<int>();

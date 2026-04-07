@@ -11,6 +11,9 @@ public class Node : MonoBehaviour
     [SerializeField] int basePrice;
     [SerializeField] float pricePower;
     [SerializeField] string upgradeName;
+    public bool upgraded = true;
+    public bool visible = true;
+
 
 
     //Updrade View
@@ -31,6 +34,7 @@ public class Node : MonoBehaviour
 
     [SerializeField] Color defaultColor = Color.white;
     [SerializeField] Color selectColor = Color.yellow;
+    [SerializeField] Color disabledColor = Color.grey;
 
 
     Transform t;
@@ -43,6 +47,10 @@ public class Node : MonoBehaviour
     TMPro.TMP_Text titleTe;
     [SerializeField]
     TMPro.TMP_Text priceTe;
+    [SerializeField]
+    SpriteRenderer spriteSr;
+    [SerializeField]
+    SpriteRenderer backgroundSr;
 
 
     float[] omega = new float[8];
@@ -50,11 +58,30 @@ public class Node : MonoBehaviour
     float[] alpha = new float[8];
 
 
+    private void Awake()
+    {
+        initialScale = transform.localScale;
+        if (PlayerPrefs.HasKey($"{upgradeName}_visible"))
+        {
+            visible = true;
+        }
+        if (PlayerPrefs.HasKey($"{upgradeName}"))
+        {
+            upgraded = true;
+        }
+
+        if (!visible)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+
     void Start()
     {
         t = transform;
         initialPosition = t.position;
-        initialScale = t.localScale;
+        
         for (int i = 0; i < 8; ++i)
         {
             omega[i] = Random.Range(0.1f * Mathf.PI, 0.2f * Mathf.PI);
@@ -93,11 +120,38 @@ public class Node : MonoBehaviour
 
     void InitNode()
     {
+        
+        DOTween.Sequence()
+            .Append(t.DOScale(0, 0))
+            .AppendInterval(0.35f)
+            .Append(t.DOScale(initialScale.x, 1f).SetEase(Ease.OutCubic));
         //Figure out the levels
         lvl = PlayerPrefs.HasKey(upgradeName) ? PlayerPrefs.GetInt(upgradeName) : 0;
         //Draw updrades
         upgradePoints = MaximUtils.DrawCenteredListHor(upgradePointPrefab, upgradePointContainer.transform, Vector3.zero, updradePointDistance, maxLvls, 0.1f);
         ColorUpgradePoints();
+
+        //Style only
+        if (lvl == 0)
+        {
+            outlineSr.color = disabledColor;
+            titleTe.color = disabledColor;
+            spriteSr.color = new Color(disabledColor.r, disabledColor.g, disabledColor.b, 0.5f);
+        }
+        else if (lvl < maxLvls)
+        {
+            outlineSr.color = defaultColor;
+            titleTe.color = defaultColor;
+            spriteSr.color = Color.white;
+        }
+        else
+        {
+            
+            outlineSr.color = selectColor;
+            titleTe.color = selectColor;
+            spriteSr.color = Color.yellow;
+        }
+
         if (lvl < maxLvls)
         {
             priceTe.text = CalculateCurrentPrice().ToString();
@@ -105,8 +159,6 @@ public class Node : MonoBehaviour
         else
         {
             priceTe.text = "inf";
-            outlineSr.color = selectColor;
-            titleTe.color = selectColor;
         }
 
 
@@ -120,14 +172,24 @@ public class Node : MonoBehaviour
 
     void ColorUpgradePoints()
     {
-        // Not optimal but ok as there should not be a lot of upgrades
-        for (int i = 0; i < lvl; ++i)
+        if (lvl == 0)
         {
-            upgradePoints[i].GetComponent<SpriteRenderer>().color = selectColor;
+            for (int i = 0; i < maxLvls; ++i)
+            {
+                upgradePoints[i].GetComponent<SpriteRenderer>().color = disabledColor;
+            }
         }
-        for (int i = lvl; i < maxLvls; ++i)
+        else
         {
-            upgradePoints[i].GetComponent<SpriteRenderer>().color = defaultColor;
+            // Not optimal but ok as there should not be a lot of upgrades
+            for (int i = 0; i < lvl; ++i)
+            {
+                upgradePoints[i].GetComponent<SpriteRenderer>().color = selectColor;
+            }
+            for (int i = lvl; i < maxLvls; ++i)
+            {
+                upgradePoints[i].GetComponent<SpriteRenderer>().color = defaultColor;
+            }
         }
     }
 
@@ -162,8 +224,17 @@ public class Node : MonoBehaviour
         Meta.inst.currentNode = null;
         t.DOKill();
         t.DOScale(1f*initialScale, 0.15f);
-        outlineSr.color = defaultColor;
-        titleTe.color = defaultColor;
+        if (lvl == 0)
+        {
+            outlineSr.color = disabledColor;
+            titleTe.color = disabledColor;
+            spriteSr.color = new Color(disabledColor.r, disabledColor.g, disabledColor.b, 0.5f);
+        }
+        else
+        {
+            outlineSr.color = defaultColor;
+            titleTe.color = defaultColor;
+        }
         purchaseButton.SetActive(false);
     }
 
@@ -178,6 +249,10 @@ public class Node : MonoBehaviour
         Debug.Log("Upgrade Aquired!");
         ++lvl;
         PlayerPrefs.SetInt(upgradeName, lvl);
+        if (lvl == 1)
+        {
+            spriteSr.color = defaultColor;
+        }
         if (lvl == maxLvls)
         {
             // Fully upgraded
@@ -190,12 +265,37 @@ public class Node : MonoBehaviour
 
             outlineSr.color = selectColor;
             titleTe.color = selectColor;
+            spriteSr.color = selectColor;
         }
         else
         {
             priceTe.text = CalculateCurrentPrice().ToString();
         }
         ColorUpgradePoints();
+
+
+        if (lvl == 1)
+        {
+            foreach (Edge e in Meta.inst.edges)
+            {
+                if (e.a == this && !e.b.visible)
+                {
+                    e.b.visible = true;
+                    PlayerPrefs.SetInt($"{e.b.upgradeName}_visible", 1);
+                    e.b.gameObject.transform.localScale = Vector3.zero;
+                    e.b.gameObject.SetActive(true);
+                    StartCoroutine(Meta.inst.RenderNewEdge(e, 1));
+                }
+                if (e.b == this && !e.a.visible)
+                {
+                    e.a.visible = true;
+                    PlayerPrefs.SetInt($"{e.a.upgradeName}_visible", 1);
+                    e.a.gameObject.transform.localScale = Vector3.zero;
+                    e.a.gameObject.SetActive(true);
+                    StartCoroutine(Meta.inst.RenderNewEdge(e, -1));
+                }
+            }
+        }
     }
 
     public void EnterPurchaseButton() 

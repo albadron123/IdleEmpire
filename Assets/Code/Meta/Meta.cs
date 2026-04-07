@@ -3,16 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public struct Edge
+{
+    public Node a;
+    public Node b;
+}
+
+
 public class Meta : MonoBehaviour
 {
     public static Meta inst = null;
 
     [HideInInspector]
     public Node currentNode = null;
-    
+
+    public List<Edge> edges;
+
+    [SerializeField]
+    GameObject edgeDotPfb;
+
+    [SerializeField]
+    const int DOTS_IN_EDGE = 10;
+
 
     void Start()
     {
+        PlayerPrefs.DeleteAll();
         if (inst != null)
         {
             Debug.LogError("Meta.cs is singleton!");
@@ -22,6 +39,64 @@ public class Meta : MonoBehaviour
         {
             inst = this;
         }
+
+        StartCoroutine(RenderEdges());
+    }
+
+
+    IEnumerator RenderEdges()
+    {
+        yield return new WaitForSeconds(0.5f);
+        List<int> perms = MaximUtils.RandomPermutations(0, DOTS_IN_EDGE);
+        float waitTime = 0.01f;
+        while (perms.Count > 0)
+        {
+            int j = perms[perms.Count-1];
+            perms.RemoveAt(perms.Count - 1);
+            for (int i = 0; i < edges.Count; ++i)
+            {
+                if (edges[i].a.visible && edges[i].b.visible)
+                {
+                    Transform aT = edges[i].a.transform;
+                    Transform bT = edges[i].b.transform;
+
+                    GameObject inst = Instantiate(edgeDotPfb, 5 * Vector3.forward + 0.5f * Vector3.up + Vector3.Lerp(aT.position, aT.position, 0.1f + 0.8f * ((float)j / DOTS_IN_EDGE)), Quaternion.identity);
+                    inst.GetComponent<EdgeDot>().t1 = aT;
+                    inst.GetComponent<EdgeDot>().t2 = bT;
+                    inst.GetComponent<EdgeDot>().lerpValue = 0.1f + 0.8f * ((float)j / DOTS_IN_EDGE);
+                }
+            }
+            yield return new WaitForSeconds(waitTime);
+            waitTime += 0.01f;
+        }
+    }
+
+    public IEnumerator RenderNewEdge(Edge e, int direction)
+    {
+        //direction == 1 -- from a to b
+        //direction == -1 -- from b to a
+        Transform aT;
+        Transform bT;
+        if (direction > 0)
+        {
+            aT = e.a.transform;
+            bT = e.b.transform;
+        }
+        else
+        {
+            bT = e.a.transform;
+            aT = e.b.transform;
+        }
+
+        for (int i = 0; i < DOTS_IN_EDGE; ++i)
+        {
+            GameObject inst = Instantiate(edgeDotPfb, 5 * Vector3.forward + 0.5f * Vector3.up + Vector3.Lerp(aT.position, aT.position, 0.1f + 0.8f * ((float)i / DOTS_IN_EDGE)), Quaternion.identity);
+            inst.GetComponent<EdgeDot>().t1 = aT;
+            inst.GetComponent<EdgeDot>().t2 = bT;
+            inst.GetComponent<EdgeDot>().lerpValue = 0.1f + 0.8f * ((float)i / DOTS_IN_EDGE);
+            yield return new WaitForSeconds(0.05f);
+        }
+
     }
 
     public void StartAgain()
