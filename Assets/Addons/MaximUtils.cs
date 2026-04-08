@@ -231,6 +231,44 @@ public class MaximUtils : MonoBehaviour
         }
     }
 
+
+
+    static float[] rnd = null;
+    public static void RenderShakyText(TMPro.TMP_Text te, float amplitude, float power)
+    {
+        if (rnd == null)
+        {
+            rnd = new float[10];
+            for (int i = 0; i < 10; ++i)
+            {
+                rnd[i] = Random.value;
+            }
+        }
+        te.ForceMeshUpdate(); // Ensure the mesh is updated
+        TMP_TextInfo teInfo = te.textInfo;
+        for (int i = 0; i < teInfo.characterCount; ++i)
+        {
+            TMP_CharacterInfo charInfo = teInfo.characterInfo[i];
+            if (!charInfo.isVisible)
+            {
+                continue;
+            }
+            UnityEngine.Vector3[] verts = teInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
+            for (int j = 0; j < 4; ++j)
+            {
+                verts[charInfo.vertexIndex + j] += new UnityEngine.Vector3(amplitude * Mathf.Sin(Time.time * rnd[(i+2) % 10] * power + rnd[(i + 7) % 10] * 5), 
+                                                                           amplitude * Mathf.Sin(Time.time * rnd[i % 10] * power + rnd[(i+3)%10]* 5), 
+                                                                           0);
+            }
+        }
+
+        for (int i = 0; i < teInfo.meshInfo.Length; ++i)
+        {
+            teInfo.meshInfo[i].mesh.vertices = teInfo.meshInfo[i].vertices;
+            te.UpdateGeometry(teInfo.meshInfo[i].mesh, i);
+        }
+    }
+
     public static IEnumerator AppearAndClearWavyText(TMPro.TMP_Text te, string s, float appearVelocity, float timeToWait, float amplitude)
     {
         te.gameObject.SetActive(true);

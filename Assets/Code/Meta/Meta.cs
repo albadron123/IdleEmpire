@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 [System.Serializable]
 public struct Edge
@@ -31,8 +32,97 @@ public class Meta : MonoBehaviour
     [SerializeField]
     float scrollMaxY;
 
+
+    public List<Node> equipmentListNodes;
+    int sizeofEquipmentList = 2;
+    int equipmentListCapacity = 5;
+    [SerializeField]
+    SpriteRenderer[] equipmentListSr;
+
     Transform t;
 
+    [SerializeField]
+    TMPro.TMP_Text devilsTe;
+
+    [SerializeField]
+    TMPro.TMP_Text bonesSpentTe;
+    [SerializeField]
+    Transform bonesSpentArrow;
+    [SerializeField]
+    Transform bonesSpentSlider;
+
+    public int bonesSpent = 0;
+    int maxBonesSpent = 100;
+
+    void InitEquipmentList()
+    {
+        equipmentListNodes = new List<Node>();
+    }
+
+
+    void InitBonesSpentSlider()
+    {
+        bonesSpentSlider.localScale = new Vector3(0, bonesSpentSlider.localScale.y, bonesSpentSlider.localScale.z);
+        bonesSpentArrow.localPosition = new Vector3(0, bonesSpentArrow.transform.position.y, bonesSpentArrow.transform.position.z);
+        bonesSpentTe.text = $"{0}/{maxBonesSpent}";
+        
+        StartCoroutine(UpdateBonesSpentSlider(0));
+    }
+
+    public IEnumerator UpdateBonesSpentSlider(int newBonesSpent)
+    {
+        const float UPDATE_TIME = 0.75f;
+
+        int oldBonesSpent = bonesSpent;
+        bonesSpent = Mathf.Clamp(newBonesSpent, 0, maxBonesSpent);
+        float fraction = (float)bonesSpent / maxBonesSpent;
+        bonesSpentSlider.DOScale(new Vector3(fraction, bonesSpentSlider.localScale.y, bonesSpentSlider.localScale.z), UPDATE_TIME);
+        bonesSpentArrow.DOLocalMove(new Vector3(fraction, bonesSpentArrow.localPosition.y, bonesSpentArrow.localPosition.z), UPDATE_TIME);
+        float timer = 0;
+        while (timer < UPDATE_TIME)
+        {
+            yield return new WaitForEndOfFrame();
+            timer += Time.deltaTime;
+            if (timer >= UPDATE_TIME)
+            {
+                timer = UPDATE_TIME;
+                bonesSpentTe.text = $"{bonesSpent}/{maxBonesSpent}";
+            }
+            else
+            {
+                bonesSpentTe.text = $"{(int)(Mathf.Lerp(oldBonesSpent, bonesSpent, timer / UPDATE_TIME))}/{maxBonesSpent}";
+            }
+        }
+    }
+
+    public bool AddToEquipmentList(Node n, Sprite s)
+    {
+        if (sizeofEquipmentList <= equipmentListNodes.Count)
+        {
+            return false;
+        }
+        equipmentListNodes.Add(n);
+        equipmentListSr[equipmentListNodes.Count - 1].sprite = s;
+        return true;
+    }
+
+    
+    public void RemoveFromEquipmentList(Node n)
+    {
+        int index = equipmentListNodes.IndexOf(n);
+        equipmentListNodes.RemoveAt(index);
+        for (int i = index; i < sizeofEquipmentList; ++i)
+        {           
+            if (i < equipmentListNodes.Count)
+            {
+                equipmentListSr[i].sprite = ((i+1) != sizeofEquipmentList) ? equipmentListSr[i + 1].sprite : null;
+            }
+            else
+            {
+                equipmentListSr[i].sprite = null;
+            }
+        }
+    }
 
     void Start()
     {
@@ -48,6 +138,8 @@ public class Meta : MonoBehaviour
             inst = this;
         }
 
+        InitEquipmentList();
+        InitBonesSpentSlider();
         StartCoroutine(RenderEdges());
     }
 
@@ -116,6 +208,8 @@ public class Meta : MonoBehaviour
 
     private void Update()
     {
+        MaximUtils.RenderShakyText(devilsTe, 0.012f, 15);
+
         float mousePositionYClamped = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).y, t.position.y - 5f, t.position.y + 5f);
         if (mousePositionYClamped > t.position.y + 4f)
         {

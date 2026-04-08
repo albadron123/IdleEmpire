@@ -27,6 +27,14 @@ public class Node : MonoBehaviour
     [SerializeField]
     GameObject purchaseButton;
 
+    [SerializeField]
+    bool canBeEquipped = false;
+
+    [SerializeField]
+    GameObject equipButton;
+    [SerializeField]
+    TMPro.TMP_Text equipText;
+
 
     List<GameObject> upgradePoints;
 
@@ -193,8 +201,10 @@ public class Node : MonoBehaviour
         }
     }
 
+    bool selected = false;
     void SelectNode()
     {
+        selected = true;
         if (lvl >= maxLvls)
         {
             t.DOKill();
@@ -217,10 +227,15 @@ public class Node : MonoBehaviour
         outlineSr.color = selectColor;
         titleTe.color = selectColor;
         purchaseButton.SetActive(true);
+        if (canBeEquipped)
+        {
+            equipButton.SetActive(true);
+        }
     }
 
     void DeselectNode()
     {
+        selected = false;
         Meta.inst.currentNode = null;
         t.DOKill();
         t.DOScale(1f*initialScale, 0.15f);
@@ -236,15 +251,31 @@ public class Node : MonoBehaviour
             titleTe.color = defaultColor;
         }
         purchaseButton.SetActive(false);
+        if (canBeEquipped && !Meta.inst.equipmentListNodes.Contains(this))
+        {
+            equipButton.SetActive(false);
+        }
     }
 
     public void AquireUpgade()
     {
-        if(!MetaEconomy.inst.UpdateBones(-CalculateCurrentPrice()))
+        int currentPrice = CalculateCurrentPrice();
+        if (!MetaEconomy.inst.UpdateBones(-currentPrice))
         {
+            t.DOKill();
+            Sequence seq = DOTween.Sequence();
+            seq.Append(t.DORotate(new Vector3(0, 0, 5), 0.04f));
+            seq.Append(t.DORotate(new Vector3(0, 0, -5), 0.08f));
+            seq.Append(t.DORotate(new Vector3(0, 0, 0), 0.04f));
+            seq.SetLoops(2);
+            seq.OnKill(() => { t.rotation = Quaternion.identity; });
+
+
             Debug.Log("Upgrade not equired");
             return;
         }
+
+        StartCoroutine(Meta.inst.UpdateBonesSpentSlider(Meta.inst.bonesSpent + currentPrice));
 
         Debug.Log("Upgrade Aquired!");
         ++lvl;
@@ -298,13 +329,71 @@ public class Node : MonoBehaviour
         }
     }
 
+    
+    public void PressEquip()
+    {
+        if (!Meta.inst.equipmentListNodes.Contains(this))
+        {
+            bool success = Meta.inst.AddToEquipmentList(this, spriteSr.sprite);
+            if (success)
+            {
+                equipText.text = "unequip?";
+            }
+            else
+            {
+                //fails   
+                t.DOKill();
+                Sequence seq = DOTween.Sequence();
+                seq.Append(t.DORotate(new Vector3(0, 0, 5), 0.04f));
+                seq.Append(t.DORotate(new Vector3(0, 0, -5), 0.08f));
+                seq.Append(t.DORotate(new Vector3(0, 0, 0), 0.04f));
+                seq.SetLoops(2);
+                seq.OnKill(() => { t.rotation = Quaternion.identity; });
+            }
+
+        }
+        else
+        {
+            if (!selected)
+            {
+                equipButton.SetActive(false);
+                equipButton.GetComponent<SpriteRenderer>().color = defaultColor;
+            }
+            equipText.text = "equip";
+            Meta.inst.RemoveFromEquipmentList(this);
+        }
+    }
+
     public void EnterPurchaseButton() 
     {
+        
         purchaseButton.GetComponent<SpriteRenderer>().color = selectColor;
     }
     
     public void ExitPurchaseButton() 
     {
         purchaseButton.GetComponent<SpriteRenderer>().color = defaultColor;
+    }
+
+    public void EnterEquipButton()
+    {
+        equipButton.GetComponent<SpriteRenderer>().color = selectColor;
+        if (Meta.inst.equipmentListNodes.Contains(this))
+        {
+            equipText.text = "unequip?";
+        }
+    }
+
+    public void ExitEquipButton()
+    {
+        equipButton.GetComponent<SpriteRenderer>().color = defaultColor;
+        if (Meta.inst.equipmentListNodes.Contains(this))
+        {
+            equipText.text = "equipped";
+        }
+        else
+        {
+            equipText.text = "equip";
+        }
     }
 }
