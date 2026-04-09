@@ -1041,19 +1041,7 @@ MonoBehaviour:
   isInteractive: 1
   e:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CoreGame, Assembly-CSharp
-        m_MethodName: PressBuildingButton
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 7859877125115540475}
-          m_ObjectArgumentAssemblyTypeName: BuildingButton, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   mouseEnterCustomEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1118,30 +1106,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b3e13f291270e4faf42631da1d7cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myBuildingTag:
-    sr: {fileID: 982981981172527536}
-    prices: 050000000a0000000f000000
-    sprites:
-    - {fileID: -585427501, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
-    - {fileID: -1874097882, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
-    - {fileID: -1880178599, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
-    buidlingLvl: 0
-    priceTe: {fileID: 8085421941290293945}
-    otherPricesTe:
-    - {fileID: 8646414450342477075}
-    - {fileID: 3490983943219145397}
-    - {fileID: 4617438668251525145}
-    titleTe: {fileID: 5716442760481111925}
-    type: 1
-  levelColors:
-  - {r: 1, g: 1, b: 1, a: 1}
-  - {r: 0.6431373, g: 0.9098039, b: 0.9490196, a: 1}
-  - {r: 0.27058825, g: 0.7058824, b: 0.78431374, a: 1}
+  type: 0
+  titleTe: {fileID: 5716442760481111925}
+  priceTe: {fileID: 8085421941290293945}
+  otherPricesTe:
+  - {fileID: 8646414450342477075}
+  - {fileID: 3490983943219145397}
+  - {fileID: 4617438668251525145}
+  sr: {fileID: 982981981172527536}
+  backgroundSr: {fileID: 1619651650820534009}
   changeButtons:
   - {fileID: 4899307779609195847}
   - {fileID: 4020475805052168436}
   - {fileID: 9116046677394913768}
-  backgroundSr: {fileID: 1619651650820534009}
+  levelColors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.6431373, g: 0.9098039, b: 0.9490196, a: 1}
+  - {r: 0.27058825, g: 0.7058824, b: 0.78431374, a: 1}
 --- !u!1 &6028029358183727168
 GameObject:
   m_ObjectHideFlags: 0

@@ -41,19 +41,6 @@ public class Resource
     public int value;
 }
 
-[System.Serializable]
-public class BuildingTag
-{
-    public SpriteRenderer sr;
-    public int[] prices;
-    public Sprite[] sprites;
-    public int buidlingLvl;
-    public TMPro.TMP_Text priceTe;
-    public TMPro.TMP_Text[] otherPricesTe;
-    public TMPro.TMP_Text titleTe;
-    public Building.BuildingType type;
-}
-
 public class CoreGame : MonoBehaviour
 {
     public static string TAG_BLOB_PLACE = "BlobPlace";
@@ -65,10 +52,10 @@ public class CoreGame : MonoBehaviour
     public static string TAG_BOMB = "Bomb";
     public static string TAG_BUILDING = "Building";
 
-    public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] { "Tawa", "Cubo", "Bubil", "Major", "Tumba", "Flawa", "Magnik", "Plomo", "Bombik", "Cacti"};
+    //public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] { "Tawa", "Cubo", "Bubil", "Major", "Tumba", "Flawa", "Magnik", "Plomo", "Bombik", "Cacti"};
 
     public List<Building> allBuidlings = new List<Building>();
-    public List<BuildingTag> allBuildingTags = new List<BuildingTag>();
+
     public Resource[] allResources;
 
     [SerializeField] BuildingObject mainTower;
@@ -91,7 +78,7 @@ public class CoreGame : MonoBehaviour
     public bool canBuild = true;
 
     GameObject currentlyPlacingBuilding = null;
-    BuildingTag currentlyBuildingTag = null;
+    BuildingButton currentlyBuildingButton = null;
     SpriteRenderer lastPlacementSquare = null;
     Vector2 mousePosition;
 
@@ -171,6 +158,8 @@ public class CoreGame : MonoBehaviour
 
     void Start()
     {
+        G.ClearBuildingStates();
+
         StartCoroutine(WaitForAttack());
         StartCoroutine(ResourceGenerationLogic());
 
@@ -268,12 +257,15 @@ public class CoreGame : MonoBehaviour
 
     public void PressBuildingButton(BuildingButton bb)
     {
-        BuildingTag bt = bb.myBuildingTag;
-        if (bt.prices[bt.buidlingLvl] <= allResources[(int)Resource.ResourceType.cubes].value)
+        int currentPrice = DataStorage.CalculateBuildingPrice(bb.type);
+        if (currentPrice <= allResources[(int)Resource.ResourceType.cubes].value)
         {
-            StartBuilding(bt);
+            StartBuilding(bb);
         }
     }
+
+
+    
 
 
     public void PressBuyPersonButton()
@@ -293,21 +285,20 @@ public class CoreGame : MonoBehaviour
         }
     }
 
-    public void StartBuilding(BuildingTag buildingTag)
+    public void StartBuilding(BuildingButton bb)
     {
         canDrag = false;
         canBuild = false;
-        currentlyBuildingTag = buildingTag;
+        currentlyBuildingButton = bb;
 
         //Instantiate building
-        string buildingName = BUILDING_NAMES[(int)buildingTag.type];
 
-        int buildingLevel = currentlyBuildingTag.buidlingLvl;
-        //PlayerPrefs.HasKey(buildingName)?PlayerPrefs.GetInt(buildingName):0;
+        int buildingLevel = G.buildingStates[(int)bb.type].currentLvl;
 
-        currentlyPlacingBuilding =
-            Instantiate(allBuidlings.Find(x => x.myType == currentlyBuildingTag.type && x.myLvl == buildingLevel).buildingPfb,
-                new Vector3(mousePosition.x, mousePosition.y, -5), Quaternion.identity);
+        currentlyPlacingBuilding = Instantiate(DataStorage.allBuildings[(int)bb.type].pfbs[buildingLevel],
+                                               new Vector3(mousePosition.x, mousePosition.y, -5),
+                                               Quaternion.identity);
+
         lastPlacementSquare = currentlyPlacingBuilding.transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
@@ -320,19 +311,21 @@ public class CoreGame : MonoBehaviour
         {
             canDrag = true;
             canBuild = true;
+
             // Aquire
-            ChangeResource(Resource.ResourceType.cubes, -currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl]);
-            // Upgrade price of the level we places ONLY
-            currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl] = (int)(currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl] * 1.3f);
-            currentlyBuildingTag.otherPricesTe[currentlyBuildingTag.buidlingLvl].text = $"{currentlyBuildingTag.buidlingLvl+1}<size=2.2>(={currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl]}cubo)</size>";
-            currentlyBuildingTag.priceTe.text = currentlyBuildingTag.prices[currentlyBuildingTag.buidlingLvl].ToString();
+            ChangeResource(Resource.ResourceType.cubes, DataStorage.CalculateBuildingPrice(currentlyBuildingButton.type));
+            // Increase the stats of built objects
+            G.buildingStates[(int)currentlyBuildingButton.type].purchasedCount[G.buildingStates[(int)currentlyBuildingButton.type].currentLvl]++;
+            
+            currentlyBuildingButton.UpdatePrices();
+            
             // Build
             currentlyPlacingBuilding.transform.position = new Vector3(currentlyPlacingBuilding.transform.position.x,
                 currentlyPlacingBuilding.transform.position.y, currentlyPlacingBuilding.transform.position.y);
 
             lastPlacementSquare.gameObject.SetActive(false);
 
-            currentlyBuildingTag = null;
+            currentlyBuildingButton = null;
             currentlyPlacingBuilding = null;
         }
     }
@@ -368,7 +361,7 @@ public class CoreGame : MonoBehaviour
 
         Destroy(currentlyPlacingBuilding);
 
-        currentlyBuildingTag = null;
+        currentlyBuildingButton = null;
         currentlyPlacingBuilding = null;
     }
 

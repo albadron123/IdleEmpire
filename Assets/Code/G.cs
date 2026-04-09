@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public struct BuildingState
+{
+    public int[] purchasedCount;
+    public int currentLvl;
+}
+
+
 public class G : MonoBehaviour
 {
     public static G inst;
@@ -14,6 +22,10 @@ public class G : MonoBehaviour
 
     public static int bonesSpent;
     public static int maxBonesSpent = 100;
+
+
+    public static BuildingState[] buildingStates;
+
 
 
     void Start()
@@ -30,6 +42,19 @@ public class G : MonoBehaviour
         LoadEquipmentListFromPlayerPrefs();
 
         bonesSpent = 0;
+    }
+
+
+    public static void ClearBuildingStates()
+    {
+        buildingStates = new BuildingState[(int)Building.BuildingType.Count];
+        for (int i = 0; i < (int)Building.BuildingType.Count; ++i)
+        {
+            buildingStates[i] = new BuildingState { 
+                purchasedCount = new int[DataStorage.allBuildings[i].maxLevels], 
+                currentLvl = 0, 
+            };
+        }
     }
 
 

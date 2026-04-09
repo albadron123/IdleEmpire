@@ -520,7 +520,7 @@ GameObject:
   - component: {fileID: 5773457212959297209}
   - component: {fileID: 4501543600168551095}
   m_Layer: 0
-  m_Name: tower
+  m_Name: Tawa_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
