@@ -22,6 +22,12 @@ public class BuildingButton : MonoBehaviour
         
     }
 
+    public void Init(Building.BuildingType buildingType)
+    {
+        myBuildingTag.titleTe.text = DataStorage.allBuildings[(int)buildingType].title;
+        myBuildingTag.sr.sprite = DataStorage.allBuildings[(int)buildingType].icon;
+    }
+
     public void SelectLevel(int level)
     {
         if (myBuildingTag.buidlingLvl != level)

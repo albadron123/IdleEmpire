@@ -9,15 +9,15 @@ public class Building
 {
     public enum BuildingType
     {
-        Tower, 
-        CubeProduction,
-        BlahProduction,
-        MajorTower,
-        Archery,
-        Flower,
-        Magnet,
-        Tree,
-        BombProduction,
+        Tawa, 
+        CuboProduction,
+        BubilProduction,
+        HutkaGrande,
+        Tumbo,
+        Flawa,
+        Magno,
+        Custik,
+        Bombo,
         Cacti,
         Count
     };
@@ -131,6 +131,13 @@ public class CoreGame : MonoBehaviour
     [SerializeField] Sprite handCursorSpr;
     SpriteRenderer cursorSr;
 
+    [Header("Left-Side UI")]
+    [SerializeField] List<GameObject> buyBuildingButtons;
+    [SerializeField] List<GameObject> buyBuildingButtonPlaceholders;
+
+
+
+
 
     private void Awake()
     {
@@ -166,7 +173,8 @@ public class CoreGame : MonoBehaviour
     {
         StartCoroutine(WaitForAttack());
         StartCoroutine(ResourceGenerationLogic());
-        
+
+        InitializeBuildingButtons();
     }
 
     [SerializeField] List<GameObject> enemyGroups = new List<GameObject>();
@@ -232,6 +240,29 @@ public class CoreGame : MonoBehaviour
             Vector3 resInitialScale = resInst.transform.localScale;
             resInst.transform.localScale = new Vector3(0, 0, 1);
             resInst.transform.DOScale(resInitialScale, 0.6f);
+        }
+    }
+
+    void InitializeBuildingButtons()
+    {
+        for (int i = 0; i < G.equippedBuildingsSize; ++i)
+        {
+            if (i < G.equippedBuildings.Count)
+            {
+                buyBuildingButtons[i].SetActive(true);
+                buyBuildingButtons[i].GetComponent<BuildingButton>().Init(G.equippedBuildings[i]);
+                buyBuildingButtonPlaceholders[i].SetActive(false);
+            }
+            else
+            {
+                buyBuildingButtons[i].SetActive(false);
+                buyBuildingButtonPlaceholders[i].SetActive(true);
+            }
+        }
+        for (int i = G.equippedBuildingsSize; i < G.equippedBuildingsCapacity; ++i)
+        {
+            buyBuildingButtons[i].SetActive(false);
+            buyBuildingButtonPlaceholders[i].SetActive(false);
         }
     }
 

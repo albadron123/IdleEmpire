@@ -83,7 +83,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
         }
 
 
-        if (b.myType == Building.BuildingType.Tree)
+        if (b.myType == Building.BuildingType.Custik)
         {
             StartCoroutine(FunctionCoroutine(0));
         }
@@ -182,7 +182,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
     public void Die()
     {
         CoreGame.inst.builtObjects.Remove(this);
-        if (b.myType == Building.BuildingType.MajorTower)
+        if (b.myType == Building.BuildingType.HutkaGrande)
         {
             CoreGame.inst.EndRun();
         }
@@ -230,7 +230,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     public IEnumerator FunctionCoroutine(int processId)
     {
-        if (b.myType == Building.BuildingType.CubeProduction)
+        if (b.myType == Building.BuildingType.CuboProduction)
         {
 
             while (true)
@@ -251,12 +251,12 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 Destroy(sliderInst);
                 sliders[processId] = null;
 
-                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_PRODUCE_CUBO);
+                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_PRODUCE_CUBO);
                 CoreGame.inst.ChangeResource(Resource.ResourceType.cubes, productionAmount);
                 CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[0].icon);
             }
         }
-        else if (b.myType == Building.BuildingType.BlahProduction)
+        else if (b.myType == Building.BuildingType.BubilProduction)
         {
 
             while (true)
@@ -278,15 +278,15 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sliders[processId] = null;
 
 
-                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_PRODUCE_BUBIL);
+                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_PRODUCE_BUBIL);
                 CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
                 CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
         }
-        else if (b.myType == Building.BuildingType.Tower || b.myType == Building.BuildingType.Flower)
+        else if (b.myType == Building.BuildingType.Tawa || b.myType == Building.BuildingType.Flawa)
         {
             GameObject myProjectilePfb = null;
-            if (b.myType == Building.BuildingType.Tower)
+            if (b.myType == Building.BuildingType.Tawa)
             {
                 myProjectilePfb = CoreGame.inst.projectilePfb;
             }
@@ -301,13 +301,13 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 float projectileSize = GetProjectileSize();
                 int damage = GetDamage();
 
-                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
+                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
                 GameObject inst = Instantiate(myProjectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
                 pr.damage = damage;
                 pr.ignoreList.Add(gameObject);
-                if (b.myType == Building.BuildingType.Flower)
+                if (b.myType == Building.BuildingType.Flawa)
                 {
                     pr.doAffectBlobs = false;    
                 }
@@ -336,7 +336,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 yield return new WaitForSeconds(shootingSpeed);
             }
         }
-        else if (b.myType == Building.BuildingType.Archery)
+        else if (b.myType == Building.BuildingType.Tumbo)
         {
             while (true)
             {
@@ -360,7 +360,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 Destroy(sliderInst);
 
 
-                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
+                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
                 GameObject inst = Instantiate(CoreGame.inst.arrowProjectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
@@ -370,7 +370,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 Destroy(inst, 0.75f);
             }
         }
-        else if (b.myType == Building.BuildingType.Tree)
+        else if (b.myType == Building.BuildingType.Custik)
         {
             while (true)
             {
@@ -387,16 +387,16 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sliders[processId] = null;
 
 
-                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_PRODUCE_BUBIL);
+                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_PRODUCE_BUBIL);
                 CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
                 CoreGame.inst.CreateIconPopUp(transform.position + new Vector3(0, 1.4f, 0), $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
         }
-        else if (b.myType == Building.BuildingType.Magnet)
+        else if (b.myType == Building.BuildingType.Magno)
         {
 
         }
-        else if (b.myType == Building.BuildingType.BombProduction)
+        else if (b.myType == Building.BuildingType.Bombo)
         {
             while (true)
             {
@@ -421,7 +421,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sliders[processId] = null;
 
 
-                SoundManager.inst.PlaySfx(SoundManager.inst.SFX_PRODUCE_BUBIL);
+                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_PRODUCE_BUBIL);
                 Instantiate(CoreGame.inst.bombPfb, specialPurposeCol.gameObject.transform.position + Vector3.back, Quaternion.identity);
             }
         }
@@ -451,15 +451,15 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     public float GetShootingSpeed()
     {
-        if (b.myType == Building.BuildingType.Tower)
+        if (b.myType == Building.BuildingType.Tawa)
         {
             return baseShootingSpeed - shootingSpeedLevel * 0.15f;
         }
-        if (b.myType == Building.BuildingType.Archery)
+        if (b.myType == Building.BuildingType.Tumbo)
         {
             return baseShootingSpeed - shootingSpeedLevel * 0.15f;
         }
-        if (b.myType == Building.BuildingType.Flower)
+        if (b.myType == Building.BuildingType.Flawa)
         {
             return baseShootingSpeed - shootingSpeedLevel * 0.15f;
         }
@@ -470,15 +470,15 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     public int GetDamage()
     {
-        if (b.myType == Building.BuildingType.Tower)
+        if (b.myType == Building.BuildingType.Tawa)
         {
             return (projectileDamageLevel + 1) * 10;
         }
-        if (b.myType == Building.BuildingType.Archery)
+        if (b.myType == Building.BuildingType.Tumbo)
         {
             return (projectileDamageLevel + 1) * 10;
         }
-        if (b.myType == Building.BuildingType.Flower)
+        if (b.myType == Building.BuildingType.Flawa)
         {
             return (projectileDamageLevel + 1) * (-1);
         }

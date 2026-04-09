@@ -29,6 +29,8 @@ public class Node : MonoBehaviour
 
     [SerializeField]
     bool canBeEquipped = false;
+    [SerializeField]
+    public Building.BuildingType myBuilding;
 
     [SerializeField]
     GameObject equipButton;
@@ -59,6 +61,7 @@ public class Node : MonoBehaviour
     SpriteRenderer spriteSr;
     [SerializeField]
     SpriteRenderer backgroundSr;
+
 
 
     float[] omega = new float[8];
@@ -128,6 +131,16 @@ public class Node : MonoBehaviour
 
     void InitNode()
     {
+        if (G.equippedBuildings.Contains(myBuilding))
+        {
+            equipButton.SetActive(true);
+            equipText.text = "equipped";
+        }
+        else
+        {
+            equipButton.SetActive(false);
+            equipText.text = "equip";
+        }
         
         DOTween.Sequence()
             .Append(t.DOScale(0, 0))
@@ -205,16 +218,9 @@ public class Node : MonoBehaviour
     void SelectNode()
     {
         selected = true;
-        if (lvl >= maxLvls)
+        if (lvl < maxLvls)
         {
-            t.DOKill();
-            Sequence seq = DOTween.Sequence();
-            seq.Append(t.DORotate(new Vector3(0, 0, 5), 0.04f));
-            seq.Append(t.DORotate(new Vector3(0, 0, -5), 0.08f));
-            seq.Append(t.DORotate(new Vector3(0, 0, 0), 0.04f));
-            seq.SetLoops(2);
-            seq.OnKill(()=> { t.rotation = Quaternion.identity; });
-            return;
+            purchaseButton.SetActive(true);    
         }
 
         if (Meta.inst.currentNode != null)
@@ -226,7 +232,6 @@ public class Node : MonoBehaviour
         t.DOScale(1.1f * initialScale, 0.15f);
         outlineSr.color = selectColor;
         titleTe.color = selectColor;
-        purchaseButton.SetActive(true);
         if (canBeEquipped)
         {
             equipButton.SetActive(true);
@@ -239,7 +244,11 @@ public class Node : MonoBehaviour
         Meta.inst.currentNode = null;
         t.DOKill();
         t.DOScale(1f*initialScale, 0.15f);
-        if (lvl == 0)
+        if (lvl >= maxLvls)
+        {
+            outlineSr.color = selectColor;
+        }
+        else if (lvl == 0)
         {
             outlineSr.color = disabledColor;
             titleTe.color = disabledColor;
@@ -251,7 +260,7 @@ public class Node : MonoBehaviour
             titleTe.color = defaultColor;
         }
         purchaseButton.SetActive(false);
-        if (canBeEquipped && !Meta.inst.equipmentListNodes.Contains(this))
+        if (canBeEquipped && !G.equippedBuildings.Contains(myBuilding))
         {
             equipButton.SetActive(false);
         }
@@ -275,7 +284,7 @@ public class Node : MonoBehaviour
             return;
         }
 
-        StartCoroutine(Meta.inst.UpdateBonesSpentSlider(Meta.inst.bonesSpent + currentPrice));
+        StartCoroutine(Meta.inst.UpdateBonesSpentSlider(G.bonesSpent + currentPrice));
 
         Debug.Log("Upgrade Aquired!");
         ++lvl;
@@ -332,9 +341,10 @@ public class Node : MonoBehaviour
     
     public void PressEquip()
     {
-        if (!Meta.inst.equipmentListNodes.Contains(this))
+        
+        if (!G.equippedBuildings.Contains(myBuilding))
         {
-            bool success = Meta.inst.AddToEquipmentList(this, spriteSr.sprite);
+            bool success = Meta.inst.AddToEquipmentList(this);
             if (success)
             {
                 equipText.text = "unequip?";
@@ -378,7 +388,7 @@ public class Node : MonoBehaviour
     public void EnterEquipButton()
     {
         equipButton.GetComponent<SpriteRenderer>().color = selectColor;
-        if (Meta.inst.equipmentListNodes.Contains(this))
+        if (G.equippedBuildings.Contains(myBuilding))
         {
             equipText.text = "unequip?";
         }
@@ -387,7 +397,7 @@ public class Node : MonoBehaviour
     public void ExitEquipButton()
     {
         equipButton.GetComponent<SpriteRenderer>().color = defaultColor;
-        if (Meta.inst.equipmentListNodes.Contains(this))
+        if (G.equippedBuildings.Contains(myBuilding))
         {
             equipText.text = "equipped";
         }

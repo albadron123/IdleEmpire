@@ -26,12 +26,6 @@ public class Blob : MonoBehaviour, IDragInteraction
 
     void Start()
     {
-        for(int i = 0; i < 100; ++i)
-        {
-            Debug.Log(MaximUtils.RandomVector2FixMagnitude(2).magnitude);
-        }
-
-
         t = transform;
         initialZPosition = t.position.z;
         myCollider = GetComponent<Collider2D>();

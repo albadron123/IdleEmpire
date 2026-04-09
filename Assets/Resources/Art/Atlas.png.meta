@@ -178,7 +178,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite-0003_2
+      name: TawaSpr
       rect:
         serializedVersion: 2
         x: 170
@@ -220,7 +220,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite-0003_4
+      name: BubilSpr
       rect:
         serializedVersion: 2
         x: 351
@@ -451,7 +451,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite-0003_15
+      name: CuboSpr
       rect:
         serializedVersion: 2
         x: 364
@@ -818,6 +818,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      BubilSpr: 1629890750
+      CuboSpr: -585427501
       Sprite-0003_0: 634578180
       Sprite-0003_1: -336800060
       Sprite-0003_10: -212899511
@@ -825,12 +827,10 @@ TextureImporter:
       Sprite-0003_12: -1723378346
       Sprite-0003_13: 1317124079
       Sprite-0003_14: -619737459
-      Sprite-0003_15: -585427501
       Sprite-0003_16: 542397296
       Sprite-0003_17: -1154163830
       Sprite-0003_18: 2056475509
       Sprite-0003_19: -623792174
-      Sprite-0003_2: 1775859747
       Sprite-0003_20: 1247114459
       Sprite-0003_21: -1811014088
       Sprite-0003_22: -1461039860
@@ -844,12 +844,12 @@ TextureImporter:
       Sprite-0003_3: -628315583
       Sprite-0003_30: 542917543
       Sprite-0003_31: 930161216
-      Sprite-0003_4: 1629890750
       Sprite-0003_5: -1442016356
       Sprite-0003_6: 530242438
       Sprite-0003_7: -385661484
       Sprite-0003_8: 1683313269
       Sprite-0003_9: 208121043
+      TawaSpr: 1775859747
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

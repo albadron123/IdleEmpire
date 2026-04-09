@@ -33,9 +33,7 @@ public class Meta : MonoBehaviour
     float scrollMaxY;
 
 
-    public List<Node> equipmentListNodes;
-    int sizeofEquipmentList = 2;
-    int equipmentListCapacity = 5;
+    
     [SerializeField]
     SpriteRenderer[] equipmentListSr;
 
@@ -51,20 +49,13 @@ public class Meta : MonoBehaviour
     [SerializeField]
     Transform bonesSpentSlider;
 
-    public int bonesSpent = 0;
-    int maxBonesSpent = 100;
-
-    void InitEquipmentList()
-    {
-        equipmentListNodes = new List<Node>();
-    }
 
 
     void InitBonesSpentSlider()
     {
         bonesSpentSlider.localScale = new Vector3(0, bonesSpentSlider.localScale.y, bonesSpentSlider.localScale.z);
         bonesSpentArrow.localPosition = new Vector3(0, bonesSpentArrow.transform.position.y, bonesSpentArrow.transform.position.z);
-        bonesSpentTe.text = $"{0}/{maxBonesSpent}";
+        bonesSpentTe.text = $"{0}/{G.maxBonesSpent}";
         
         StartCoroutine(UpdateBonesSpentSlider(0));
     }
@@ -73,9 +64,9 @@ public class Meta : MonoBehaviour
     {
         const float UPDATE_TIME = 0.75f;
 
-        int oldBonesSpent = bonesSpent;
-        bonesSpent = Mathf.Clamp(newBonesSpent, 0, maxBonesSpent);
-        float fraction = (float)bonesSpent / maxBonesSpent;
+        int oldBonesSpent = G.bonesSpent;
+        G.bonesSpent = Mathf.Clamp(newBonesSpent, 0, G.maxBonesSpent);
+        float fraction = (float)G.bonesSpent / G.maxBonesSpent;
         bonesSpentSlider.DOScale(new Vector3(fraction, bonesSpentSlider.localScale.y, bonesSpentSlider.localScale.z), UPDATE_TIME);
         bonesSpentArrow.DOLocalMove(new Vector3(fraction, bonesSpentArrow.localPosition.y, bonesSpentArrow.localPosition.z), UPDATE_TIME);
         float timer = 0;
@@ -86,48 +77,74 @@ public class Meta : MonoBehaviour
             if (timer >= UPDATE_TIME)
             {
                 timer = UPDATE_TIME;
-                bonesSpentTe.text = $"{bonesSpent}/{maxBonesSpent}";
+                bonesSpentTe.text = $"{G.bonesSpent}/{G.maxBonesSpent}";
             }
             else
             {
-                bonesSpentTe.text = $"{(int)(Mathf.Lerp(oldBonesSpent, bonesSpent, timer / UPDATE_TIME))}/{maxBonesSpent}";
+                bonesSpentTe.text = $"{(int)(Mathf.Lerp(oldBonesSpent, G.bonesSpent, timer / UPDATE_TIME))}/{G.maxBonesSpent}";
             }
         }
     }
 
-    public bool AddToEquipmentList(Node n, Sprite s)
-    {
-        if (sizeofEquipmentList <= equipmentListNodes.Count)
-        {
-            return false;
-        }
-        equipmentListNodes.Add(n);
-        equipmentListSr[equipmentListNodes.Count - 1].sprite = s;
-        return true;
-    }
 
-    
-    public void RemoveFromEquipmentList(Node n)
+    void ShowEquipmentList()
     {
-        int index = equipmentListNodes.IndexOf(n);
-        equipmentListNodes.RemoveAt(index);
-        for (int i = index; i < sizeofEquipmentList; ++i)
-        {           
-            if (i < equipmentListNodes.Count)
+        for (int i = 0; i < G.equippedBuildingsSize; ++i)
+        {
+            equipmentListSr[i].transform.parent.gameObject.SetActive(true);
+            if (i < G.equippedBuildings.Count)
             {
-                equipmentListSr[i].sprite = ((i+1) != sizeofEquipmentList) ? equipmentListSr[i + 1].sprite : null;
+                equipmentListSr[i].sprite = DataStorage.allBuildings[(int)G.equippedBuildings[i]].icon;
             }
             else
             {
                 equipmentListSr[i].sprite = null;
             }
         }
+        for (int i = G.equippedBuildingsSize; i < G.equippedBuildingsCapacity; ++i)
+        {
+            equipmentListSr[i].transform.parent.gameObject.SetActive(false);
+        }
+    }
+
+    public bool AddToEquipmentList(Node n)
+    {
+        if (G.equippedBuildingsSize <= G.equippedBuildings.Count)
+        {
+            return false;
+        }
+        G.equippedBuildings.Add(n.myBuilding);
+        equipmentListSr[G.equippedBuildings.Count - 1].sprite = DataStorage.allBuildings[(int)n.myBuilding].icon;
+
+        G.SaveEquipmentListToPlayerPrefs();
+        return true;
+    }
+
+    
+    public void RemoveFromEquipmentList(Node n)
+    {
+        int index = G.equippedBuildings.IndexOf(n.myBuilding);
+        G.equippedBuildings.RemoveAt(index);
+        for (int i = index; i < G.equippedBuildingsSize; ++i)
+        {           
+            if (i < G.equippedBuildings.Count)
+            {
+                equipmentListSr[i].sprite = ((i+1) != G.equippedBuildingsSize) ? 
+                                                equipmentListSr[i + 1].sprite : 
+                                                null;
+            }
+            else
+            {
+                equipmentListSr[i].sprite = null;
+            }
+        }
+
+        G.SaveEquipmentListToPlayerPrefs();
     }
 
     void Start()
     {
         t = transform;
-        PlayerPrefs.DeleteAll();
         if (inst != null)
         {
             Debug.LogError("Meta.cs is singleton!");
@@ -138,9 +155,11 @@ public class Meta : MonoBehaviour
             inst = this;
         }
 
-        InitEquipmentList();
+        ShowEquipmentList();
+
         InitBonesSpentSlider();
         StartCoroutine(RenderEdges());
+
     }
 
 

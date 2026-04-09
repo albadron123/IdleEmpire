@@ -178,7 +178,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_2
+      name: Tawa
       rect:
         serializedVersion: 2
         x: 170
@@ -220,15 +220,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_4
+      name: Bubil
       rect:
         serializedVersion: 2
         x: 351
         y: 569
         width: 101
         height: 97
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.49188444, y: 0.11128974}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -430,7 +430,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_14
+      name: MainTower
       rect:
         serializedVersion: 2
         x: 217
@@ -472,7 +472,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_16
+      name: Tumbo
       rect:
         serializedVersion: 2
         x: 746
@@ -535,15 +535,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_19
+      name: Cubo
       rect:
         serializedVersion: 2
         x: 364
         y: 432
         width: 68
         height: 98
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.46383756, y: 0.09852787}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -752,8 +752,8 @@ TextureImporter:
         y: 317
         width: 101
         height: 97
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.48376858, y: 0.08593907}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -766,11 +766,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_30
+      name: Custik
       rect:
         serializedVersion: 2
         x: 588
-        y: 315
+        y: 313
         width: 112
         height: 125
       alignment: 9
@@ -913,7 +913,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_37
+      name: Flawa
       rect:
         serializedVersion: 2
         x: 481
@@ -976,7 +976,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_40
+      name: Bombo
       rect:
         serializedVersion: 2
         x: 906
@@ -1060,7 +1060,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_44
+      name: Magno
       rect:
         serializedVersion: 2
         x: 737
@@ -1228,7 +1228,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprites2_52
+      name: Cacti
       rect:
         serializedVersion: 2
         x: 1070
@@ -1280,19 +1280,25 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Bombo: -1273314432
+      Bubil: -1886273051
+      Cacti: -930879559
+      Cubo: -134427908
+      Custik: -177653587
+      Flawa: -1804865205
+      Magno: -295619969
+      MainTower: 1286127217
+      Tawa: 1299095534
+      Tumbo: -1294682916
       sprites2_0: -1229600306
       sprites2_1: 1613918464
       sprites2_10: -94093199
       sprites2_11: 394606809
       sprites2_12: 75429979
       sprites2_13: -814880481
-      sprites2_14: 1286127217
       sprites2_15: 102109582
-      sprites2_16: -1294682916
       sprites2_17: -2063233410
       sprites2_18: 626370656
-      sprites2_19: -134427908
-      sprites2_2: 1299095534
       sprites2_20: 1197168661
       sprites2_21: 1462239686
       sprites2_22: 1862622292
@@ -1304,22 +1310,17 @@ TextureImporter:
       sprites2_28: -994241860
       sprites2_29: 1838607546
       sprites2_3: 1566010180
-      sprites2_30: -177653587
       sprites2_31: -1591625002
       sprites2_32: -773870249
       sprites2_33: 1089696871
       sprites2_34: -115722941
       sprites2_35: -683629005
       sprites2_36: 238562103
-      sprites2_37: -1804865205
       sprites2_38: 1777296974
       sprites2_39: 1519944657
-      sprites2_4: -1886273051
-      sprites2_40: -1273314432
       sprites2_41: 562657532
       sprites2_42: 923095084
       sprites2_43: 451455374
-      sprites2_44: -295619969
       sprites2_45: -1748100121
       sprites2_46: 1466809408
       sprites2_47: -1529834268
@@ -1328,7 +1329,6 @@ TextureImporter:
       sprites2_5: -57161786
       sprites2_50: -51480736
       sprites2_51: 590988875
-      sprites2_52: -930879559
       sprites2_53: -684727642
       sprites2_6: -496470638
       sprites2_7: 797660247
