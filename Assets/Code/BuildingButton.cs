@@ -34,9 +34,25 @@ public class BuildingButton : MonoBehaviour
 
     public void Init(Building.BuildingType buildingType)
     {
+        int level = G.buildingStates[(int)buildingType].upgradeLvlUnlocked;
+        
+        for (int i = 0; i < changeButtons.Length; ++i)
+        {
+            changeButtons[i].SetActive(false);
+        }
+
+        if (level > 0)
+        {
+            for (int i = 0; i < level + 1; ++i)
+            {
+                changeButtons[i].SetActive(true);
+                otherPricesTe[i].text = OtherPriceTag(i, DataStorage.CalculateBuildingPrice(type, i));
+            }
+        }
         type = buildingType;
         titleTe.text = DataStorage.allBuildings[(int)type].title;
         sr.sprite = DataStorage.allBuildings[(int)type].icon;
+        priceTe.text = DataStorage.CalculateBuildingPrice(type).ToString();
     }
 
     public void SelectLevel(int lvl)
@@ -66,7 +82,12 @@ public class BuildingButton : MonoBehaviour
     {
         int newPrice = DataStorage.CalculateBuildingPrice(type);
 
-        otherPricesTe[G.buildingStates[(int)type].currentLvl].text = $"{G.buildingStates[(int)type].currentLvl + 1}<size=2.2>(={newPrice}cubo)</size>";
+        otherPricesTe[G.buildingStates[(int)type].currentLvl].text = OtherPriceTag(G.buildingStates[(int)type].currentLvl, newPrice);
         priceTe.text = newPrice.ToString();
+    }
+
+    public string OtherPriceTag(int lvl, int price)
+    {
+        return $"{lvl+1}<size=2.2>(={price}cubo)</size>";
     }
 }

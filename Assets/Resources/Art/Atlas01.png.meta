@@ -811,12 +811,12 @@ TextureImporter:
       name: sprites2_32
       rect:
         serializedVersion: 2
-        x: 24
+        x: 20
         y: 292
         width: 47
         height: 47
       alignment: 9
-      pivot: {x: 0.92699677, y: 0.9122081}
+      pivot: {x: 0.076693274, y: 0.92832786}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -837,7 +837,7 @@ TextureImporter:
         width: 64
         height: 54
       alignment: 9
-      pivot: {x: 0.4937482, y: -0.17084192}
+      pivot: {x: 0.558856, y: 0.08871234}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

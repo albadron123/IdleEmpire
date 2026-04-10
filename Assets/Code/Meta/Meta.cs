@@ -113,8 +113,8 @@ public class Meta : MonoBehaviour
         {
             return false;
         }
-        G.equippedBuildings.Add(n.myBuilding);
-        equipmentListSr[G.equippedBuildings.Count - 1].sprite = DataStorage.allBuildings[(int)n.myBuilding].icon;
+        G.equippedBuildings.Add(DataStorage.allUpgrades[(int)n.myHandle].buildingHandle.Value);
+        equipmentListSr[G.equippedBuildings.Count - 1].sprite = DataStorage.allBuildings[(int)DataStorage.allUpgrades[(int)n.myHandle].buildingHandle.Value].icon;
 
         G.SaveEquipmentListToPlayerPrefs();
         return true;
@@ -123,7 +123,7 @@ public class Meta : MonoBehaviour
     
     public void RemoveFromEquipmentList(Node n)
     {
-        int index = G.equippedBuildings.IndexOf(n.myBuilding);
+        int index = G.equippedBuildings.IndexOf(DataStorage.allUpgrades[(int)n.myHandle].buildingHandle.Value);
         G.equippedBuildings.RemoveAt(index);
         for (int i = index; i < G.equippedBuildingsSize; ++i)
         {           
@@ -174,7 +174,7 @@ public class Meta : MonoBehaviour
             perms.RemoveAt(perms.Count - 1);
             for (int i = 0; i < edges.Count; ++i)
             {
-                if (edges[i].a.visible && edges[i].b.visible)
+                if (G.upgradeStates[(int)edges[i].a.myHandle].visible && G.upgradeStates[(int)edges[i].b.myHandle].visible)
                 {
                     Transform aT = edges[i].a.transform;
                     Transform bT = edges[i].b.transform;

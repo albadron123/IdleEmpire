@@ -10,7 +10,7 @@ public static class Bootloader
     {
         Debug.Log("---Init game---");
 
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
 
         //Initializing global services
         GameObject staticContainer = new GameObject("===Global Managers===");
@@ -22,11 +22,22 @@ public static class Bootloader
 
         GameObject dataStorageGO = new GameObject("Data Storage");
         dataStorageGO.transform.parent = staticContainer.transform;
-        dataStorageGO.AddComponent<DataStorage>();
+        DataStorage ds = dataStorageGO.AddComponent<DataStorage>();
 
         GameObject G_GO = new GameObject("G");
         G_GO.transform.parent = staticContainer.transform;
         G_GO.AddComponent<G>();
+
+        //Load all the saved stuff & essential data
+        DataStorage.LoadSound();
+        DataStorage.LoadBuildings();
+        DataStorage.LoadUpgrades();
+
+        G.equippedBuildingsCapacity = 6;
+        G.bonesSpent = 0;
+        G.InitBuildingStates();
+        G.InitUpgradeStates();
+        G.LoadEquipmentListFromPlayerPrefs();
 
     }
     

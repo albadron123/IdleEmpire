@@ -113,10 +113,9 @@ public class CoreGame : MonoBehaviour
     [SerializeField] GameObject clickableBlobPfb;
 
     [Header("Cursor")]
-    [SerializeField] GameObject cursorInst;
     [SerializeField] Sprite basicCursorSpr;
     [SerializeField] Sprite handCursorSpr;
-    SpriteRenderer cursorSr;
+
 
     [Header("Left-Side UI")]
     [SerializeField] List<GameObject> buyBuildingButtons;
@@ -148,17 +147,12 @@ public class CoreGame : MonoBehaviour
         {
             builtObjects = new List<BuildingObject>();
         }
-
-
-        Cursor.visible = false;
-        cursorSr = cursorInst.GetComponent<SpriteRenderer>();
-        cursorSr.sprite = basicCursorSpr;
     }
 
 
     void Start()
     {
-        G.ClearBuildingStates();
+        G.InitBuildingStates();
 
         StartCoroutine(WaitForAttack());
         StartCoroutine(ResourceGenerationLogic());
@@ -372,30 +366,14 @@ public class CoreGame : MonoBehaviour
     {
         mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        cursorInst.transform.position = new Vector3(mousePosition.x, mousePosition.y, -9.6f);
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            cursorInst.transform.localScale = new Vector3(0.85f, 0.85f, 1);
-        }
-        if(Input.GetMouseButtonUp(0))
-        {
-            cursorInst.transform.localScale = new Vector3(1f, 1f, 1);
-            cursorSr.color = Color.white;
-        }
-
         if (draggedObject != null)
         {
-            cursorSr.sprite = handCursorSpr;
-
+            G.SetCursor(handCursorSpr);
             draggedObject.transform.position = new Vector3(mousePosition.x, mousePosition.y, -5);
-            cursorSr.color = Color.yellow;
         }
         else
         {
-            
-
-            cursorSr.sprite = basicCursorSpr;
+            G.SetCursor(basicCursorSpr);
         }
 
         if (currentlyPlacingBuilding != null)

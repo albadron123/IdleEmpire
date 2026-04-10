@@ -251,7 +251,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 Destroy(sliderInst);
                 sliders[processId] = null;
 
-                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_PRODUCE_CUBO);
+                SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_CUBO);
                 CoreGame.inst.ChangeResource(Resource.ResourceType.cubes, productionAmount);
                 CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[0].icon);
             }
@@ -278,7 +278,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sliders[processId] = null;
 
 
-                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_PRODUCE_BUBIL);
+                SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_BUBIL);
                 CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
                 CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
@@ -301,7 +301,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 float projectileSize = GetProjectileSize();
                 int damage = GetDamage();
 
-                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
+                SoundManager.inst.PlaySfx(DataStorage.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
                 GameObject inst = Instantiate(myProjectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
@@ -360,7 +360,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 Destroy(sliderInst);
 
 
-                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
+                SoundManager.inst.PlaySfx(DataStorage.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
                 GameObject inst = Instantiate(CoreGame.inst.arrowProjectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
@@ -387,7 +387,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sliders[processId] = null;
 
 
-                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_PRODUCE_BUBIL);
+                SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_BUBIL);
                 CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
                 CoreGame.inst.CreateIconPopUp(transform.position + new Vector3(0, 1.4f, 0), $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
@@ -421,7 +421,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sliders[processId] = null;
 
 
-                SoundManager.inst.PlaySfx(DataStorage.inst.SFX_PRODUCE_BUBIL);
+                SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_BUBIL);
                 Instantiate(CoreGame.inst.bombPfb, specialPurposeCol.gameObject.transform.position + Vector3.back, Quaternion.identity);
             }
         }

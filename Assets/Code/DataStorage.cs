@@ -16,20 +16,58 @@ public struct BuildingData
     public GameObject[] pfbs;
 };
 
+public enum UpgradeHandle
+{
+    //Building upgrades
+    Tawa,
+    Cubo,
+    Bubil,
+    HutkaGrande,
+    Tumbo,
+    Flawa,
+    Magno,
+    Custik,
+    Bombo,
+    Cacti,
+
+    SpawnMoreCubo,
+    SpawnMoreBubil,
+    MoreBones,
+    
+    ClickDamage,
+
+    BombikDamage,
+    BombikRange,
+
+    MoreSlots,
+
+    Count
+};
+
+public struct UpgradeData
+{
+    public string title;
+    public int maxLvls;
+    public int[] pricePerLevel;
+
+    public bool isBuildingUpdrade;
+    public Building.BuildingType? buildingHandle;
+};
 
 public class DataStorage : MonoBehaviour
 {
 
     [HideInInspector]
-    public AudioClip SFX_PRODUCE_CUBO;
+    public static AudioClip SFX_PRODUCE_CUBO;
     [HideInInspector]
-    public AudioClip SFX_PRODUCE_BUBIL;
+    public static AudioClip SFX_PRODUCE_BUBIL;
     [HideInInspector]
-    public AudioClip SFX_SHOOT;
+    public static AudioClip SFX_SHOOT;
 
     public static DataStorage inst = null;
 
     public static BuildingData[] allBuildings;
+    public static UpgradeData[] allUpgrades;
 
     void Start()
     {
@@ -39,19 +77,16 @@ public class DataStorage : MonoBehaviour
             Destroy(gameObject);
         }
         inst = this;
-
-        LoadSound();
-        LoadBuildings();
     }
 
-    void LoadSound()
+    public static void LoadSound()
     {
         SFX_PRODUCE_BUBIL = Resources.Load<AudioClip>("Sound/SFX/ProduceBubil");
         SFX_PRODUCE_CUBO = Resources.Load<AudioClip>("Sound/SFX/ProduceCubo");
         SFX_SHOOT = Resources.Load<AudioClip>("Sound/SFX/Shoot");
     }
 
-    void LoadBuildings()
+    public static void LoadBuildings()
     {
         allBuildings = new BuildingData[(int)Building.BuildingType.Count];
 
@@ -175,6 +210,155 @@ public class DataStorage : MonoBehaviour
     }
 
 
+    public static void LoadUpgrades()
+    {
+        allUpgrades = new UpgradeData[(int)UpgradeHandle.Count];
+
+        allUpgrades[(int)UpgradeHandle.Tawa] = new UpgradeData()
+        {
+            title = "Tawa",
+            maxLvls = 3,
+            pricePerLevel = new int[3] { 10, 20, 50},
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.Tawa,
+        };
+
+        allUpgrades[(int)UpgradeHandle.Cubo] = new UpgradeData()
+        {
+            title = "Cubo",
+            maxLvls = 3,
+            pricePerLevel = new int[3] { 10, 20, 50 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.CuboProduction,
+        };
+
+        allUpgrades[(int)UpgradeHandle.Bubil] = new UpgradeData()
+        {
+            title = "Bubil",
+            maxLvls = 3,
+            pricePerLevel = new int[3] { 10, 20, 50 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.BubilProduction,
+        };
+
+        allUpgrades[(int)UpgradeHandle.HutkaGrande] = new UpgradeData()
+        {
+            title = "Hutka Grande",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.HutkaGrande,
+        };
+
+        allUpgrades[(int)UpgradeHandle.Tumbo] = new UpgradeData()
+        {
+            title = "Tumbo",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.Tumbo,
+        };
+
+        allUpgrades[(int)UpgradeHandle.Flawa] = new UpgradeData()
+        {
+            title = "Flawa",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.Flawa,
+        };
+
+        allUpgrades[(int)UpgradeHandle.Magno] = new UpgradeData()
+        {
+            title = "Magno",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.Magno,
+        };
+
+        allUpgrades[(int)UpgradeHandle.Custik] = new UpgradeData()
+        {
+            title = "Custik",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.Custik,
+        };
+
+        allUpgrades[(int)UpgradeHandle.Bombo] = new UpgradeData()
+        {
+            title = "Bombo",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.Bombo,
+        };
+
+        allUpgrades[(int)UpgradeHandle.Cacti] = new UpgradeData()
+        {
+            title = "Cacti",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.Cacti,
+        };
+
+        allUpgrades[(int)UpgradeHandle.SpawnMoreCubo] = new UpgradeData()
+        {
+            title = "Spawn More Cubo",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        allUpgrades[(int)UpgradeHandle.SpawnMoreBubil] = new UpgradeData()
+        {
+            title = "Spawn More Bubil",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        allUpgrades[(int)UpgradeHandle.MoreBones] = new UpgradeData()
+        {
+            title = "More Bones",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        allUpgrades[(int)UpgradeHandle.ClickDamage] = new UpgradeData()
+        {
+            title = "Click Damage",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        allUpgrades[(int)UpgradeHandle.BombikDamage] = new UpgradeData()
+        {
+            title = "+ Bombik Dmg",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        allUpgrades[(int)UpgradeHandle.BombikRange] = new UpgradeData()
+        {
+            title = "+ Bombik Range",
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 10 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+    }
+
     
     void Update()
     {
@@ -186,7 +370,18 @@ public class DataStorage : MonoBehaviour
     public static int CalculateBuildingPrice(Building.BuildingType type)
     {
         int currentLvl = G.buildingStates[(int)type].currentLvl;
-        int purchased = G.buildingStates[(int)type].purchasedCount[currentLvl];
-        return (int)(allBuildings[(int)type].initialPricePerLevel[currentLvl] * Mathf.Pow(allBuildings[(int)type].priceMultiplierPerLevel[currentLvl], purchased));
+        return CalculateBuildingPrice(type, currentLvl);
+    }
+
+    public static int CalculateBuildingPrice(Building.BuildingType type, int lvl)
+    {
+        int purchased = G.buildingStates[(int)type].purchasedCount[lvl];
+        return (int)(allBuildings[(int)type].initialPricePerLevel[lvl] * Mathf.Pow(allBuildings[(int)type].priceMultiplierPerLevel[lvl], purchased));
+    }
+
+    public static int CalculateUpgradePrice(UpgradeHandle handle)
+    {
+        int lvl = G.upgradeStates[(int)handle].upgradeLvl;
+        return allUpgrades[(int)handle].pricePerLevel[lvl];
     }
 }

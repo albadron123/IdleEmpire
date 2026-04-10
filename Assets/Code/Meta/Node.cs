@@ -5,14 +5,8 @@ using DG.Tweening;
 
 public class Node : MonoBehaviour
 {
-    [Header("UpgradeModel")]
-    [SerializeField] int maxLvls;
-    [SerializeField] int lvl;
-    [SerializeField] int basePrice;
-    [SerializeField] float pricePower;
-    [SerializeField] string upgradeName;
-    public bool upgraded = true;
-    public bool visible = true;
+    
+    
 
 
 
@@ -27,10 +21,6 @@ public class Node : MonoBehaviour
     [SerializeField]
     GameObject purchaseButton;
 
-    [SerializeField]
-    bool canBeEquipped = false;
-    [SerializeField]
-    public Building.BuildingType myBuilding;
 
     [SerializeField]
     GameObject equipButton;
@@ -68,25 +58,17 @@ public class Node : MonoBehaviour
     float[] phi = new float[8];
     float[] alpha = new float[8];
 
+    public UpgradeHandle myHandle;
+
 
     private void Awake()
     {
         initialScale = transform.localScale;
-        if (PlayerPrefs.HasKey($"{upgradeName}_visible"))
-        {
-            visible = true;
-        }
-        if (PlayerPrefs.HasKey($"{upgradeName}"))
-        {
-            upgraded = true;
-        }
-
-        if (!visible)
+        if (!G.upgradeStates[(int)myHandle].visible)
         {
             gameObject.SetActive(false);
         }
     }
-
 
     void Start()
     {
@@ -131,7 +113,8 @@ public class Node : MonoBehaviour
 
     void InitNode()
     {
-        if (G.equippedBuildings.Contains(myBuilding))
+        
+        if (DataStorage.allUpgrades[(int)myHandle].isBuildingUpdrade && G.equippedBuildings.Contains(DataStorage.allUpgrades[(int)myHandle].buildingHandle.Value))
         {
             equipButton.SetActive(true);
             equipText.text = "equipped";
@@ -146,20 +129,21 @@ public class Node : MonoBehaviour
             .Append(t.DOScale(0, 0))
             .AppendInterval(0.35f)
             .Append(t.DOScale(initialScale.x, 1f).SetEase(Ease.OutCubic));
-        //Figure out the levels
-        lvl = PlayerPrefs.HasKey(upgradeName) ? PlayerPrefs.GetInt(upgradeName) : 0;
+        
         //Draw updrades
-        upgradePoints = MaximUtils.DrawCenteredListHor(upgradePointPrefab, upgradePointContainer.transform, Vector3.zero, updradePointDistance, maxLvls, 0.1f);
+        upgradePoints = MaximUtils.DrawCenteredListHor(upgradePointPrefab, upgradePointContainer.transform, Vector3.zero, updradePointDistance, DataStorage.allUpgrades[(int)myHandle].maxLvls, 0.1f);
         ColorUpgradePoints();
 
         //Style only
+        int lvl = G.upgradeStates[(int)myHandle].upgradeLvl;
+        int maxLvl = DataStorage.allUpgrades[(int)myHandle].maxLvls;
         if (lvl == 0)
         {
             outlineSr.color = disabledColor;
             titleTe.color = disabledColor;
             spriteSr.color = new Color(disabledColor.r, disabledColor.g, disabledColor.b, 0.5f);
         }
-        else if (lvl < maxLvls)
+        else if (lvl < maxLvl)
         {
             outlineSr.color = defaultColor;
             titleTe.color = defaultColor;
@@ -173,9 +157,9 @@ public class Node : MonoBehaviour
             spriteSr.color = Color.yellow;
         }
 
-        if (lvl < maxLvls)
+        if (lvl < maxLvl)
         {
-            priceTe.text = CalculateCurrentPrice().ToString();
+            priceTe.text = DataStorage.CalculateUpgradePrice(myHandle).ToString();
         }
         else
         {
@@ -185,17 +169,15 @@ public class Node : MonoBehaviour
 
     }
 
-    int CalculateCurrentPrice()
-    {
-        int powerPart = lvl > 0 ? (int)Mathf.Pow(pricePower, lvl) : 0;
-        return basePrice + powerPart;
-    }
+
 
     void ColorUpgradePoints()
     {
+        int lvl = G.upgradeStates[(int)myHandle].upgradeLvl;
+        int maxLvl = DataStorage.allUpgrades[(int)myHandle].maxLvls;
         if (lvl == 0)
         {
-            for (int i = 0; i < maxLvls; ++i)
+            for (int i = 0; i < maxLvl; ++i)
             {
                 upgradePoints[i].GetComponent<SpriteRenderer>().color = disabledColor;
             }
@@ -207,7 +189,7 @@ public class Node : MonoBehaviour
             {
                 upgradePoints[i].GetComponent<SpriteRenderer>().color = selectColor;
             }
-            for (int i = lvl; i < maxLvls; ++i)
+            for (int i = lvl; i < maxLvl; ++i)
             {
                 upgradePoints[i].GetComponent<SpriteRenderer>().color = defaultColor;
             }
@@ -217,8 +199,11 @@ public class Node : MonoBehaviour
     bool selected = false;
     void SelectNode()
     {
+        int lvl = G.upgradeStates[(int)myHandle].upgradeLvl;
+        int maxLvl = DataStorage.allUpgrades[(int)myHandle].maxLvls;
+
         selected = true;
-        if (lvl < maxLvls)
+        if (lvl < maxLvl)
         {
             purchaseButton.SetActive(true);    
         }
@@ -232,7 +217,7 @@ public class Node : MonoBehaviour
         t.DOScale(1.1f * initialScale, 0.15f);
         outlineSr.color = selectColor;
         titleTe.color = selectColor;
-        if (canBeEquipped)
+        if (DataStorage.allUpgrades[(int)myHandle].isBuildingUpdrade && G.upgradeStates[(int)myHandle].upgradeLvl > 0)
         {
             equipButton.SetActive(true);
         }
@@ -240,11 +225,14 @@ public class Node : MonoBehaviour
 
     void DeselectNode()
     {
+        int lvl = G.upgradeStates[(int)myHandle].upgradeLvl;
+        int maxLvl = DataStorage.allUpgrades[(int)myHandle].maxLvls;
+
         selected = false;
         Meta.inst.currentNode = null;
         t.DOKill();
         t.DOScale(1f*initialScale, 0.15f);
-        if (lvl >= maxLvls)
+        if (lvl >= maxLvl)
         {
             outlineSr.color = selectColor;
         }
@@ -260,7 +248,7 @@ public class Node : MonoBehaviour
             titleTe.color = defaultColor;
         }
         purchaseButton.SetActive(false);
-        if (canBeEquipped && !G.equippedBuildings.Contains(myBuilding))
+        if (DataStorage.allUpgrades[(int)myHandle].isBuildingUpdrade && !G.equippedBuildings.Contains(DataStorage.allUpgrades[(int)myHandle].buildingHandle.Value))
         {
             equipButton.SetActive(false);
         }
@@ -268,7 +256,7 @@ public class Node : MonoBehaviour
 
     public void AquireUpgade()
     {
-        int currentPrice = CalculateCurrentPrice();
+        int currentPrice = DataStorage.CalculateUpgradePrice(myHandle);
         if (!MetaEconomy.inst.UpdateBones(-currentPrice))
         {
             t.DOKill();
@@ -286,14 +274,48 @@ public class Node : MonoBehaviour
 
         StartCoroutine(Meta.inst.UpdateBonesSpentSlider(G.bonesSpent + currentPrice));
 
-        Debug.Log("Upgrade Aquired!");
+        int lvl = G.upgradeStates[(int)myHandle].upgradeLvl;
+        int maxLvl = DataStorage.allUpgrades[(int)myHandle].maxLvls;
+
+        List<UpgradeHandle> upgradeHandles = new List<UpgradeHandle>();
+
+        bool spectialCondition = lvl == 1 && (myHandle == UpgradeHandle.Cubo || myHandle == UpgradeHandle.Bubil || myHandle == UpgradeHandle.Tawa);
+        if (lvl == 0 || spectialCondition)
+        {
+            foreach (Edge e in Meta.inst.edges)
+            {
+                if (e.a == this && !G.upgradeStates[(int)e.b.myHandle].visible)
+                {
+                    upgradeHandles.Add(e.b.myHandle);
+                    e.b.gameObject.transform.localScale = Vector3.zero;
+                    e.b.gameObject.SetActive(true);
+                    StartCoroutine(Meta.inst.RenderNewEdge(e, 1));
+                }
+                if (e.b == this && !G.upgradeStates[(int)e.a.myHandle].visible)
+                {
+                    upgradeHandles.Add(e.a.myHandle);
+                    e.a.gameObject.transform.localScale = Vector3.zero;
+                    e.a.gameObject.SetActive(true);
+                    StartCoroutine(Meta.inst.RenderNewEdge(e, -1));
+                }
+            }
+        }
+
+
+        G.AquireUpgrade(myHandle, upgradeHandles);
+        //now we *know* that level is increased in G.AquireUpgrade(...)
         ++lvl;
-        PlayerPrefs.SetInt(upgradeName, lvl);
+
+        //visually change the current upgrade
         if (lvl == 1)
         {
             spriteSr.color = defaultColor;
+            if (DataStorage.allUpgrades[(int)myHandle].isBuildingUpdrade)
+            {
+                equipButton.SetActive(true);
+            }
         }
-        if (lvl == maxLvls)
+        if (lvl == maxLvl)
         {
             // Fully upgraded
             purchaseButton.SetActive(false);
@@ -309,40 +331,19 @@ public class Node : MonoBehaviour
         }
         else
         {
-            priceTe.text = CalculateCurrentPrice().ToString();
+            priceTe.text = DataStorage.CalculateUpgradePrice(myHandle).ToString();
         }
         ColorUpgradePoints();
 
-
-        if (lvl == 1)
-        {
-            foreach (Edge e in Meta.inst.edges)
-            {
-                if (e.a == this && !e.b.visible)
-                {
-                    e.b.visible = true;
-                    PlayerPrefs.SetInt($"{e.b.upgradeName}_visible", 1);
-                    e.b.gameObject.transform.localScale = Vector3.zero;
-                    e.b.gameObject.SetActive(true);
-                    StartCoroutine(Meta.inst.RenderNewEdge(e, 1));
-                }
-                if (e.b == this && !e.a.visible)
-                {
-                    e.a.visible = true;
-                    PlayerPrefs.SetInt($"{e.a.upgradeName}_visible", 1);
-                    e.a.gameObject.transform.localScale = Vector3.zero;
-                    e.a.gameObject.SetActive(true);
-                    StartCoroutine(Meta.inst.RenderNewEdge(e, -1));
-                }
-            }
-        }
+        
+        
     }
 
     
     public void PressEquip()
     {
         
-        if (!G.equippedBuildings.Contains(myBuilding))
+        if (DataStorage.allUpgrades[(int)myHandle].isBuildingUpdrade && !G.equippedBuildings.Contains(DataStorage.allUpgrades[(int)myHandle].buildingHandle.Value))
         {
             bool success = Meta.inst.AddToEquipmentList(this);
             if (success)
@@ -388,7 +389,7 @@ public class Node : MonoBehaviour
     public void EnterEquipButton()
     {
         equipButton.GetComponent<SpriteRenderer>().color = selectColor;
-        if (G.equippedBuildings.Contains(myBuilding))
+        if (G.equippedBuildings.Contains(DataStorage.allUpgrades[(int)myHandle].buildingHandle.Value))
         {
             equipText.text = "unequip?";
         }
@@ -397,7 +398,7 @@ public class Node : MonoBehaviour
     public void ExitEquipButton()
     {
         equipButton.GetComponent<SpriteRenderer>().color = defaultColor;
-        if (G.equippedBuildings.Contains(myBuilding))
+        if (G.equippedBuildings.Contains(DataStorage.allUpgrades[(int)myHandle].buildingHandle.Value))
         {
             equipText.text = "equipped";
         }
