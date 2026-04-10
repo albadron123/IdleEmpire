@@ -70,6 +70,11 @@ public class DataStorage : MonoBehaviour
     [HideInInspector]
     public static AudioClip SFX_OVER_UPGRADE_BUTTON;
 
+
+    public static AudioClip SOUND_BROWN_NOISE;
+    public static AudioClip SOUND_FIREPLACE;
+    public static AudioClip SOUND_FIREPLACE_MUSIC;
+
     public static DataStorage inst = null;
 
     public static BuildingData[] allBuildings;
@@ -93,7 +98,10 @@ public class DataStorage : MonoBehaviour
         SFX_CLICK_UPGRADE = Resources.Load<AudioClip>("Sound/SFX/ClickUpgrade");
         SFX_CLICK_UPGRADE_BUTTON = Resources.Load<AudioClip>("Sound/SFX/ClickUpgradeButton");
         SFX_OVER_UPGRADE_BUTTON = Resources.Load<AudioClip>("Sound/SFX/OverUpgradeButton");
-    }
+        SOUND_BROWN_NOISE = Resources.Load<AudioClip>("Sound/BrownNoise");
+        SOUND_FIREPLACE = Resources.Load<AudioClip>("Sound/Fireplace");
+        SOUND_FIREPLACE_MUSIC = Resources.Load<AudioClip>("Sound/FireplaceMusic");
+}
 
     public static void LoadBuildings()
     {

@@ -160,6 +160,8 @@ public class Meta : MonoBehaviour
         InitBonesSpentSlider();
         StartCoroutine(RenderEdges());
 
+        StartCoroutine(SoundManager.inst.ChangeBackgroundProfile(new AudioClip[2] { DataStorage.SOUND_FIREPLACE, DataStorage.SOUND_FIREPLACE_MUSIC}, new float[]{0.35f,0.2f}, new float[]{1f,0.8f}));
+        SoundManager.inst.AddBackground(DataStorage.SOUND_BROWN_NOISE, 0.04f, 1, true);
     }
 
 
@@ -227,6 +229,10 @@ public class Meta : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            StartCoroutine(SoundManager.inst.ChangeBackgroundProfile(new AudioClip[2] { DataStorage.SOUND_FIREPLACE, DataStorage.SOUND_FIREPLACE_MUSIC }, new float[] { 0.35f, 0.2f }, new float[] { 1f, 0.8f }, 5));
+        }
         MaximUtils.RenderShakyText(devilsTe, 0.012f, 15);
 
         float mousePositionYClamped = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).y, t.position.y - 5f, t.position.y + 5f);
