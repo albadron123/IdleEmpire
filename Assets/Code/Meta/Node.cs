@@ -221,6 +221,8 @@ public class Node : MonoBehaviour
         {
             equipButton.SetActive(true);
         }
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_CLICK_UPGRADE, 1, 0.8f, 1);
     }
 
     void DeselectNode()
@@ -252,6 +254,8 @@ public class Node : MonoBehaviour
         {
             equipButton.SetActive(false);
         }
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_CLICK_UPGRADE, 1, 0.8f, 1);
     }
 
     public void AquireUpgade()
@@ -335,8 +339,8 @@ public class Node : MonoBehaviour
         }
         ColorUpgradePoints();
 
-        
-        
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_CLICK_UPGRADE_BUTTON, 1, 0.8f, 1);
     }
 
     
@@ -373,17 +377,23 @@ public class Node : MonoBehaviour
             equipText.text = "equip";
             Meta.inst.RemoveFromEquipmentList(this);
         }
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_CLICK_UPGRADE_BUTTON, 1, 0.8f, 1);
     }
 
     public void EnterPurchaseButton() 
     {
         
         purchaseButton.GetComponent<SpriteRenderer>().color = selectColor;
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_OVER_UPGRADE_BUTTON, 0.5f, 0.8f, 1);
     }
     
     public void ExitPurchaseButton() 
     {
         purchaseButton.GetComponent<SpriteRenderer>().color = defaultColor;
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_OVER_UPGRADE_BUTTON, 0.5f, 0.8f, 1);
     }
 
     public void EnterEquipButton()
@@ -393,6 +403,8 @@ public class Node : MonoBehaviour
         {
             equipText.text = "unequip?";
         }
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_OVER_UPGRADE_BUTTON, 0.5f, 0.8f, 1);
     }
 
     public void ExitEquipButton()
@@ -406,5 +418,7 @@ public class Node : MonoBehaviour
         {
             equipText.text = "equip";
         }
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_OVER_UPGRADE_BUTTON, 0.5f, 0.8f, 1);
     }
 }

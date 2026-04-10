@@ -63,6 +63,12 @@ public class DataStorage : MonoBehaviour
     public static AudioClip SFX_PRODUCE_BUBIL;
     [HideInInspector]
     public static AudioClip SFX_SHOOT;
+    [HideInInspector]
+    public static AudioClip SFX_CLICK_UPGRADE;
+    [HideInInspector]
+    public static AudioClip SFX_CLICK_UPGRADE_BUTTON;
+    [HideInInspector]
+    public static AudioClip SFX_OVER_UPGRADE_BUTTON;
 
     public static DataStorage inst = null;
 
@@ -84,6 +90,9 @@ public class DataStorage : MonoBehaviour
         SFX_PRODUCE_BUBIL = Resources.Load<AudioClip>("Sound/SFX/ProduceBubil");
         SFX_PRODUCE_CUBO = Resources.Load<AudioClip>("Sound/SFX/ProduceCubo");
         SFX_SHOOT = Resources.Load<AudioClip>("Sound/SFX/Shoot");
+        SFX_CLICK_UPGRADE = Resources.Load<AudioClip>("Sound/SFX/ClickUpgrade");
+        SFX_CLICK_UPGRADE_BUTTON = Resources.Load<AudioClip>("Sound/SFX/ClickUpgradeButton");
+        SFX_OVER_UPGRADE_BUTTON = Resources.Load<AudioClip>("Sound/SFX/OverUpgradeButton");
     }
 
     public static void LoadBuildings()
