@@ -72,6 +72,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.848
       objectReference: {fileID: 0}
+    - target: {fileID: 3360111548111253970, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.954
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360111548111253970, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360111548111253970, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.11
+      objectReference: {fileID: 0}
     - target: {fileID: 3993227459521723875, guid: 762ba903c64370c419691d53d63461c9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.025
@@ -116,13 +128,17 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1.11
       objectReference: {fileID: 0}
+    - target: {fileID: 5922123453046485782, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 542917543, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
     - target: {fileID: 6281734274484283513, guid: 762ba903c64370c419691d53d63461c9, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6921129094441651834, guid: 762ba903c64370c419691d53d63461c9, type: 3}
       propertyPath: m_Name
-      value: towerLvl1
+      value: Tawa_2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

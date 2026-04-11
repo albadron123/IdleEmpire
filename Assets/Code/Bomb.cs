@@ -28,6 +28,7 @@ public class Bomb : MonoBehaviour, IDragInteraction
     public void FinishDrag()
     {
         canExplode = true;
+        GetComponent<DragObject>().shadow.SetActive(true);
     }
 
     
@@ -35,6 +36,8 @@ public class Bomb : MonoBehaviour, IDragInteraction
     {
         if (canExplode)
         {
+            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
+
             List<Collider2D> cols = new List<Collider2D>();
             Physics2D.OverlapCollider(myCol, new ContactFilter2D().NoFilter(), cols);
             foreach (Collider2D col in cols)

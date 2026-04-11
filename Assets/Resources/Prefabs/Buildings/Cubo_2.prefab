@@ -94,11 +94,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6394377674043695164, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6784931032043712049, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_Name
-      value: CuboLvl1
+      value: Cubo_2
       objectReference: {fileID: 0}
     - target: {fileID: 8534595610195519360, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_LocalScale.x
@@ -112,6 +112,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9100288791929352303, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1874097882, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
     - target: {fileID: 9147553516910864315, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.037

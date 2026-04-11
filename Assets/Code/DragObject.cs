@@ -15,11 +15,17 @@ public class DragObject : MonoBehaviour
     
     public IDragInteraction dragInteraction;
 
-    
+    public GameObject shadow = null;
+
+    private void Start()
+    {
+
+    }
 
 
     private void OnMouseDown()
     {
+        
         FriendCreature fc = GetComponent<FriendCreature>();
         if(fc != null && fc.shoked) return;
         
@@ -31,6 +37,10 @@ public class DragObject : MonoBehaviour
                 if (dragInteraction != null)
                 {
                     dragInteraction.StartDrag();
+                    if (shadow != null)
+                    {
+                        shadow.SetActive(false);
+                    }
                 }
             }
         }

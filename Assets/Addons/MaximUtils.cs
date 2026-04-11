@@ -342,4 +342,9 @@ public static class StringUtils
     {
         return $"<color={color}>{s}</color>";
     }
+
+    public static string Size(this string s, float fontSize)
+    {
+        return $"<size={fontSize}>{s}</size>";
+    }
 }

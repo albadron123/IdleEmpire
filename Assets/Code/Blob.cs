@@ -56,6 +56,8 @@ public class Blob : MonoBehaviour, IDragInteraction
 
     public void FinishDrag()
     {
+        
+
         CoreGame.inst.canBuild = true;
         
         FriendCreature fc = GetComponent<FriendCreature>();
@@ -111,6 +113,10 @@ public class Blob : MonoBehaviour, IDragInteraction
         {
             t.position = new Vector3(t.position.x, t.position.y, initialZPosition);
             meCreature.StartSimulation();
+            if (GetComponent<DragObject>().shadow != null)
+            {
+                GetComponent<DragObject>().shadow.SetActive(true);
+            }
         }
 
         outline.SetActive(false);

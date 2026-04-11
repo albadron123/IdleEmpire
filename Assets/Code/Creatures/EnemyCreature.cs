@@ -43,7 +43,7 @@ public class EnemyCreature : Creature
         base.ChangeHealth(damage);
         if (damage < 0)
         {
-            CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"{damage} hp".Color("red").Bold(), null);
+            CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"{damage} hp".Color("red").Bold().Size(40), null, 0.7f);
         }
     }
 
@@ -54,7 +54,7 @@ public class EnemyCreature : Creature
         if (Random.value < criticalChance)
         {
             reward = rewardBonesCritical;
-            CoreGame.inst.CreateIconPopUp(t.position, $"CRITICAL!\n+{reward}", CoreGame.inst.allResources[2].icon);
+            CoreGame.inst.CreateIconPopUp(t.position, $"{"CRITICAL!".Size(50)}\n+{reward}", CoreGame.inst.allResources[2].icon);
         }
         else
         {

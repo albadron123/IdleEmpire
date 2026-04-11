@@ -457,7 +457,7 @@ public class CoreGame : MonoBehaviour
     }
 
 
-    public void CreateIconPopUp(Vector2 initialPosition, string text, Sprite icon)
+    public void CreateIconPopUp(Vector2 initialPosition, string text, Sprite icon, float fading = 1.5f)
     {
 
         GameObject inst = Instantiate(moreResourcePfb, (Vector3)initialPosition + new Vector3(-1.2f, 0.7f, -9), Quaternion.identity);
@@ -465,12 +465,19 @@ public class CoreGame : MonoBehaviour
         te.text = text;
         SpriteRenderer sr = inst.transform.GetChild(0).GetComponent<SpriteRenderer>();
         sr.sprite = icon;
+
+
         DOTween.Sequence()
-            .Append(inst.transform.DOJump(inst.transform.position + new Vector3(Random.Range(-0.4f, 0.4f), 0.15f, 0), Random.Range(0.3f, 0.6f), 1, 1f))
-            .Join(inst.transform.DOScale(0.12f, 1f))
-            .Join(sr.DOFade(0, 1.5f))
-            .Join(te.DOFade(0, 1.5f));
-        Destroy(inst, 1.5f);
+            .Append(inst.transform.DOJump(inst.transform.position + new Vector3(Random.Range(-0.4f, 0.4f), 0.15f, 0), Random.Range(0.3f, 0.6f), 1, fading * 0.66f))
+            .Join(inst.transform.DOScale(0.12f, fading * 0.66f))
+            .Join(
+                DOTween.Sequence()
+                .AppendInterval(0.5f * fading)
+                .Join(sr.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
+                .Join(te.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
+            )
+            .Join(inst.transform.DOMoveZ(1, fading));
+        Destroy(inst, fading);
     }
 
     // --- Upgrades sections --- 

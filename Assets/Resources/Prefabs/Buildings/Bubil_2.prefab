@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 299350263885656428, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -351529815, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
     - target: {fileID: 2497385501889427159, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.73
@@ -62,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: -351529815, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
     - target: {fileID: 7097252096923523686, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: m_Name
-      value: BubilLvl1
+      value: Bubil_2
       objectReference: {fileID: 0}
     - target: {fileID: 7211810504238387178, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: baseProductionTime

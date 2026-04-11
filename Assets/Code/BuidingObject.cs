@@ -5,6 +5,8 @@ using DG.Tweening;
 
 public class BuildingObject : MonoBehaviour, IDestructable
 {
+    [SerializeField]
+    Transform zDivider;
 
     Transform t;
 
@@ -71,6 +73,16 @@ public class BuildingObject : MonoBehaviour, IDestructable
         RegisterBuilding();
 
         t = transform;
+        if (zDivider != null)
+        {
+            t.position = new Vector3(t.position.x, t.position.y, zDivider.position.y);
+            zDivider.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning($"A building object of type '{DataStorage.allBuildings[(int)b.myType].title}' has no zDivider");
+            t.position = new Vector3(t.position.x, t.position.y, t.position.y);
+        }
 
         processes = new Coroutine[blobPlaces.Count];
         sliders = new GameObject[blobPlaces.Count];
@@ -153,11 +165,11 @@ public class BuildingObject : MonoBehaviour, IDestructable
     {
         if (damage < 0)
         {
-            CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"{damage} hp".Bold(), null);
+            CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"{damage} hp".Bold().Size(50), null, 0.7f);
         }
         else
         {
-            CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"+{damage} hp".Bold().Color("#559F52"), null);
+            CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"+{damage} hp".Bold().Color("#559F52").Size(40), null, 0.7f);
         }
 
         if (b.myType == Building.BuildingType.Cacti)
