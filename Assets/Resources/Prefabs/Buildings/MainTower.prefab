@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zDivider: {fileID: 1745304050749143591}
+  healthText: {fileID: 3481597901138319502}
   b:
     myType: 3
     buildingPfb: {fileID: 6996129902443490374}
@@ -816,6 +817,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3504354232951079662, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
+      propertyPath: m_Name
+      value: healthText
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504354232951079662, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -861,6 +866,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3068080253284211682, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
   m_PrefabInstance: {fileID: 3669322377346161358}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3481597901138319502 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 197335513504694848, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
+  m_PrefabInstance: {fileID: 3669322377346161358}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4005338446753650997 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 394592022157804539, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}

@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zDivider: {fileID: 2527050441000845802}
+  healthText: {fileID: 0}
   b:
     myType: 9
     buildingPfb: {fileID: 452254659705555257}
@@ -772,7 +773,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8932171945423536716
 Transform:
   m_ObjectHideFlags: 0

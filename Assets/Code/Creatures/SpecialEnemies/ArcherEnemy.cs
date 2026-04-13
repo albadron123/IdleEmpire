@@ -25,7 +25,10 @@ public class ArcherEnemy : EnemyCreature
 
         Vector2 targetPosition = (Vector2)targetObj.transform.position + MaximUtils.RandomVector2FixMagnitude(2f) + MaximUtils.RandomVector2(0.25f);
 
+        
         a.SetBool("walk", true);
+        
+        
         do
         {
             yield return new WaitForFixedUpdate();

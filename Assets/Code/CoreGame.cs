@@ -482,12 +482,6 @@ public class CoreGame : MonoBehaviour
 
     // --- Upgrades sections --- 
 
-
-    public void BuyUpgrade(BuildingObject bo)
-    {
-
-    }
-
     public void ShowUpgrades(List<UpgradeType> upgradeTypes, BuildingObject buildingToUpgrade)
     {
         const float BUTTON_OFFSET = 0.1F;

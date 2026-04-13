@@ -19,6 +19,7 @@ public class Creature : MonoBehaviour, IDestructable
 
 
     protected Animator a;
+    protected Animation an;
     protected Transform t;
     protected Coroutine simulation = null;
 
@@ -80,8 +81,12 @@ public class Creature : MonoBehaviour, IDestructable
             StopAllCoroutines();
             
             simulation = null;
-            a.SetBool("walk", false);
-            a.SetBool("attack", false);
+            if (a != null)
+            {
+                a.SetBool("walk", false);
+                a.SetBool("attack", false);
+            }
+            
         }  
     }
     

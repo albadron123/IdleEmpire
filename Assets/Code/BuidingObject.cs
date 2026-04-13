@@ -8,6 +8,10 @@ public class BuildingObject : MonoBehaviour, IDestructable
     [SerializeField]
     Transform zDivider;
 
+    [SerializeField]
+    TMPro.TMP_Text healthText;
+
+
     Transform t;
 
     public Building b;
@@ -160,9 +164,16 @@ public class BuildingObject : MonoBehaviour, IDestructable
         inCollision.Remove(o);
     }
 
-
+    
     public void ChangeHealth(int damage)
     {
+        DestructableObject dObj = GetComponent<DestructableObject>();
+
+        if (healthText != null)
+        {
+            healthText.text = $"{dObj.health}hp";
+        }
+
         if (damage < 0)
         {
             CoreGame.inst.CreateIconPopUp((Vector2)t.position + new Vector2(0.5f, 0f), $"{damage} hp".Bold().Size(50), null, 0.7f);
@@ -173,8 +184,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
         }
 
         if (b.myType == Building.BuildingType.Cacti)
-        {
-            DestructableObject dObj = GetComponent<DestructableObject>();
+        {    
             float healthPortion = (float)dObj.health / dObj.maxHealth;
             if (healthPortion >= 0.67f)
             {
