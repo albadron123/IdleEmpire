@@ -79,7 +79,10 @@ public class CoreGame : MonoBehaviour
 
     GameObject currentlyPlacingBuilding = null;
     BuildingButton currentlyBuildingButton = null;
-    SpriteRenderer lastPlacementSquare = null;
+    LineRenderer currentlyPlacingLr;
+    Vector2 currentlyPlacingSize;
+    Vector2 currentlyPlacingOffset;
+    
     Vector2 mousePosition;
 
     float attackTimer = 0;
@@ -103,6 +106,8 @@ public class CoreGame : MonoBehaviour
     float personPrice = 20;
     [SerializeField] TMPro.TMP_Text personPriceTe;
     [SerializeField] GameObject blobPfb;
+
+
 
 
     List<GameObject> upgradeButtons = null;
@@ -293,7 +298,25 @@ public class CoreGame : MonoBehaviour
                                                new Vector3(mousePosition.x, mousePosition.y, -5),
                                                Quaternion.identity);
 
-        lastPlacementSquare = currentlyPlacingBuilding.transform.GetChild(0).GetComponent<SpriteRenderer>();
+
+        
+        Transform cpT = currentlyPlacingBuilding.transform.Find("BuildingCollider");
+        BoxCollider2D cpB2d = cpT.GetComponent<BoxCollider2D>();
+        currentlyPlacingSize = cpB2d.size;
+        currentlyPlacingOffset = (Vector2)cpT.localPosition + cpB2d.offset;
+        currentlyPlacingLr = currentlyPlacingBuilding.GetComponent<LineRenderer>();
+        currentlyPlacingLr.positionCount = 5;
+    }
+
+
+    public void DrawBuildingRect(Vector3 position, Vector2 center, Vector2 size)
+    {
+        currentlyPlacingLr.positionCount = 5;
+        currentlyPlacingLr.SetPositions(new Vector3[] {position + (Vector3) (center + new Vector2(size.x / 2, size.y / 2)),
+                                                       position + (Vector3) (center + new Vector2(-size.x / 2, size.y / 2)),
+                                                       position + (Vector3) (center + new Vector2(-size.x / 2, -size.y / 2)),
+                                                       position + (Vector3) (center + new Vector2(size.x / 2, -size.y / 2)),
+                                                       position + (Vector3) (center + new Vector2(size.x / 2, size.y / 2))});
     }
 
     public void BuildHere()
@@ -317,7 +340,8 @@ public class CoreGame : MonoBehaviour
             currentlyPlacingBuilding.transform.position = new Vector3(currentlyPlacingBuilding.transform.position.x,
                 currentlyPlacingBuilding.transform.position.y, currentlyPlacingBuilding.transform.position.y);
 
-            lastPlacementSquare.gameObject.SetActive(false);
+            currentlyPlacingLr.positionCount = 0;
+            currentlyPlacingLr = null;
 
             currentlyBuildingButton = null;
             currentlyPlacingBuilding = null;
@@ -379,13 +403,16 @@ public class CoreGame : MonoBehaviour
         if (currentlyPlacingBuilding != null)
         {
             currentlyPlacingBuilding.transform.position = new Vector3(mousePosition.x, mousePosition.y, -5);
+            DrawBuildingRect(currentlyPlacingBuilding.transform.position + 10*Vector3.forward, currentlyPlacingOffset, currentlyPlacingSize);
             if (CanBuildHere())
             {
-                lastPlacementSquare.color = new Color(0, 1, 0, 0.2f);
+                currentlyPlacingLr.startColor = new Color(0, 1, 0, 0.2f);
+                currentlyPlacingLr.endColor = new Color(0, 1, 0, 0.2f);
             }
             else
             {
-                lastPlacementSquare.color = new Color(1, 0, 0, 0.2f);
+                currentlyPlacingLr.startColor = new Color(1, 0, 0, 0.2f);
+                currentlyPlacingLr.endColor = new Color(1, 0, 0, 0.2f);
             }
 
             if (Input.GetMouseButtonDown(0))
