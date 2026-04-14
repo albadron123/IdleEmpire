@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 2271150746589833459}
   m_Layer: 0
   m_Name: Custik_1
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -383,6 +383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zDivider: {fileID: 0}
+  healthText: {fileID: 0}
   b:
     myType: 7
     buildingPfb: {fileID: 5983912854912321416}

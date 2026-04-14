@@ -1739,6 +1739,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Archer
       objectReference: {fileID: 0}
+    - target: {fileID: 5059700727895486345, guid: ca2e6e0ba04dff74fad79faf54fafedd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8947163925339603921, guid: ca2e6e0ba04dff74fad79faf54fafedd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.98
@@ -2279,13 +2283,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 2872052785565730646, guid: 249559f4bfb0eb34e9184c1985513a46, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4810956630342471278, guid: 249559f4bfb0eb34e9184c1985513a46, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.533
       objectReference: {fileID: 0}
     - target: {fileID: 4810956630342471278, guid: 249559f4bfb0eb34e9184c1985513a46, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.771
+      value: 3.87
       objectReference: {fileID: 0}
     - target: {fileID: 4810956630342471278, guid: 249559f4bfb0eb34e9184c1985513a46, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4300,6 +4308,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tinyEnemyBlob
       objectReference: {fileID: 0}
+    - target: {fileID: 1008407526824223830, guid: 9f25ec9ba3a070541b2ffaa35c7cb482, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9082132591133364323, guid: 9f25ec9ba3a070541b2ffaa35c7cb482, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.15
@@ -4444,13 +4456,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Summoner
       objectReference: {fileID: 0}
+    - target: {fileID: 3240849574553956672, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7458539384589984278, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
+      propertyPath: idleVelocity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7458539384589984278, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
+      propertyPath: activeVelocity
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8083380556316881910, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.78
+      value: 7.29
       objectReference: {fileID: 0}
     - target: {fileID: 8083380556316881910, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.771
+      value: -3.65
       objectReference: {fileID: 0}
     - target: {fileID: 8083380556316881910, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_LocalPosition.z

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3564110852129795376}
   - component: {fileID: 6810359040952485842}
   - component: {fileID: 557766429251182198}
-  - component: {fileID: 9217734412412148196}
+  - component: {fileID: 7458539384589984278}
   m_Layer: 0
   m_Name: Summoner
   m_TagString: Enemy
@@ -123,7 +123,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.56}
   m_EdgeRadius: 0
---- !u!114 &9217734412412148196
+--- !u!114 &7458539384589984278
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,16 +132,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3240849574553956672}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02c3c9b4230ff104bb88aa45034cb705, type: 3}
+  m_Script: {fileID: 11500000, guid: 26fadb2dbe54ce341ac5ff2b6dbe842e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myType: 1
-  idleVelocity: 1
-  activeVelocity: 1.5
-  myDamage: 1
-  rewardBones: 2
-  rewardBonesCritical: 3
+  myType: 3
+  idleVelocity: 2
+  activeVelocity: 2
+  myDamage: 0
+  rewardBones: 5
+  rewardBonesCritical: 7
   criticalChance: 0.15
+  groupToSummon: {fileID: 3568264352962970614, guid: c931ddb7cd5a27142a3818ec2827626d, type: 3}
 --- !u!1 &3333285747876813354
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ArcherEnemy : EnemyCreature
 {
     [SerializeField] GameObject projectilePrefab;
+    [SerializeField] Transform shootingPlace;
     [SerializeField] float arrorVelocity;
 
     float shootingDistance = 3f;
@@ -18,17 +19,30 @@ public class ArcherEnemy : EnemyCreature
 
     protected IEnumerator GetOnDistanceFromTarget(GameObject targetObj)
     {
+        a.SetBool("walk", true);
+
         if(targetObj == null)
         {
             targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
         }
 
+        
         Vector2 targetPosition = (Vector2)targetObj.transform.position + MaximUtils.RandomVector2FixMagnitude(2f) + MaximUtils.RandomVector2(0.25f);
+        //We are attemopting to get the correct target position
+        int attempt = 0;
+        while(MaximUtils.GetNearestOverlappedWithTag2D(targetPosition, 0.4f, CoreGame.TAG_BUILDING) != null && attempt < 100)
+        {
+            targetPosition = (Vector2)targetObj.transform.position + MaximUtils.RandomVector2FixMagnitude(2f) + MaximUtils.RandomVector2(0.25f);
+            ++attempt;
+        }
+        if(attempt >= 100)
+        {
+            targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
+            StartCoroutine(GetOnDistanceFromTarget(targetObj));
+            yield break;
+        }
 
-        
-        a.SetBool("walk", true);
-        
-        
+
         do
         {
             yield return new WaitForFixedUpdate();
@@ -42,7 +56,7 @@ public class ArcherEnemy : EnemyCreature
 
             t.position = Vector2.MoveTowards(t.position, targetPosition, Time.fixedDeltaTime * activeVelocity);
             t.position = new Vector3(t.position.x, t.position.y, t.position.y);
-            float d = Vector2.Distance(t.position, targetPosition);
+
         } while (Vector2.Distance(t.position, targetPosition) >= 0.1f);
 
         a.SetBool("walk", false);
@@ -60,22 +74,22 @@ public class ArcherEnemy : EnemyCreature
                 a.SetBool("attack", false);
                 targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
                 StartCoroutine(GetOnDistanceFromTarget(targetObj));
+                yield break;
             }
-            //Shoot projectile 
-            // TODO: get rid of this magic constant later !!! (and of any magic constants in the code where it is in WaitForSeconds & replace with actual animation velocities
-            a.SetBool("attack", true);
-            yield return new WaitForSeconds(0.3f);
 
-            GameObject projectileInst = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            a.SetBool("attack", true);
+            GameObject projectileInst = Instantiate(projectilePrefab, shootingPlace.position, Quaternion.identity);
             Projectile projectile = projectileInst.GetComponent<Projectile>();
             projectile.direction =  (Vector3)((Vector2)targetObj.transform.position - (Vector2)t.position);
             projectile.damage = myDamage;
             projectile.velocity = arrorVelocity;
             Destroy(projectileInst,1.2f);
 
+            yield return new WaitForSeconds(0.3f);
             a.SetBool("attack", false);
             a.SetBool("walk", false);
             // Pause and stay
+
             yield return new WaitForSeconds(3);
             
         }
@@ -84,7 +98,9 @@ public class ArcherEnemy : EnemyCreature
         {
             targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
             StartCoroutine(GetOnDistanceFromTarget(targetObj));
+            yield break;
         }
+
         StartCoroutine(GetOnDistanceFromTarget(targetObj));
     }
 

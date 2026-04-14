@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6347066730907442632}
   m_Layer: 0
   m_Name: Tumbo_1
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,6 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zDivider: {fileID: 0}
+  healthText: {fileID: 0}
   b:
     myType: 4
     buildingPfb: {fileID: 346650942622582641}

@@ -644,7 +644,7 @@ GameObject:
   - component: {fileID: 1814145324109251906}
   m_Layer: 0
   m_Name: Magno_1
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -684,6 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zDivider: {fileID: 0}
+  healthText: {fileID: 0}
   b:
     myType: 6
     buildingPfb: {fileID: 8975100538288267592}

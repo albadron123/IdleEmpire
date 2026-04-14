@@ -645,7 +645,7 @@ GameObject:
   - component: {fileID: 5658698521741836679}
   m_Layer: 0
   m_Name: Cubo_1
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -737,6 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zDivider: {fileID: 9076788185278988482}
+  healthText: {fileID: 0}
   b:
     myType: 1
     buildingPfb: {fileID: 0}

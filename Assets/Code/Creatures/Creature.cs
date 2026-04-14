@@ -14,7 +14,10 @@ public class Creature : MonoBehaviour, IDestructable
     public enum CreatureType
     {
         normal,
-        tinyEnemy
+        tinyEnemy,
+        archerEnemy,
+        summonerEnemy,
+        bossEnemy,
     };
 
 
