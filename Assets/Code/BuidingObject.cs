@@ -12,7 +12,13 @@ public class BuildingObject : MonoBehaviour, IDestructable
     TMPro.TMP_Text healthText;
 
 
-    Transform t;
+    [SerializeField]
+    Sprite destroyedBuildingSpr;
+
+
+    private Transform t;
+    private DestructableObject dObj;
+    private SpriteRenderer sr;
 
     public Building b;
 
@@ -23,14 +29,15 @@ public class BuildingObject : MonoBehaviour, IDestructable
     private GameObject[] sliders;
     private Blob[] blobs;
 
-    private SpriteRenderer sr;
 
 
     public GameObject outline;
 
     public GameObject rotationPart = null;
 
-    
+
+
+
     [Header("Attack Variables")]
 
     float[] towerAnglePerPlace;
@@ -61,6 +68,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
     [SerializeField]
     List<UpgradeType> upgradeTypes;
 
+    
+
     void RegisterBuilding()
     {
         if (CoreGame.inst.builtObjects == null)
@@ -73,6 +82,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        dObj = GetComponent<DestructableObject>();
+        dObj.maxHealth = DataStorage.allBuildings[(int)b.myType].maxHealthPerLevel[(int)b.myLvl];
 
         RegisterBuilding();
 
@@ -122,7 +133,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                     {
                         int damage = proj.damage;
                         Destroy(col.gameObject);
-                        DestructableObject dObj = GetComponent<DestructableObject>();
+                        
                         dObj.ChangeHealth(-damage);
                         if (dObj.health <= 0)
                         {
@@ -148,7 +159,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                         StartCoroutine(CactiReload(col.gameObject));
                         
                         col.gameObject.GetComponent<DestructableObject>().ChangeHealth(-myDamage);
-                        DestructableObject dObj = GetComponent<DestructableObject>();
+                        
                         dObj.ChangeHealth(-3);
 
                     }
@@ -167,7 +178,6 @@ public class BuildingObject : MonoBehaviour, IDestructable
     
     public void ChangeHealth(int damage)
     {
-        DestructableObject dObj = GetComponent<DestructableObject>();
 
         if (healthText != null)
         {
@@ -203,6 +213,11 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     public void Die()
     {
+        GameObject ruinInst = Instantiate(CoreGame.inst.ruinPfb, t.position, Quaternion.identity);
+        ruinInst.GetComponent<SpriteRenderer>().sprite = destroyedBuildingSpr;
+        GameObject fx = Instantiate(CoreGame.inst.destructionEffect, t.position, Quaternion.identity);
+        Destroy(fx, 0.8f);
+
         CoreGame.inst.builtObjects.Remove(this);
         if (b.myType == Building.BuildingType.HutkaGrande)
         {

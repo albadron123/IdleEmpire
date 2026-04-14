@@ -33,14 +33,7 @@ public class DestructableObject : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ChangeHealth(-1);
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            ChangeHealth(1);
-        }
+
     }
 
     public void InitHealth()

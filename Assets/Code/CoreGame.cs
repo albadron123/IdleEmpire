@@ -68,10 +68,10 @@ public class CoreGame : MonoBehaviour
 
     public GameObject sliderPfb;
     public GameObject moreResourcePfb;
-
+    public GameObject ruinPfb;
+    public GameObject destructionEffect;
 
     public BuildingObject selectedBuilding = null;
-
 
 
     public bool canDrag = true;
@@ -330,7 +330,7 @@ public class CoreGame : MonoBehaviour
             canBuild = true;
 
             // Aquire
-            ChangeResource(Resource.ResourceType.cubes, DataStorage.CalculateBuildingPrice(currentlyBuildingButton.type));
+            ChangeResource(Resource.ResourceType.cubes, -DataStorage.CalculateBuildingPrice(currentlyBuildingButton.type));
             // Increase the stats of built objects
             G.buildingStates[(int)currentlyBuildingButton.type].purchasedCount[G.buildingStates[(int)currentlyBuildingButton.type].currentLvl]++;
             
@@ -406,13 +406,13 @@ public class CoreGame : MonoBehaviour
             DrawBuildingRect(currentlyPlacingBuilding.transform.position + 10*Vector3.forward, currentlyPlacingOffset, currentlyPlacingSize);
             if (CanBuildHere())
             {
-                currentlyPlacingLr.startColor = new Color(0, 1, 0, 0.2f);
-                currentlyPlacingLr.endColor = new Color(0, 1, 0, 0.2f);
+                currentlyPlacingLr.startColor = new Color(0.3f, 1, 0.3f, 1f);
+                currentlyPlacingLr.endColor = new Color(0.3f, 1, 0.3f, 1f);
             }
             else
             {
-                currentlyPlacingLr.startColor = new Color(1, 0, 0, 0.2f);
-                currentlyPlacingLr.endColor = new Color(1, 0, 0, 0.2f);
+                currentlyPlacingLr.startColor = new Color(1, 0.3f, 0.3f, 1f);
+                currentlyPlacingLr.endColor = new Color(1, 0.3f, 0.3f, 1f);
             }
 
             if (Input.GetMouseButtonDown(0))
