@@ -120,14 +120,42 @@ public class CoreGame : MonoBehaviour
     [Header("Cursor")]
     [SerializeField] Sprite basicCursorSpr;
     [SerializeField] Sprite handCursorSpr;
+    [SerializeField] Sprite swordCursorSpr;
+    [SerializeField] Sprite wandCursorSpr;
+
+    public enum FunctionalCursor { Basic, Sward, Wand, Count};
+
+    FunctionalCursor currentCursor;
+
+    [SerializeField] GameObject[] cursorButtons = new GameObject[3];
+
+    [SerializeField] Color selectColor;
 
 
     [Header("Left-Side UI")]
     [SerializeField] List<GameObject> buyBuildingButtons;
     [SerializeField] List<GameObject> buyBuildingButtonPlaceholders;
 
+    void InitRunFromUpgrades()
+    {
+        InitCursorButtons();
+        //TODO:
+        // - init the amounts of bones generated
+        // - init the amounts of boubil and cubo spawned
+        // - init bombs powers and ranges
+        // - (may be) init enemy powers
+    }
 
-
+    void InitCursorButtons()
+    {
+        currentCursor = FunctionalCursor.Basic;
+        cursorButtons[0].GetComponent<SpriteRenderer>().color = selectColor;
+        //logic here
+        for (int i = 0; i < cursorButtons.Length; ++i)
+        {
+            cursorButtons[i].SetActive(true);
+        }
+    }
 
 
     private void Awake()
@@ -157,6 +185,7 @@ public class CoreGame : MonoBehaviour
 
     void Start()
     {
+        InitRunFromUpgrades();
         G.InitBuildingStates();
 
         StartCoroutine(WaitForAttack());
@@ -383,21 +412,59 @@ public class CoreGame : MonoBehaviour
         currentlyPlacingBuilding = null;
     }
 
-    
 
+    public void SetCurrentCursor(int fc)
+    {
+        currentCursor = (FunctionalCursor)fc;
+        switch (currentCursor)
+        {
+            case FunctionalCursor.Basic:
+                G.SetCursor(basicCursorSpr);
+                break;
+            case FunctionalCursor.Sward:
+                G.SetCursor(swordCursorSpr);
+                break;
+            case FunctionalCursor.Wand:
+                G.SetCursor(wandCursorSpr);
+                break;
+        }
+        for (int i = 0; i < cursorButtons.Length; ++i)
+        {
+            if (i != (int)currentCursor)
+            {
+                cursorButtons[i].GetComponent<SpriteRenderer>().color = Color.white;
+            }
+            else
+            {
+                cursorButtons[i].GetComponent<SpriteRenderer>().color = selectColor;
+            }
+        }
+    }
 
     void Update()
     {
         mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (draggedObject != null)
+        if (Input.mouseScrollDelta.y < 0)
         {
-            G.SetCursor(handCursorSpr);
-            draggedObject.transform.position = new Vector3(mousePosition.x, mousePosition.y, -5);
+            SetCurrentCursor((((int)currentCursor + 1 + (int)FunctionalCursor.Count) % ((int)FunctionalCursor.Count)));
         }
-        else
+        if (Input.mouseScrollDelta.y > 0)
         {
-            G.SetCursor(basicCursorSpr);
+            SetCurrentCursor((((int)currentCursor - 1 + (int)FunctionalCursor.Count) % ((int)FunctionalCursor.Count)));
+        }
+
+        if (currentCursor == FunctionalCursor.Basic)
+        {
+            if (draggedObject != null)
+            {
+                G.SetCursor(handCursorSpr);
+                draggedObject.transform.position = new Vector3(mousePosition.x, mousePosition.y, -5);
+            }
+            else
+            {
+                G.SetCursor(basicCursorSpr);
+            }
         }
 
         if (currentlyPlacingBuilding != null)
