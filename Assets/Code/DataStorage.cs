@@ -30,11 +30,20 @@ public enum UpgradeHandle
     Bombo,
     Cacti,
 
+    AutoResourceGather,
+
+    BobbyAttackDamage,
+    BobbyMovementVelocity,
+
     SpawnMoreCubo,
     SpawnMoreBubil,
     MoreBones,
     
     ClickDamage,
+    ClickAttackRange, 
+
+    ClickHeal,
+    ClickHealRange,
 
     BombikDamage,
     BombikRange,
@@ -79,6 +88,24 @@ public class DataStorage : MonoBehaviour
 
     public static BuildingData[] allBuildings;
     public static UpgradeData[] allUpgrades;
+
+    //Special upgrade data structures
+    public static int[] bobbyDmgPerLevel;
+    public static float[] bobbyVelocityPerLevel;
+
+    public static int[] clickBaseAttackPerLevel;
+    public static float[] clickAttackRadiusPerLevel;
+
+    public static int[] clickHealAmountPerLevel;
+    public static float[] clickHealRadiusPerLevel;
+
+    public static float[] cuboSpawnTimePerLevel;
+    public static float[] bubilSpawnTimePerLevel;
+
+    public static float[] bonesMultiplierPerLevel;
+
+    public static float[] bombRadiusPerLevel;
+    public static int[] bombDamagePerLevel;
 
     void Start()
     {
@@ -331,59 +358,137 @@ public class DataStorage : MonoBehaviour
             buildingHandle = Building.BuildingType.Cacti,
         };
 
-        allUpgrades[(int)UpgradeHandle.SpawnMoreCubo] = new UpgradeData()
+        
+        allUpgrades[(int)UpgradeHandle.AutoResourceGather] = new UpgradeData()
         {
-            title = "Spawn More Cubo",
+            title = "Gather Resources without clicking",
             maxLvls = 1,
-            pricePerLevel = new int[1] { 10 },
+            pricePerLevel = new int[1] { 75 },
             isBuildingUpdrade = false,
             buildingHandle = null,
         };
+
+        allUpgrades[(int)UpgradeHandle.BobbyAttackDamage] = new UpgradeData()
+        {
+            title = "Bobby killin damaga",
+            maxLvls = 5,
+            pricePerLevel = new int[5] {10, 20, 40, 60, 100},
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        bobbyDmgPerLevel = new int[5] { 3, 10, 20, 60, 150};
+
+        allUpgrades[(int)UpgradeHandle.BobbyMovementVelocity] = new UpgradeData()
+        {
+            title = "Bobby spiddin",
+            maxLvls = 3,
+            pricePerLevel = new int[3] { 20, 40, 60 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        bobbyVelocityPerLevel = new float[3] { 2, 3.5f, 5.5f };
+
+        allUpgrades[(int)UpgradeHandle.SpawnMoreCubo] = new UpgradeData()
+        {
+            title = "Spawn More Cubo",
+            maxLvls = 4,
+            pricePerLevel = new int[4] { 10, 20, 40, 100 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+        
+        cuboSpawnTimePerLevel = new float[4] {5, 4.25f, 3.75f, 2};
 
         allUpgrades[(int)UpgradeHandle.SpawnMoreBubil] = new UpgradeData()
         {
             title = "Spawn More Bubil",
-            maxLvls = 1,
-            pricePerLevel = new int[1] { 10 },
+            maxLvls = 4,
+            pricePerLevel = new int[4] { 10, 20, 40, 100 },
             isBuildingUpdrade = false,
             buildingHandle = null,
         };
+
+        bubilSpawnTimePerLevel = new float[4] { 5, 4.25f, 3.75f, 2 };
 
         allUpgrades[(int)UpgradeHandle.MoreBones] = new UpgradeData()
         {
             title = "More Bones",
-            maxLvls = 1,
-            pricePerLevel = new int[1] { 10 },
+            maxLvls = 4,
+            pricePerLevel = new int[4] { 10, 20, 30, 40 },
             isBuildingUpdrade = false,
             buildingHandle = null,
         };
 
+        bonesMultiplierPerLevel = new float[4] { 1, 2, 3, 5 };
+
         allUpgrades[(int)UpgradeHandle.ClickDamage] = new UpgradeData()
         {
-            title = "Click Damage",
-            maxLvls = 1,
-            pricePerLevel = new int[1] { 10 },
+            title = "Click Attack Dmg",
+            maxLvls = 5,
+            pricePerLevel = new int[5] { 20, 40, 60, 85 , 100},
             isBuildingUpdrade = false,
             buildingHandle = null,
         };
+
+        clickBaseAttackPerLevel = new int[5] { 1, 2, 5, 10, 20 };
+
+        allUpgrades[(int)UpgradeHandle.ClickAttackRange] = new UpgradeData()
+        {
+            title = "Click Attack Range",
+            maxLvls = 5,
+            pricePerLevel = new int[5] { 20, 40, 60, 85, 100 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        clickAttackRadiusPerLevel = new float[5] { 0.3f, 0.45f, 0.6f, 0.75f, 1f };
+
+
+        allUpgrades[(int)UpgradeHandle.ClickHeal] = new UpgradeData()
+        {
+            title = "Click Heal Amount",
+            maxLvls = 5,
+            pricePerLevel = new int[5] { 20, 40, 60, 85, 100 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        clickHealAmountPerLevel = new int[5] { 1, 2, 5, 10, 20 };
+
+        allUpgrades[(int)UpgradeHandle.ClickHealRange] = new UpgradeData()
+        {
+            title = "Click Heal Range",
+            maxLvls = 5,
+            pricePerLevel = new int[5] { 20, 40, 60, 85, 100 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        clickHealRadiusPerLevel = new float[5] { 0.5f, 0.7f, 0.9f, 1.25f, 2f };
 
         allUpgrades[(int)UpgradeHandle.BombikDamage] = new UpgradeData()
         {
             title = "+ Bombik Dmg",
-            maxLvls = 1,
-            pricePerLevel = new int[1] { 10 },
+            maxLvls = 3,
+            pricePerLevel = new int[3] {50, 100, 200},
             isBuildingUpdrade = false,
             buildingHandle = null,
         };
 
+        bombDamagePerLevel = new int[3] {10, 30, 100};
+
         allUpgrades[(int)UpgradeHandle.BombikRange] = new UpgradeData()
         {
             title = "+ Bombik Range",
-            maxLvls = 1,
-            pricePerLevel = new int[1] { 10 },
+            maxLvls = 3,
+            pricePerLevel = new int[3] { 50, 100, 200},
             isBuildingUpdrade = false,
             buildingHandle = null,
         };
+
+        bombRadiusPerLevel = new float[3] { 1, 1.5f, 2};
     }
 
     

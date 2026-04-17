@@ -232,6 +232,80 @@ public class MaximUtils : MonoBehaviour
     }
 
 
+    public static LineRenderer[] CreateLineRendererBatch(string objectName, int count, Color c, Material m, float howThin)
+    {
+        
+        LineRenderer[] lrs = new LineRenderer[count];
+        
+        GameObject obj = new GameObject(objectName);
+        for (int i = 0; i < count; ++i)
+        {
+            GameObject child = new GameObject($"{i}");
+            child.transform.parent = obj.transform;
+            lrs[i] = child.AddComponent<LineRenderer>();
+            lrs[i].material = m;
+            lrs[i].startWidth = howThin;
+            lrs[i].endWidth = howThin;
+            lrs[i].startColor = c;
+            lrs[i].endColor = c;
+        }
+        
+        return lrs;
+    }
+
+    public static void RenderDashedCircle(LineRenderer[] lrs, float radius, float timeElapsed, int gaps)
+    {
+        int lrId = 0;
+        int dotsCount = 360;
+
+        // half of the circle is gaps and another half in not
+        float angleOfAGap = 360.0f / (gaps * 2);
+
+        List<UnityEngine.Vector3> positions = new List<UnityEngine.Vector3>();
+
+        int prevSectorId = 0;
+        for (int i = 0; i < dotsCount; ++i)
+        {
+            //by sector i mean a part of the circle that is a gap or not a gap
+            float sectorAngle = i / (float)dotsCount * 360;
+            int sectorId = (int)(sectorAngle / angleOfAGap);
+            if (sectorId % 2 != 0 && prevSectorId % 2 == 0)
+            {
+                //add the last position of the drawn part once more
+                lrs[lrId].positionCount = positions.Count;
+                lrs[lrId].SetPositions(positions.ToArray());
+                positions.Clear();
+                ++lrId;
+                if (lrId >= lrs.Length)
+                {
+                    return;
+                }
+            }
+
+            if (sectorId % 2 == 0)
+            {
+                positions.Add(new UnityEngine.Vector3(Mathf.Cos((sectorAngle + timeElapsed * 100) * Mathf.Deg2Rad), Mathf.Sin((sectorAngle + timeElapsed * 100) * Mathf.Deg2Rad), -8) * radius);
+            }
+
+
+            prevSectorId = sectorId;
+        }
+
+        if (prevSectorId == 0)
+        {
+            //unsaved stuff
+            lrs[lrId].positionCount = positions.Count;
+            lrs[lrId].SetPositions(positions.ToArray());
+            positions.Clear();
+            ++lrId;
+        }
+        while (lrId < lrs.Length)
+        {
+            lrs[lrId].positionCount = 0;
+            ++lrId;
+        }
+    }
+
 
     static float[] rnd = null;
     public static void RenderShakyText(TMPro.TMP_Text te, float amplitude, float power)

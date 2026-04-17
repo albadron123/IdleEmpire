@@ -211,4 +211,11 @@ public class G : MonoBehaviour
     {
         cursorSr.sprite = s;
     }
+
+    //Useful shortcuts:
+
+    public static int GetUpgradeLvl(UpgradeHandle h)
+    {
+        return upgradeStates[(int)h].upgradeLvl;
+    }
 }

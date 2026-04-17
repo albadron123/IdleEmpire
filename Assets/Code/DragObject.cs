@@ -25,7 +25,11 @@ public class DragObject : MonoBehaviour
 
     private void OnMouseDown()
     {
-        
+        if (CoreGame.inst.currentCursor != CoreGame.FunctionalCursor.Basic)
+        {
+            return;
+        }
+                
         FriendCreature fc = GetComponent<FriendCreature>();
         if(fc != null && fc.shoked) return;
         

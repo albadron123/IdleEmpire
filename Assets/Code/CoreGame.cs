@@ -71,6 +71,13 @@ public class CoreGame : MonoBehaviour
     public GameObject ruinPfb;
     public GameObject destructionEffect;
 
+    float specialLrThikness = 0.1f;
+    Color specialLrColor = Color.white;
+    [SerializeField] Material specialLrMaterial;
+    LineRenderer[] specialLrs;
+
+
+
     public BuildingObject selectedBuilding = null;
 
 
@@ -125,7 +132,9 @@ public class CoreGame : MonoBehaviour
 
     public enum FunctionalCursor { Basic, Sward, Wand, Count};
 
-    FunctionalCursor currentCursor;
+    public FunctionalCursor currentCursor;
+
+    int unlockedCursorCount;
 
     [SerializeField] GameObject[] cursorButtons = new GameObject[3];
 
@@ -136,22 +145,86 @@ public class CoreGame : MonoBehaviour
     [SerializeField] List<GameObject> buyBuildingButtons;
     [SerializeField] List<GameObject> buyBuildingButtonPlaceholders;
 
+
+    //===========RUN CONFIG PARAMS==============
+    public static float bonesBonusMultiplier;
+
+    public static float bubilGenerationTime;
+    public static float cuboGenerationTime;
+
+    public static int clickDamage;
+    public static float clickAttackRadius;
+
+    public static int clickHeal;
+    public static float clickHealRadius;
+
+    public static bool autoGatherResource;
+
+    public static int bobbyDmg;
+    public static float bobbyVelocity;
+
     void InitRunFromUpgrades()
     {
         InitCursorButtons();
-        //TODO:
-        // - init the amounts of bones generated
-        // - init the amounts of boubil and cubo spawned
-        // - init bombs powers and ranges
-        // - (may be) init enemy powers
+
+        bonesBonusMultiplier = DataStorage.bonesMultiplierPerLevel[G.GetUpgradeLvl(UpgradeHandle.MoreBones)];
+
+        cuboGenerationTime = DataStorage.cuboSpawnTimePerLevel[G.GetUpgradeLvl(UpgradeHandle.SpawnMoreCubo)];
+        bubilGenerationTime = DataStorage.bubilSpawnTimePerLevel[G.GetUpgradeLvl(UpgradeHandle.SpawnMoreBubil)];
+
+        clickDamage = DataStorage.clickBaseAttackPerLevel[G.GetUpgradeLvl(UpgradeHandle.ClickDamage)];
+        clickAttackRadius = DataStorage.clickAttackRadiusPerLevel[G.GetUpgradeLvl(UpgradeHandle.ClickAttackRange)];
+
+        clickHeal = DataStorage.clickHealAmountPerLevel[G.GetUpgradeLvl(UpgradeHandle.ClickHeal)];
+        clickHealRadius = DataStorage.clickHealRadiusPerLevel[G.GetUpgradeLvl(UpgradeHandle.ClickHealRange)];
+
+        bobbyDmg = DataStorage.bobbyDmgPerLevel[G.GetUpgradeLvl(UpgradeHandle.BobbyAttackDamage)];
+        bobbyVelocity = DataStorage.bobbyVelocityPerLevel[G.GetUpgradeLvl(UpgradeHandle.BobbyMovementVelocity)];
+
+        autoGatherResource = (G.GetUpgradeLvl(UpgradeHandle.AutoResourceGather) > 0);
     }
 
     void InitCursorButtons()
     {
+        bool hasAttackCursor = false;
+        bool hasHealCursor = false;
+
+        if (G.upgradeStates[(int)UpgradeHandle.ClickDamage].upgradeLvl > 0)
+        {
+            hasAttackCursor = true;
+        }
+        if (G.upgradeStates[(int)UpgradeHandle.ClickHeal].upgradeLvl > 0)
+        {
+            hasAttackCursor = true;
+        }
+
         currentCursor = FunctionalCursor.Basic;
-        cursorButtons[0].GetComponent<SpriteRenderer>().color = selectColor;
-        //logic here
+
+        //Disable Cursor buttons for now
         for (int i = 0; i < cursorButtons.Length; ++i)
+        {
+            cursorButtons[i].SetActive(false);
+        }
+
+        if (!hasAttackCursor)
+        {
+            //No cursor is unlocked, so only 1 (basic) is available
+            unlockedCursorCount = 1;
+            return;
+        }
+
+        if (!hasHealCursor)
+        {
+            unlockedCursorCount = 2;
+        }
+        else
+        {
+            unlockedCursorCount = 3;
+        }
+
+        cursorButtons[0].GetComponent<SpriteRenderer>().color = selectColor;
+        
+        for (int i = 0; i < unlockedCursorCount; ++i)
         {
             cursorButtons[i].SetActive(true);
         }
@@ -192,6 +265,8 @@ public class CoreGame : MonoBehaviour
         StartCoroutine(ResourceGenerationLogic());
 
         InitializeBuildingButtons();
+
+        specialLrs = MaximUtils.CreateLineRendererBatch("_CIRCLE LR (generated)_", 7, specialLrColor, specialLrMaterial, specialLrThikness);
     }
 
     [SerializeField] List<GameObject> enemyGroups = new List<GameObject>();
@@ -315,6 +390,8 @@ public class CoreGame : MonoBehaviour
 
     public void StartBuilding(BuildingButton bb)
     {
+        CoreGame.inst.SetCurrentCursor((int)FunctionalCursor.Basic);
+
         canDrag = false;
         canBuild = false;
         currentlyBuildingButton = bb;
@@ -443,15 +520,22 @@ public class CoreGame : MonoBehaviour
 
     void Update()
     {
+        
+        MaximUtils.RenderDashedCircle(specialLrs, 1, Time.time, 6);
+        
+        
         mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (Input.mouseScrollDelta.y < 0)
+        if (draggedObject == null && currentlyBuildingButton == null)
         {
-            SetCurrentCursor((((int)currentCursor + 1 + (int)FunctionalCursor.Count) % ((int)FunctionalCursor.Count)));
-        }
-        if (Input.mouseScrollDelta.y > 0)
-        {
-            SetCurrentCursor((((int)currentCursor - 1 + (int)FunctionalCursor.Count) % ((int)FunctionalCursor.Count)));
+            if (Input.mouseScrollDelta.y < 0)
+            {
+                SetCurrentCursor(((int)currentCursor + 1 + unlockedCursorCount) % unlockedCursorCount);
+            }
+            if (Input.mouseScrollDelta.y > 0)
+            {
+                SetCurrentCursor(((int)currentCursor - 1 + unlockedCursorCount) % unlockedCursorCount);
+            }
         }
 
         if (currentCursor == FunctionalCursor.Basic)
@@ -495,14 +579,30 @@ public class CoreGame : MonoBehaviour
 
         if (currentlyPlacingBuilding == null && draggedObject==null)
         {
-            // perform clicking activities
+
+            
             if(Input.GetMouseButtonDown(0))
             {
-                Collider2D enemyCol = MaximUtils.GetNearestOverlappedWithTag2D(mousePosition, 0.1f, TAG_ENEMY);
-                if (enemyCol != null)
+                // attack enemies
+                if (currentCursor == FunctionalCursor.Sward)
                 {
-                    enemyCol.GetComponent<DestructableObject>().ChangeHealth(-1);
+                    Collider2D enemyCol = MaximUtils.GetNearestOverlappedWithTag2D(mousePosition, clickAttackRadius, TAG_ENEMY);
+                    if (enemyCol != null)
+                    {
+                        enemyCol.GetComponent<DestructableObject>().ChangeHealth(-clickDamage);
+                    }
                 }
+                // gather resources
+                
+                Collider2D resourseCol = MaximUtils.GetNearestOverlappedWithTag2D(mousePosition, 0.1f, TAG_CLICKABLE_RESOURCE);
+                if (resourseCol != null)
+                {
+                    resourseCol.GetComponent<ClickableResource>().Click();
+                }
+            }
+
+            if (autoGatherResource)
+            {
                 Collider2D resourseCol = MaximUtils.GetNearestOverlappedWithTag2D(mousePosition, 0.1f, TAG_CLICKABLE_RESOURCE);
                 if (resourseCol != null)
                 {

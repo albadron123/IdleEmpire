@@ -466,13 +466,16 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     private void OnMouseDown()
     {
-        if (CoreGame.inst.selectedBuilding == this)
+        if (CoreGame.inst.currentCursor == CoreGame.FunctionalCursor.Basic)
         {
-            CoreGame.inst.HideUpgrades();
-        }
-        else
-        {
-            CoreGame.inst.ShowUpgrades(upgradeTypes, this);
+            if (CoreGame.inst.selectedBuilding == this)
+            {
+                CoreGame.inst.HideUpgrades();
+            }
+            else
+            {
+                CoreGame.inst.ShowUpgrades(upgradeTypes, this);
+            }
         }
     }
 
