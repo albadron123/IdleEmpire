@@ -93,17 +93,23 @@ public class Boss : EnemyCreature
         yield return new WaitForSeconds(0.5f);
 
         Instantiate(groupToSummon, t.position, Quaternion.identity);
-        target.ChangeHealth(-myDamage / 2);
+        target?.ChangeHealth(-myDamage / 2);
         yield return new WaitForSeconds(0.25f);
-        target.ChangeHealth(-myDamage / 2);
+        target?.ChangeHealth(-myDamage / 2);
         yield return new WaitForSeconds(0.25f);
 
         a.SetBool("attack1", false);
         a.SetBool("attack2", false);
         yield return new WaitForSeconds(2.5f);
 
-
-        StartCoroutine(GetOnDistanceFromTarget(target.gameObject));
+        if (target != null)
+        {
+            StartCoroutine(GetOnDistanceFromTarget(target.gameObject));
+        }
+        else
+        {
+            StartSimulation();
+        }
     }
 
     protected IEnumerator GetOnDistanceFromTarget(GameObject targetObj)

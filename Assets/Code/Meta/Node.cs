@@ -68,6 +68,7 @@ public class Node : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        spriteSr.sprite = DataStorage.allUpgrades[(int)myHandle].icon;
     }
 
     void Start()

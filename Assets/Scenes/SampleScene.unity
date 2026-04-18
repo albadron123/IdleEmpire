@@ -1455,13 +1455,13 @@ MonoBehaviour:
   m_text: --Next Attack--
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 43cc36de59b0a1341bae44daedd7d4b8, type: 2}
-  m_sharedMaterial: {fileID: -7239975052848558036, guid: 494df778aee0b2a4d9d3a38899143c58, type: 2}
+  m_sharedMaterial: {fileID: -7239975052848558036, guid: 43cc36de59b0a1341bae44daedd7d4b8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1544,7 +1544,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7239975052848558036, guid: 494df778aee0b2a4d9d3a38899143c58, type: 2}
+  - {fileID: -7239975052848558036, guid: 43cc36de59b0a1341bae44daedd7d4b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1574,7 +1574,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488070160}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -9}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2027,6 +2027,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6028718680442105674, guid: b43574bc6acf1ae46abd92f611790bbc, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1355834478, guid: f4f59f5f05b583b49b0b2cf5bc759e6a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3593,7 +3597,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252822643}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -9}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

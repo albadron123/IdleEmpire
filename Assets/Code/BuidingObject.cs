@@ -213,6 +213,10 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     public void Die()
     {
+        RemoveAllBlobs();
+
+        StopAllCoroutines();
+
         GameObject ruinInst = Instantiate(CoreGame.inst.ruinPfb, t.position, Quaternion.identity);
         ruinInst.GetComponent<SpriteRenderer>().sprite = destroyedBuildingSpr;
         GameObject fx = Instantiate(CoreGame.inst.destructionEffect, t.position, Quaternion.identity);
@@ -262,6 +266,33 @@ public class BuildingObject : MonoBehaviour, IDestructable
         {
             Destroy(sliders[processId]);
             sliders[processId] = null;
+        }
+    }
+
+    public void RemoveAllBlobs()
+    {
+        for (int processId = 0; processId < blobs.Length; ++processId)
+        {
+            if (blobs[processId] == null)
+            {
+                continue;
+            }
+
+            Blob b = blobs[processId];
+            DOTween.Sequence()
+                .Append(b.transform.DOJump(t.position - 0.3f * Vector3.up + (Vector3)MaximUtils.RandomVector2(0.4f), Random.Range(0.7f, 0.9f), 1, 0.6f))
+                .AppendCallback(() => { b.GetComponent<Creature>().StartSimulation(); Debug.Log("b is simulated"); });
+
+            if (processes[processId] != null)
+            {
+                StopCoroutine(processes[processId]);
+                processes[processId] = null;
+            }
+            if (sliders[processId] != null)
+            {
+                Destroy(sliders[processId]);
+                sliders[processId] = null;
+            }
         }
     }
 

@@ -73,7 +73,7 @@ public class CoreGame : MonoBehaviour
 
     float specialLrThikness = 0.1f;
     Color specialLrColor = Color.white;
-    [SerializeField] Material specialLrMaterial;
+    public Material specialLrMaterial;
     LineRenderer[] specialLrs;
 
 
@@ -163,6 +163,9 @@ public class CoreGame : MonoBehaviour
     public static int bobbyDmg;
     public static float bobbyVelocity;
 
+    public static float bombRadius;
+    public static int bombDamage;
+
     void InitRunFromUpgrades()
     {
         InitCursorButtons();
@@ -180,6 +183,9 @@ public class CoreGame : MonoBehaviour
 
         bobbyDmg = DataStorage.bobbyDmgPerLevel[G.GetUpgradeLvl(UpgradeHandle.BobbyAttackDamage)];
         bobbyVelocity = DataStorage.bobbyVelocityPerLevel[G.GetUpgradeLvl(UpgradeHandle.BobbyMovementVelocity)];
+
+        bombRadius = DataStorage.bombRadiusPerLevel[G.GetUpgradeLvl(UpgradeHandle.BombikRange)];
+        bombDamage = DataStorage.bombDamagePerLevel[G.GetUpgradeLvl(UpgradeHandle.BombikDamage)];
 
         autoGatherResource = (G.GetUpgradeLvl(UpgradeHandle.AutoResourceGather) > 0);
     }
@@ -521,10 +527,11 @@ public class CoreGame : MonoBehaviour
     void Update()
     {
         
-        MaximUtils.RenderDashedCircle(specialLrs, 1, Time.time, 6);
         
         
         mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        MaximUtils.RenderDashedCircle(specialLrs, mousePosition, 0.3f, Time.time, 6);
 
         if (draggedObject == null && currentlyBuildingButton == null)
         {

@@ -56,6 +56,7 @@ public enum UpgradeHandle
 public struct UpgradeData
 {
     public string title;
+    public Sprite icon;
     public int maxLvls;
     public int[] pricePerLevel;
 
@@ -128,7 +129,7 @@ public class DataStorage : MonoBehaviour
         SOUND_BROWN_NOISE = Resources.Load<AudioClip>("Sound/BrownNoise");
         SOUND_FIREPLACE = Resources.Load<AudioClip>("Sound/Fireplace");
         SOUND_FIREPLACE_MUSIC = Resources.Load<AudioClip>("Sound/FireplaceMusic");
-}
+    }
 
     public static void LoadBuildings()
     {
@@ -268,9 +269,12 @@ public class DataStorage : MonoBehaviour
     {
         allUpgrades = new UpgradeData[(int)UpgradeHandle.Count];
 
+        List<Sprite> sprites = (Resources.LoadAll<Sprite>("Art/UpgradeIcons")).ToList<Sprite>();
+
         allUpgrades[(int)UpgradeHandle.Tawa] = new UpgradeData()
         {
             title = "Tawa",
+            icon = sprites[(int)UpgradeHandle.Tawa],
             maxLvls = 3,
             pricePerLevel = new int[3] { 10, 20, 50},
             isBuildingUpdrade = true,
@@ -280,6 +284,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.Cubo] = new UpgradeData()
         {
             title = "Cubo",
+            icon = sprites[(int)UpgradeHandle.Cubo],
             maxLvls = 3,
             pricePerLevel = new int[3] { 10, 20, 50 },
             isBuildingUpdrade = true,
@@ -289,6 +294,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.Bubil] = new UpgradeData()
         {
             title = "Bubil",
+            icon = sprites[(int)UpgradeHandle.Bubil],
             maxLvls = 3,
             pricePerLevel = new int[3] { 10, 20, 50 },
             isBuildingUpdrade = true,
@@ -298,6 +304,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.HutkaGrande] = new UpgradeData()
         {
             title = "Hutka Grande",
+            icon = sprites[(int)UpgradeHandle.HutkaGrande],
             maxLvls = 1,
             pricePerLevel = new int[1] { 10 },
             isBuildingUpdrade = true,
@@ -307,6 +314,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.Tumbo] = new UpgradeData()
         {
             title = "Tumbo",
+            icon = sprites[(int)UpgradeHandle.Tumbo],
             maxLvls = 1,
             pricePerLevel = new int[1] { 10 },
             isBuildingUpdrade = true,
@@ -316,6 +324,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.Flawa] = new UpgradeData()
         {
             title = "Flawa",
+            icon = sprites[(int)UpgradeHandle.Flawa],
             maxLvls = 1,
             pricePerLevel = new int[1] { 10 },
             isBuildingUpdrade = true,
@@ -325,6 +334,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.Magno] = new UpgradeData()
         {
             title = "Magno",
+            icon = sprites[(int)UpgradeHandle.Magno],
             maxLvls = 1,
             pricePerLevel = new int[1] { 10 },
             isBuildingUpdrade = true,
@@ -334,6 +344,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.Custik] = new UpgradeData()
         {
             title = "Custik",
+            icon = sprites[(int)UpgradeHandle.Custik],
             maxLvls = 1,
             pricePerLevel = new int[1] { 10 },
             isBuildingUpdrade = true,
@@ -343,6 +354,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.Bombo] = new UpgradeData()
         {
             title = "Bombo",
+            icon = sprites[(int)UpgradeHandle.Bombo],
             maxLvls = 1,
             pricePerLevel = new int[1] { 10 },
             isBuildingUpdrade = true,
@@ -352,6 +364,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.Cacti] = new UpgradeData()
         {
             title = "Cacti",
+            icon = sprites[(int)UpgradeHandle.Cacti],
             maxLvls = 1,
             pricePerLevel = new int[1] { 10 },
             isBuildingUpdrade = true,
@@ -362,6 +375,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.AutoResourceGather] = new UpgradeData()
         {
             title = "Gather Resources without clicking",
+            icon = sprites[(int)UpgradeHandle.AutoResourceGather],
             maxLvls = 1,
             pricePerLevel = new int[1] { 75 },
             isBuildingUpdrade = false,
@@ -371,6 +385,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.BobbyAttackDamage] = new UpgradeData()
         {
             title = "Bobby killin damaga",
+            icon = sprites[(int)UpgradeHandle.BobbyAttackDamage],
             maxLvls = 5,
             pricePerLevel = new int[5] {10, 20, 40, 60, 100},
             isBuildingUpdrade = false,
@@ -382,6 +397,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.BobbyMovementVelocity] = new UpgradeData()
         {
             title = "Bobby spiddin",
+            icon = sprites[(int)UpgradeHandle.BobbyMovementVelocity],
             maxLvls = 3,
             pricePerLevel = new int[3] { 20, 40, 60 },
             isBuildingUpdrade = false,
@@ -393,6 +409,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.SpawnMoreCubo] = new UpgradeData()
         {
             title = "Spawn More Cubo",
+            icon = sprites[(int)UpgradeHandle.SpawnMoreCubo],
             maxLvls = 4,
             pricePerLevel = new int[4] { 10, 20, 40, 100 },
             isBuildingUpdrade = false,
@@ -404,6 +421,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.SpawnMoreBubil] = new UpgradeData()
         {
             title = "Spawn More Bubil",
+            icon = sprites[(int)UpgradeHandle.SpawnMoreBubil],
             maxLvls = 4,
             pricePerLevel = new int[4] { 10, 20, 40, 100 },
             isBuildingUpdrade = false,
@@ -415,6 +433,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.MoreBones] = new UpgradeData()
         {
             title = "More Bones",
+            icon = sprites[(int)UpgradeHandle.MoreBones],
             maxLvls = 4,
             pricePerLevel = new int[4] { 10, 20, 30, 40 },
             isBuildingUpdrade = false,
@@ -426,6 +445,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.ClickDamage] = new UpgradeData()
         {
             title = "Click Attack Dmg",
+            icon = sprites[(int)UpgradeHandle.ClickDamage],
             maxLvls = 5,
             pricePerLevel = new int[5] { 20, 40, 60, 85 , 100},
             isBuildingUpdrade = false,
@@ -437,6 +457,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.ClickAttackRange] = new UpgradeData()
         {
             title = "Click Attack Range",
+            icon = sprites[(int)UpgradeHandle.ClickAttackRange],
             maxLvls = 5,
             pricePerLevel = new int[5] { 20, 40, 60, 85, 100 },
             isBuildingUpdrade = false,
@@ -449,6 +470,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.ClickHeal] = new UpgradeData()
         {
             title = "Click Heal Amount",
+            icon = sprites[(int)UpgradeHandle.ClickHeal],
             maxLvls = 5,
             pricePerLevel = new int[5] { 20, 40, 60, 85, 100 },
             isBuildingUpdrade = false,
@@ -460,6 +482,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.ClickHealRange] = new UpgradeData()
         {
             title = "Click Heal Range",
+            icon = sprites[(int)UpgradeHandle.ClickHealRange],
             maxLvls = 5,
             pricePerLevel = new int[5] { 20, 40, 60, 85, 100 },
             isBuildingUpdrade = false,
@@ -471,6 +494,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.BombikDamage] = new UpgradeData()
         {
             title = "+ Bombik Dmg",
+            icon = sprites[(int)UpgradeHandle.BombikDamage],
             maxLvls = 3,
             pricePerLevel = new int[3] {50, 100, 200},
             isBuildingUpdrade = false,
@@ -482,6 +506,7 @@ public class DataStorage : MonoBehaviour
         allUpgrades[(int)UpgradeHandle.BombikRange] = new UpgradeData()
         {
             title = "+ Bombik Range",
+            icon = sprites[(int)UpgradeHandle.BombikRange],
             maxLvls = 3,
             pricePerLevel = new int[3] { 50, 100, 200},
             isBuildingUpdrade = false,

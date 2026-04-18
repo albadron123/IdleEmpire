@@ -35,7 +35,7 @@ public class Blob : MonoBehaviour, IDragInteraction
 
     void Update()
     {
-        
+
     }
 
     public void StartDrag()
@@ -45,7 +45,7 @@ public class Blob : MonoBehaviour, IDragInteraction
 
         if (currentBuilding != null)
         {
-            CoreGame.inst.canBuild = false;    
+            CoreGame.inst.canBuild = false;
 
             currentBuilding.RemoveBlob(this, currentPlace);
             currentPlace.GetComponent<SpriteRenderer>().enabled = true;
@@ -67,22 +67,6 @@ public class Blob : MonoBehaviour, IDragInteraction
             outline.SetActive(false);
             return;
         }
-
-        /*
-        List<Collider2D> results = new List<Collider2D>();
-        
-        GameObject foundPlace = null;
-        
-        Physics2D.OverlapCollider(myCollider, new ContactFilter2D().NoFilter(), results);
-        foreach(Collider2D res in results)
-        {
-            if (res.gameObject.tag == CoreGame.TAG_BLOB_PLACE)
-            {
-                foundPlace = res.gameObject;
-                break;
-            }
-        }
-        */
 
         Collider2D foundPlaceCol = MaximUtils.GetNearestOverlappedWithTag2D(myCollider, CoreGame.TAG_BLOB_PLACE);
         GameObject foundPlace = null;

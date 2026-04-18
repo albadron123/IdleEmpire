@@ -1353,6 +1353,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Atlas01_4
+      rect:
+        serializedVersion: 2
+        x: 718
+        y: 238
+        width: 56
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db9c3e4dffce5da47a9b63b6767f25c8
+      internalID: -1355834478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1368,6 +1389,7 @@ TextureImporter:
       Atlas01_1: 782358783
       Atlas01_2: -1119455321
       Atlas01_3: -180142487
+      Atlas01_4: -1355834478
       Bombo: -1273314432
       Bubil: -1886273051
       Cacti: -930879559

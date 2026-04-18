@@ -232,7 +232,7 @@ public class MaximUtils : MonoBehaviour
     }
 
 
-    public static LineRenderer[] CreateLineRendererBatch(string objectName, int count, Color c, Material m, float howThin)
+    public static LineRenderer[] CreateLineRendererBatch(string objectName, int count, Color c, Material m, float howThin, string sortingLayerName = "FORWARD")
     {
         
         LineRenderer[] lrs = new LineRenderer[count];
@@ -248,12 +248,13 @@ public class MaximUtils : MonoBehaviour
             lrs[i].endWidth = howThin;
             lrs[i].startColor = c;
             lrs[i].endColor = c;
+            lrs[i].sortingLayerName = sortingLayerName;
         }
         
         return lrs;
     }
 
-    public static void RenderDashedCircle(LineRenderer[] lrs, float radius, float timeElapsed, int gaps)
+    public static void RenderDashedCircle(LineRenderer[] lrs, UnityEngine.Vector3 pos, float radius, float timeElapsed, int gaps)
     {
         int lrId = 0;
         int dotsCount = 360;
@@ -284,7 +285,7 @@ public class MaximUtils : MonoBehaviour
 
             if (sectorId % 2 == 0)
             {
-                positions.Add(new UnityEngine.Vector3(Mathf.Cos((sectorAngle + timeElapsed * 100) * Mathf.Deg2Rad), Mathf.Sin((sectorAngle + timeElapsed * 100) * Mathf.Deg2Rad), -8) * radius);
+                positions.Add(pos + new UnityEngine.Vector3(Mathf.Cos((sectorAngle + timeElapsed * 100) * Mathf.Deg2Rad), Mathf.Sin((sectorAngle + timeElapsed * 100) * Mathf.Deg2Rad), -8) * radius);
             }
 
 
