@@ -14,6 +14,7 @@ public struct UpgradeState
 {
     public int upgradeLvl;
     public bool visible;
+
 }
 
 
@@ -91,25 +92,32 @@ public class G : MonoBehaviour
             //set up initial upgrades in memory
             PlayerPrefs.SetInt("===has upgrades===", 1);
 
+            //Set reset every upgrade
             for (int upgradeHandle = 0; upgradeHandle < (int)UpgradeHandle.Count; ++upgradeHandle)
             {
                 upgradeStates[upgradeHandle].visible = false;
                 upgradeStates[upgradeHandle].upgradeLvl = 0;
             }
 
+            //Set the default state correctly
             upgradeStates[(int)UpgradeHandle.Cubo].upgradeLvl = 1;
             upgradeStates[(int)UpgradeHandle.Cubo].visible = true;
+
             upgradeStates[(int)UpgradeHandle.Bubil].upgradeLvl = 1;
             upgradeStates[(int)UpgradeHandle.Bubil].visible = true;
+
             upgradeStates[(int)UpgradeHandle.Tawa].upgradeLvl = 1;
             upgradeStates[(int)UpgradeHandle.Tawa].visible = true;
 
-            PlayerPrefs.SetInt($"{upgradeStates[(int)UpgradeHandle.Cubo]}", 1);
-            PlayerPrefs.SetInt($"{upgradeStates[(int)UpgradeHandle.Cubo]}_visible", 1);
-            PlayerPrefs.SetInt($"{upgradeStates[(int)UpgradeHandle.Bubil]}", 1);
-            PlayerPrefs.SetInt($"{upgradeStates[(int)UpgradeHandle.Bubil]}_visible", 1);
-            PlayerPrefs.SetInt($"{upgradeStates[(int)UpgradeHandle.Tawa]}", 1);
-            PlayerPrefs.SetInt($"{upgradeStates[(int)UpgradeHandle.Tawa]}_visible", 1);
+            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Cubo].title}", 1);
+            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Cubo].title}_visible", 1);
+            
+            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Bubil].title}", 1);
+            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Bubil].title}_visible", 1);
+            
+            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Tawa].title}", 1);
+            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Tawa].title}_visible", 1);
+            
 
 
             buildingStates[(int)Building.BuildingType.CuboProduction].upgradeLvlUnlocked = 0;
@@ -142,10 +150,10 @@ public class G : MonoBehaviour
         for (int i = 0; i < connectedUpgrades.Count; ++i)
         {
             upgradeStates[(int)connectedUpgrades[i]].visible = true;
-            PlayerPrefs.SetInt($"{upgradeStates[(int)connectedUpgrades[i]]}_visible", 1);
+            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)connectedUpgrades[i]].title}_visible", 1);
         }
         ++upgradeStates[(int)h].upgradeLvl;
-        PlayerPrefs.SetInt($"{upgradeStates[(int)h]}", upgradeStates[(int)h].upgradeLvl);
+        PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)h].title}", upgradeStates[(int)h].upgradeLvl);
         if (DataStorage.allUpgrades[(int)h].isBuildingUpdrade)
         {
             //aquire building upgrade :^)
@@ -156,26 +164,43 @@ public class G : MonoBehaviour
         }
     }
 
+    public static void UpgradeEquipBuildingsSize()
+    {
+        ++equippedBuildingsSize;
+        PlayerPrefs.SetInt("equippedBuildingsSize", equippedBuildingsSize);
+    }
 
     public static void LoadEquipmentListFromPlayerPrefs()
     {
-        equippedBuildingsSize = 3;
+        
         equippedBuildings = new List<Building.BuildingType>();
         if (PlayerPrefs.HasKey("equippedBuildingsSize"))
         {
             equippedBuildingsSize = PlayerPrefs.GetInt("equippedBuildingsSize");
-        }
-        for (int i = 0; i < equippedBuildingsSize; ++i)
-        {
-            if (PlayerPrefs.HasKey($"equipment_{i}"))
+            for (int i = 0; i < equippedBuildingsSize; ++i)
             {
-                int val = PlayerPrefs.GetInt($"equipment_{i}");
-                if (val >= 0)
+                if (PlayerPrefs.HasKey($"equipment_{i}"))
                 {
-                    equippedBuildings.Add((Building.BuildingType)val);
+                    int val = PlayerPrefs.GetInt($"equipment_{i}");
+                    if (val >= 0)
+                    {
+                        equippedBuildings.Add((Building.BuildingType)val);
+                    }
                 }
             }
         }
+        else
+        {
+            equippedBuildingsSize = 3;
+            equippedBuildings.Add(Building.BuildingType.CuboProduction);
+            equippedBuildings.Add(Building.BuildingType.BubilProduction);
+            equippedBuildings.Add(Building.BuildingType.Tawa);
+            PlayerPrefs.SetInt("equippedBuildingsSize", equippedBuildingsSize);
+            PlayerPrefs.SetInt($"equipment_{0}", (int)Building.BuildingType.CuboProduction);
+            PlayerPrefs.SetInt($"equipment_{1}", (int)Building.BuildingType.BubilProduction);
+            PlayerPrefs.SetInt($"equipment_{2}", (int)Building.BuildingType.Tawa);
+        }
+        
     }
 
     public static void SaveEquipmentListToPlayerPrefs()

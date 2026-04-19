@@ -371,6 +371,12 @@ public class DataStorage : MonoBehaviour
             buildingHandle = Building.BuildingType.Cacti,
         };
 
+
+        /// ============EFFECT UPGRADES=========
+        /// ============EFFECT UPGRADES=========
+        /// ============EFFECT UPGRADES=========
+        /// ============EFFECT UPGRADES=========
+
         
         allUpgrades[(int)UpgradeHandle.AutoResourceGather] = new UpgradeData()
         {
@@ -392,7 +398,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        bobbyDmgPerLevel = new int[5] { 3, 10, 20, 60, 150};
+        bobbyDmgPerLevel = new int[6] {1, 3, 10, 20, 60, 100};
 
         allUpgrades[(int)UpgradeHandle.BobbyMovementVelocity] = new UpgradeData()
         {
@@ -404,7 +410,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        bobbyVelocityPerLevel = new float[3] { 2, 3.5f, 5.5f };
+        bobbyVelocityPerLevel = new float[4] {2, 3f, 4.5f, 5.5f };
 
         allUpgrades[(int)UpgradeHandle.SpawnMoreCubo] = new UpgradeData()
         {
@@ -416,7 +422,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
         
-        cuboSpawnTimePerLevel = new float[4] {5, 4.25f, 3.75f, 2};
+        cuboSpawnTimePerLevel = new float[5] {5, 3.75f, 2.5f, 1.25f, 0.5f};
 
         allUpgrades[(int)UpgradeHandle.SpawnMoreBubil] = new UpgradeData()
         {
@@ -428,7 +434,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        bubilSpawnTimePerLevel = new float[4] { 5, 4.25f, 3.75f, 2 };
+        bubilSpawnTimePerLevel = new float[5] { 5, 3.75f, 2.5f, 1.25f, 0.5f };
 
         allUpgrades[(int)UpgradeHandle.MoreBones] = new UpgradeData()
         {
@@ -440,7 +446,8 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        bonesMultiplierPerLevel = new float[4] { 1, 2, 3, 5 };
+        //IMPORTANT: if we have something without a level, then we use [0]
+        bonesMultiplierPerLevel = new float[5] { 1, 2, 3, 5, 10 };
 
         allUpgrades[(int)UpgradeHandle.ClickDamage] = new UpgradeData()
         {
@@ -452,7 +459,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        clickBaseAttackPerLevel = new int[5] { 1, 2, 5, 10, 20 };
+        clickBaseAttackPerLevel = new int[6] { 0, 1, 2, 5, 10, 20};
 
         allUpgrades[(int)UpgradeHandle.ClickAttackRange] = new UpgradeData()
         {
@@ -464,7 +471,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        clickAttackRadiusPerLevel = new float[5] { 0.3f, 0.45f, 0.6f, 0.75f, 1f };
+        clickAttackRadiusPerLevel = new float[6] { 0.15f, 0.3f, 0.45f, 0.6f, 0.75f, 1f};
 
 
         allUpgrades[(int)UpgradeHandle.ClickHeal] = new UpgradeData()
@@ -477,7 +484,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        clickHealAmountPerLevel = new int[5] { 1, 2, 5, 10, 20 };
+        clickHealAmountPerLevel = new int[6] {0, 1, 2, 5, 10, 20 };
 
         allUpgrades[(int)UpgradeHandle.ClickHealRange] = new UpgradeData()
         {
@@ -489,7 +496,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        clickHealRadiusPerLevel = new float[5] { 0.5f, 0.7f, 0.9f, 1.25f, 2f };
+        clickHealRadiusPerLevel = new float[6] {0.15f, 0.5f, 0.7f, 0.9f, 1.25f, 2f };
 
         allUpgrades[(int)UpgradeHandle.BombikDamage] = new UpgradeData()
         {
@@ -501,7 +508,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        bombDamagePerLevel = new int[3] {10, 30, 100};
+        bombDamagePerLevel = new int[4] {0, 10, 30, 100};
 
         allUpgrades[(int)UpgradeHandle.BombikRange] = new UpgradeData()
         {
@@ -513,7 +520,19 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        bombRadiusPerLevel = new float[3] { 1, 1.5f, 2};
+        bombRadiusPerLevel = new float[4] {0.3f, 1, 1.5f, 2};
+
+        
+        allUpgrades[(int)UpgradeHandle.MoreSlots] = new UpgradeData()
+        {
+            title = "More building slots",
+            icon = sprites[(int)UpgradeHandle.MoreSlots],
+            maxLvls = 3,
+            pricePerLevel = new int[3] { 25, 50, 150},
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
     }
 
     

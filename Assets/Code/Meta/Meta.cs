@@ -49,6 +49,11 @@ public class Meta : MonoBehaviour
     [SerializeField]
     Transform bonesSpentSlider;
 
+    [SerializeField] Sprite resurrectButtonSpr;
+    [SerializeField] Sprite resurrectButtonFocusSpr;
+
+    bool canResurrect = true;
+
 
 
     void InitBonesSpentSlider()
@@ -107,6 +112,12 @@ public class Meta : MonoBehaviour
         }
     }
 
+    public void IncrementEquipmentListSize()
+    {
+        G.UpgradeEquipBuildingsSize();
+        ShowEquipmentList();
+    }
+
     public bool AddToEquipmentList(Node n)
     {
         if (G.equippedBuildingsSize <= G.equippedBuildings.Count)
@@ -117,6 +128,8 @@ public class Meta : MonoBehaviour
         equipmentListSr[G.equippedBuildings.Count - 1].sprite = DataStorage.allBuildings[(int)DataStorage.allUpgrades[(int)n.myHandle].buildingHandle.Value].icon;
 
         G.SaveEquipmentListToPlayerPrefs();
+
+        canResurrect = G.equippedBuildings.Count > 0;
         return true;
     }
 
@@ -140,6 +153,8 @@ public class Meta : MonoBehaviour
         }
 
         G.SaveEquipmentListToPlayerPrefs();
+
+        canResurrect = G.equippedBuildings.Count > 0;
     }
 
     void Start()
@@ -155,6 +170,9 @@ public class Meta : MonoBehaviour
             inst = this;
         }
 
+
+        
+        canResurrect = G.equippedBuildings.Count > 0;
         ShowEquipmentList();
 
         InitBonesSpentSlider();
@@ -220,9 +238,26 @@ public class Meta : MonoBehaviour
 
     }
 
-    public void StartAgain()
+    public void StartAgain(Transform button)
     {
-        SceneManager.LoadScene("SampleScene");
+        if (canResurrect)
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
+        else
+        {
+            MaximUtils.DOCancelShake(button);
+        }
+    }
+
+    public void MouseEnterResurrect(SpriteRenderer sr)
+    {
+        sr.sprite = resurrectButtonFocusSpr;
+    }
+
+    public void MouseExitResurrect(SpriteRenderer sr)
+    {
+        sr.sprite = resurrectButtonSpr;
     }
 
 

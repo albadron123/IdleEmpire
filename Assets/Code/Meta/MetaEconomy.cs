@@ -33,7 +33,7 @@ public class MetaEconomy : MonoBehaviour
         {
             lastRound = PlayerPrefs.GetInt("currentBones");
         }
-        bonesTe.text = $"BONES: {bones}";
+        bonesTe.text = $"{bones}";
     }
 
 
@@ -53,7 +53,7 @@ public class MetaEconomy : MonoBehaviour
         }
 
         bones += delta;
-        bonesTe.text = $"BONES: {bones}";
+        bonesTe.text = $"{bones}";
 
         PlayerPrefs.SetInt("totalBones", bones);
         PlayerPrefs.Save();

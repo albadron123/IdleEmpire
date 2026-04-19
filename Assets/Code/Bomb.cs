@@ -9,19 +9,17 @@ public class Bomb : MonoBehaviour, IDragInteraction
 
     LineRenderer[] lrs;
 
-    [SerializeField]
-    int damage = 4;
 
-    Collider2D myCol;
+    CircleCollider2D myCol;
 
     bool canExplode = false;
     bool wasActive = false;
     
     void Start()
     {
-        myCol = GetComponent<Collider2D>();
+        myCol = GetComponent<CircleCollider2D>();
         GetComponent<DragObject>().dragInteraction = this;
-
+        
         lrs = MaximUtils.CreateLineRendererBatch("BOMB_OUTLINE", 17, new Color(0.3f, 0.3f, 0.3f, 0.8f), CoreGame.inst.spriteDefaultMaterial, 0.08f, "Default");
     }
 
@@ -30,6 +28,7 @@ public class Bomb : MonoBehaviour, IDragInteraction
         if (wasActive == false)
         {
             lrs = MaximUtils.CreateLineRendererBatch("BOMB_OUTLINE", 17, new Color(0.3f, 0.3f, 0.3f, 0.8f), CoreGame.inst.spriteDefaultMaterial, 0.08f, "Default");
+            myCol.radius = CoreGame.bombRadius;
         }
         wasActive = true;
 
@@ -47,7 +46,7 @@ public class Bomb : MonoBehaviour, IDragInteraction
     {
         if (wasActive)
         {
-            MaximUtils.RenderDashedCircle(lrs, transform.position + Vector3.forward * 10, CoreGame.bombRadius, 0.6f * Time.time, 16);
+            MaximUtils.RenderDashedCircle(lrs, transform.position + 0.15f * Vector3.up + Vector3.forward * 10, CoreGame.bombRadius, 0.6f * Time.time, 16);
         }
         if (canExplode)
         {
@@ -65,7 +64,7 @@ public class Bomb : MonoBehaviour, IDragInteraction
                     {
                         if (affected[i].gameObject.tag == CoreGame.TAG_ENEMY || affected[i].gameObject.tag == CoreGame.TAG_BUILDING)
                         {
-                            affected[i].gameObject.GetComponent<DestructableObject>().ChangeHealth(-damage);
+                            affected[i].gameObject.GetComponent<DestructableObject>().ChangeHealth(-CoreGame.bombDamage);
                         }
                     }
                     GameObject inst = Instantiate(explostionPfb, transform.position, Quaternion.identity);

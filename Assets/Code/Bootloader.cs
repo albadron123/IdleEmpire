@@ -10,7 +10,7 @@ public static class Bootloader
     {
         Debug.Log("---Init game---");
 
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         //Initializing global services
         GameObject staticContainer = new GameObject("===Global Managers===");

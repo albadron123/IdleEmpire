@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  maxHealth: 30
+  maxHealth: 200
   sliderContainer: {fileID: 3554059552606863704}
   sliderT: {fileID: 8519526678162458415}
   srList:

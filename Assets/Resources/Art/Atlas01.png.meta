@@ -1357,12 +1357,12 @@ TextureImporter:
       name: Atlas01_4
       rect:
         serializedVersion: 2
-        x: 718
+        x: 711
         y: 238
-        width: 56
-        height: 66
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 63
+        height: 78
+      alignment: 9
+      pivot: {x: 0.5520436, y: 0.15321605}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

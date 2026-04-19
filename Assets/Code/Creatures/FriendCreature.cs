@@ -17,6 +17,9 @@ public class FriendCreature : Creature
 
     public override void StartSimulation()
     {
+        activeVelocity = CoreGame.bobbyVelocity;
+        myDamage = CoreGame.bobbyDmg;
+
         Collider2D col = MaximUtils.GetNearestOverlappedWithTag2D(t.position, 3, CoreGame.TAG_ENEMY);
         if (col != null)
         {

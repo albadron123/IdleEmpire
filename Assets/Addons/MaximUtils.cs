@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.Linq;
 using System.Numerics;
-
+using DG.Tweening;
 
 public class MaximUtils : MonoBehaviour
 {
@@ -189,6 +189,17 @@ public class MaximUtils : MonoBehaviour
         return instances;
     }
 
+
+    public static void DOCancelShake(Transform t)
+    {
+        t.DOKill();
+        Sequence seq = DOTween.Sequence();
+        seq.Append(t.DORotate(new UnityEngine.Vector3(0, 0, 5), 0.04f));
+        seq.Append(t.DORotate(new UnityEngine.Vector3(0, 0, -5), 0.08f));
+        seq.Append(t.DORotate(new UnityEngine.Vector3(0, 0, 0), 0.04f));
+        seq.SetLoops(2);
+        seq.OnKill(() => { t.rotation = UnityEngine.Quaternion.identity; });
+    }
 
     public static UnityEngine.Vector2 RandomVector2(float maxMagnitude)
     {

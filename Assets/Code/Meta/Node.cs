@@ -69,6 +69,7 @@ public class Node : MonoBehaviour
             gameObject.SetActive(false);
         }
         spriteSr.sprite = DataStorage.allUpgrades[(int)myHandle].icon;
+        titleTe.text = DataStorage.allUpgrades[(int)myHandle].title;
     }
 
     void Start()
@@ -342,6 +343,13 @@ public class Node : MonoBehaviour
 
 
         SoundManager.inst.PlaySfx(DataStorage.SFX_CLICK_UPGRADE_BUTTON, 1, 0.8f, 1);
+
+
+        //===SPECTIAL CONDITIONS
+        if (myHandle == UpgradeHandle.MoreSlots)
+        {
+            Meta.inst.IncrementEquipmentListSize();
+        }
     }
 
     
