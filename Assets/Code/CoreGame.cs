@@ -9,7 +9,7 @@ public class Building
 {
     public enum BuildingType
     {
-        Tawa, 
+        Tawa,
         CuboProduction,
         BubilProduction,
         HutkaGrande,
@@ -31,9 +31,9 @@ public class Resource
 {
     public enum ResourceType
     {
-        cubes,
-        blah,
-        bones,
+        Cubo,
+        Bubil,
+        Bones,
         Count
     }
     public Sprite icon;
@@ -89,7 +89,7 @@ public class CoreGame : MonoBehaviour
     LineRenderer currentlyPlacingLr;
     Vector2 currentlyPlacingSize;
     Vector2 currentlyPlacingOffset;
-    
+
     Vector2 mousePosition;
 
     float attackTimer = 0;
@@ -130,7 +130,7 @@ public class CoreGame : MonoBehaviour
     [SerializeField] Sprite swordCursorSpr;
     [SerializeField] Sprite wandCursorSpr;
 
-    public enum FunctionalCursor { Basic, Sward, Wand, Count};
+    public enum FunctionalCursor { Basic, Sward, Wand, Count };
 
     public FunctionalCursor currentCursor;
 
@@ -229,7 +229,7 @@ public class CoreGame : MonoBehaviour
         }
 
         cursorButtons[0].GetComponent<SpriteRenderer>().color = selectColor;
-        
+
         for (int i = 0; i < unlockedCursorCount; ++i)
         {
             cursorButtons[i].SetActive(true);
@@ -268,16 +268,17 @@ public class CoreGame : MonoBehaviour
         G.InitBuildingStates();
 
         StartCoroutine(WaitForAttack());
-        StartCoroutine(ResourceGenerationLogic());
+        StartCoroutine(ResourceGenerationLogic(Resource.ResourceType.Cubo));
+        StartCoroutine(ResourceGenerationLogic(Resource.ResourceType.Bubil));
 
         InitializeBuildingButtons();
 
-        specialLrs = MaximUtils.CreateLineRendererBatch("_CIRCLE LR (generated)_", 7, specialLrColor, specialLrMaterial, specialLrThikness);
+        specialLrs = MaximUtils.CreateLineRendererBatch("_CIRCLE LR (generated)_", 17, specialLrColor, specialLrMaterial, specialLrThikness);
     }
 
     [SerializeField] List<GameObject> enemyGroups = new List<GameObject>();
 
-    
+
 
 
     IEnumerator WaitForAttack()
@@ -324,22 +325,24 @@ public class CoreGame : MonoBehaviour
         StartCoroutine(WaitForAttack());
     }
 
-
-    IEnumerator ResourceGenerationLogic()
+    IEnumerator ResourceGenerationLogic(Resource.ResourceType res)
     {
+        float baseGenerationTime = (res == Resource.ResourceType.Cubo) ? cuboGenerationTime : bubilGenerationTime;
+        GameObject genPrefab = (res == Resource.ResourceType.Cubo) ? clickableBlockPfb : clickableBlobPfb;
         while (true)
         {
             //Step 1: Wait
-            yield return new WaitForSeconds(Random.Range(2, 5));
+            yield return new WaitForSeconds(baseGenerationTime + Random.Range(-baseGenerationTime / 3f, baseGenerationTime / 3f));
             //Step 2: Generate resource in free place
-            GameObject resPfb = (Random.value > 0.5f) ? clickableBlobPfb : clickableBlockPfb;
-            GameObject resInst = Instantiate(resPfb, new Vector3(Random.Range(-5f, 8f), Random.Range(-4.5f, 4.5f), 50),
+            GameObject resInst = Instantiate(genPrefab, new Vector3(Random.Range(-5f, 8f), Random.Range(-4.5f, 4.5f), 50),
                 Quaternion.identity);
             Vector3 resInitialScale = resInst.transform.localScale;
             resInst.transform.localScale = new Vector3(0, 0, 1);
             resInst.transform.DOScale(resInitialScale, 0.6f);
         }
     }
+
+
 
     void InitializeBuildingButtons()
     {
@@ -367,22 +370,22 @@ public class CoreGame : MonoBehaviour
     public void PressBuildingButton(BuildingButton bb)
     {
         int currentPrice = DataStorage.CalculateBuildingPrice(bb.type);
-        if (currentPrice <= allResources[(int)Resource.ResourceType.cubes].value)
+        if (currentPrice <= allResources[(int)Resource.ResourceType.Cubo].value)
         {
             StartBuilding(bb);
         }
     }
 
 
-    
+
 
 
     public void PressBuyPersonButton()
     {
-        if ((int)personPrice <= allResources[(int)Resource.ResourceType.blah].value)
+        if ((int)personPrice <= allResources[(int)Resource.ResourceType.Bubil].value)
         {
             // Pay for the person
-            ChangeResource(Resource.ResourceType.blah, -(int)personPrice);
+            ChangeResource(Resource.ResourceType.Bubil, -(int)personPrice);
             //Create person
             Instantiate(blobPfb,
                 mainTower.transform.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0).normalized *
@@ -411,7 +414,7 @@ public class CoreGame : MonoBehaviour
                                                Quaternion.identity);
 
 
-        
+
         Transform cpT = currentlyPlacingBuilding.transform.Find("BuildingCollider");
         BoxCollider2D cpB2d = cpT.GetComponent<BoxCollider2D>();
         currentlyPlacingSize = cpB2d.size;
@@ -442,12 +445,12 @@ public class CoreGame : MonoBehaviour
             canBuild = true;
 
             // Aquire
-            ChangeResource(Resource.ResourceType.cubes, -DataStorage.CalculateBuildingPrice(currentlyBuildingButton.type));
+            ChangeResource(Resource.ResourceType.Cubo, -DataStorage.CalculateBuildingPrice(currentlyBuildingButton.type));
             // Increase the stats of built objects
             G.buildingStates[(int)currentlyBuildingButton.type].purchasedCount[G.buildingStates[(int)currentlyBuildingButton.type].currentLvl]++;
-            
+
             currentlyBuildingButton.UpdatePrices();
-            
+
             // Build
             currentlyPlacingBuilding.transform.position = new Vector3(currentlyPlacingBuilding.transform.position.x,
                 currentlyPlacingBuilding.transform.position.y, currentlyPlacingBuilding.transform.position.y);
@@ -526,12 +529,7 @@ public class CoreGame : MonoBehaviour
 
     void Update()
     {
-        
-        
-        
         mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        MaximUtils.RenderDashedCircle(specialLrs, mousePosition, 0.3f, Time.time, 6);
 
         if (draggedObject == null && currentlyBuildingButton == null)
         {
@@ -547,6 +545,8 @@ public class CoreGame : MonoBehaviour
 
         if (currentCursor == FunctionalCursor.Basic)
         {
+            specialLrs[0].transform.parent.gameObject.SetActive(false);
+
             if (draggedObject != null)
             {
                 G.SetCursor(handCursorSpr);
@@ -557,11 +557,26 @@ public class CoreGame : MonoBehaviour
                 G.SetCursor(basicCursorSpr);
             }
         }
+        else
+        {
+            // visualize cursor range (radius)
+            float radius = 5;
+            if (currentCursor == FunctionalCursor.Sward)
+            {
+                radius = clickAttackRadius;
+            }
+            else if (currentCursor == FunctionalCursor.Wand)
+            {
+                radius = clickHealRadius;
+            }
+            specialLrs[0].transform.parent.gameObject.SetActive(true);
+            MaximUtils.RenderDashedCircle(specialLrs, mousePosition, radius, Time.time, 16);
+        }
 
         if (currentlyPlacingBuilding != null)
         {
             currentlyPlacingBuilding.transform.position = new Vector3(mousePosition.x, mousePosition.y, -5);
-            DrawBuildingRect(currentlyPlacingBuilding.transform.position + 10*Vector3.forward, currentlyPlacingOffset, currentlyPlacingSize);
+            DrawBuildingRect(currentlyPlacingBuilding.transform.position + 10 * Vector3.forward, currentlyPlacingOffset, currentlyPlacingSize);
             if (CanBuildHere())
             {
                 currentlyPlacingLr.startColor = new Color(0.3f, 1, 0.3f, 1f);
@@ -584,23 +599,23 @@ public class CoreGame : MonoBehaviour
             }
         }
 
-        if (currentlyPlacingBuilding == null && draggedObject==null)
+        if (currentlyPlacingBuilding == null && draggedObject == null)
         {
 
-            
-            if(Input.GetMouseButtonDown(0))
+
+            if (Input.GetMouseButtonDown(0))
             {
                 // attack enemies
                 if (currentCursor == FunctionalCursor.Sward)
                 {
-                    Collider2D enemyCol = MaximUtils.GetNearestOverlappedWithTag2D(mousePosition, clickAttackRadius, TAG_ENEMY);
-                    if (enemyCol != null)
+                    List<Collider2D> enemyCols = MaximUtils.GetAllOverlappedWithTag2D(mousePosition, clickAttackRadius, TAG_ENEMY);
+                    for (int i = 0; i < enemyCols.Count; ++i)
                     {
-                        enemyCol.GetComponent<DestructableObject>().ChangeHealth(-clickDamage);
+                        enemyCols[i].GetComponent<DestructableObject>().ChangeHealth(-clickDamage);
                     }
                 }
                 // gather resources
-                
+
                 Collider2D resourseCol = MaximUtils.GetNearestOverlappedWithTag2D(mousePosition, 0.1f, TAG_CLICKABLE_RESOURCE);
                 if (resourseCol != null)
                 {
@@ -618,7 +633,7 @@ public class CoreGame : MonoBehaviour
             }
         }
 
-// Cheats
+        // Cheats
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -632,19 +647,19 @@ public class CoreGame : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            ChangeResource(Resource.ResourceType.cubes, 20);
+            ChangeResource(Resource.ResourceType.Cubo, 20);
         }
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            ChangeResource(Resource.ResourceType.blah, 20);
+            ChangeResource(Resource.ResourceType.Bubil, 20);
         }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            ChangeResource(Resource.ResourceType.bones, 20);
+            ChangeResource(Resource.ResourceType.Bones, 20);
         }
-        
+
 #endif
 
     }
@@ -703,7 +718,7 @@ public class CoreGame : MonoBehaviour
             // Instantiating
             GameObject buttonInst = Instantiate(upgradeButtonPfb, Vector3.zero, Quaternion.identity, upgradesContainer);
             buttonInst.transform.localPosition = new Vector3(0, i * (buttonInst.transform.localScale.y + BUTTON_OFFSET), 0);
-            
+
             upgradeButtons.Add(buttonInst);
         }
     }

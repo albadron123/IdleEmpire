@@ -88,6 +88,37 @@ public class MaximUtils : MonoBehaviour
         return null;
     }
 
+    public static List<Collider2D> GetAllOverlappedWithTag2D(Collider2D col, string tag)
+    {
+        List<Collider2D> overlapped = new List<Collider2D>();
+        List<Collider2D> result = new List<Collider2D>();
+        Physics2D.OverlapCollider(col, new ContactFilter2D().NoFilter(), overlapped);
+        foreach (Collider2D other in overlapped)
+        {
+            if (other.gameObject.CompareTag(tag))
+            {
+                result.Add(other);
+            }
+        }
+        return result;
+    }
+
+    public static List<Collider2D> GetAllOverlappedWithTag2D(UnityEngine.Vector3 position, float radius, string tag)
+    {
+        Collider2D[] overlapped = Physics2D.OverlapCircleAll(position, radius);
+        List<Collider2D> result = new List<Collider2D>();
+        foreach (Collider2D col in overlapped)
+        {
+            if (col.gameObject.CompareTag(tag))
+            {
+                result.Add(col);
+            }
+        }
+        return result;
+    }
+
+
+
     public static Collider2D GetNearestOverlappedWithTag2D(Collider2D col, string tag)
     {
         List<Collider2D> overlapped = new List<Collider2D>();

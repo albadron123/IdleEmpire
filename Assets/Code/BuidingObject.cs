@@ -320,7 +320,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sliders[processId] = null;
 
                 SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_CUBO);
-                CoreGame.inst.ChangeResource(Resource.ResourceType.cubes, productionAmount);
+                CoreGame.inst.ChangeResource(Resource.ResourceType.Cubo, productionAmount);
                 CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[0].icon);
             }
         }
@@ -347,7 +347,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
 
                 SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_BUBIL);
-                CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
+                CoreGame.inst.ChangeResource(Resource.ResourceType.Bubil, productionAmount);
                 CoreGame.inst.CreateIconPopUp(blobs[processId].transform.position, $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
         }
@@ -456,7 +456,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
 
                 SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_BUBIL);
-                CoreGame.inst.ChangeResource(Resource.ResourceType.blah, productionAmount);
+                CoreGame.inst.ChangeResource(Resource.ResourceType.Bubil, productionAmount);
                 CoreGame.inst.CreateIconPopUp(transform.position + new Vector3(0, 1.4f, 0), $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
             }
         }

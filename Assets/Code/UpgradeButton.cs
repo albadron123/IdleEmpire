@@ -42,10 +42,10 @@ public class UpgradeButton : MonoBehaviour
         int lvl   = GetLevel();
         int price = GetPrice();
 
-        if (lvl < 4 && price <= CoreGame.inst.allResources[(int)Resource.ResourceType.bones].value)
+        if (lvl < 4 && price <= CoreGame.inst.allResources[(int)Resource.ResourceType.Bones].value)
         {
             // Aquire upgrade
-            CoreGame.inst.ChangeResource(Resource.ResourceType.bones, -price);
+            CoreGame.inst.ChangeResource(Resource.ResourceType.Bones, -price);
             // Apply Effect
             switch (myType)
             {

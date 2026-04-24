@@ -60,7 +60,7 @@ public class EnemyCreature : Creature
         {
             CoreGame.inst.CreateIconPopUp(t.position, $"+{reward}", CoreGame.inst.allResources[2].icon);
         }
-        CoreGame.inst.ChangeResource(Resource.ResourceType.bones, reward);
+        CoreGame.inst.ChangeResource(Resource.ResourceType.Bones, reward);
     }
 
     public override void StartSimulation()

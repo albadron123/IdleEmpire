@@ -422,7 +422,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
         
-        cuboSpawnTimePerLevel = new float[5] {5, 3.75f, 2.5f, 1.25f, 0.5f};
+        cuboSpawnTimePerLevel = new float[5] { 7f, 5f, 3f, 1.5f, 0.5f };
 
         allUpgrades[(int)UpgradeHandle.SpawnMoreBubil] = new UpgradeData()
         {
@@ -434,7 +434,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        bubilSpawnTimePerLevel = new float[5] { 5, 3.75f, 2.5f, 1.25f, 0.5f };
+        bubilSpawnTimePerLevel = new float[5] { 7f, 5f, 3f, 1.5f, 0.5f };
 
         allUpgrades[(int)UpgradeHandle.MoreBones] = new UpgradeData()
         {
