@@ -106,8 +106,8 @@ public class G : MonoBehaviour
             upgradeStates[(int)UpgradeHandle.Bubil].upgradeLvl = 1;
             upgradeStates[(int)UpgradeHandle.Bubil].visible = true;
 
-            upgradeStates[(int)UpgradeHandle.Tawa].upgradeLvl = 1;
-            upgradeStates[(int)UpgradeHandle.Tawa].visible = true;
+            upgradeStates[(int)UpgradeHandle.Tumbo].upgradeLvl = 1;
+            upgradeStates[(int)UpgradeHandle.Tumbo].visible = true;
 
             PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Cubo].title}", 1);
             PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Cubo].title}_visible", 1);
@@ -115,17 +115,17 @@ public class G : MonoBehaviour
             PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Bubil].title}", 1);
             PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Bubil].title}_visible", 1);
             
-            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Tawa].title}", 1);
-            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Tawa].title}_visible", 1);
+            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Tumbo].title}", 1);
+            PlayerPrefs.SetInt($"{DataStorage.allUpgrades[(int)UpgradeHandle.Tumbo].title}_visible", 1);
             
 
 
             buildingStates[(int)Building.BuildingType.CuboProduction].upgradeLvlUnlocked = 0;
             buildingStates[(int)Building.BuildingType.BubilProduction].upgradeLvlUnlocked = 0;
-            buildingStates[(int)Building.BuildingType.Tawa].upgradeLvlUnlocked = 0;
+            buildingStates[(int)Building.BuildingType.Tumbo].upgradeLvlUnlocked = 0;
             PlayerPrefs.SetInt($"building_updrade_{DataStorage.allBuildings[(int)Building.BuildingType.CuboProduction].title}", 0);
             PlayerPrefs.SetInt($"building_updrade_{DataStorage.allBuildings[(int)Building.BuildingType.BubilProduction].title}", 0);
-            PlayerPrefs.SetInt($"building_updrade_{DataStorage.allBuildings[(int)Building.BuildingType.Tawa].title}", 0);
+            PlayerPrefs.SetInt($"building_updrade_{DataStorage.allBuildings[(int)Building.BuildingType.Tumbo].title}", 0);
         }
         else
         {
@@ -194,11 +194,11 @@ public class G : MonoBehaviour
             equippedBuildingsSize = 3;
             equippedBuildings.Add(Building.BuildingType.CuboProduction);
             equippedBuildings.Add(Building.BuildingType.BubilProduction);
-            equippedBuildings.Add(Building.BuildingType.Tawa);
+            equippedBuildings.Add(Building.BuildingType.Tumbo);
             PlayerPrefs.SetInt("equippedBuildingsSize", equippedBuildingsSize);
             PlayerPrefs.SetInt($"equipment_{0}", (int)Building.BuildingType.CuboProduction);
             PlayerPrefs.SetInt($"equipment_{1}", (int)Building.BuildingType.BubilProduction);
-            PlayerPrefs.SetInt($"equipment_{2}", (int)Building.BuildingType.Tawa);
+            PlayerPrefs.SetInt($"equipment_{2}", (int)Building.BuildingType.Tumbo);
         }
         
     }

@@ -226,6 +226,7 @@ MonoBehaviour:
   rewardBones: 2
   rewardBonesCritical: 3
   criticalChance: 0.15
+  myHandle: 1
 --- !u!1 &3653806302438263284
 GameObject:
   m_ObjectHideFlags: 0

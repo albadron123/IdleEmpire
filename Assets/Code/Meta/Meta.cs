@@ -14,6 +14,8 @@ public struct Edge
 
 public class Meta : MonoBehaviour
 {
+    [SerializeField] Sprite defaultCursorSpr;
+
     public static Meta inst = null;
 
     [HideInInspector]
@@ -170,7 +172,7 @@ public class Meta : MonoBehaviour
             inst = this;
         }
 
-
+        G.SetCursor(defaultCursorSpr);
         
         canResurrect = G.equippedBuildings.Count > 0;
         ShowEquipmentList();

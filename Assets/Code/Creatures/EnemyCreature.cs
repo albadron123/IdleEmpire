@@ -11,9 +11,21 @@ public class EnemyCreature : Creature
     [SerializeField]
     float criticalChance = 0.15f;
 
+    [SerializeField]
+    EnemyHandle myHandle;
+
+    DestructableObject dObj;
+
     protected override void Start()
     {
         base.Start();
+        rewardBones = DataStorage.allEnemies[(int)myHandle].bonesReward;
+        rewardBonesCritical = DataStorage.allEnemies[(int)myHandle].bonesRewardCritial;
+        myDamage = DataStorage.allEnemies[(int)myHandle].simpleDamage;
+        dObj = GetComponent<DestructableObject>();
+        dObj.maxHealth = DataStorage.allEnemies[(int)myHandle].maxHealth;
+        //as we've changed the basic health, we re-init it (probably multiple times, though it's okey, but it is nesessary to do so to apply the maxHealth change
+        dObj.InitHealth();
     }
 
     protected override void Update()
@@ -50,10 +62,10 @@ public class EnemyCreature : Creature
     public override void Die()
     {
         base.Die();
-        int reward = rewardBones;
+        int reward = Mathf.CeilToInt(rewardBones * CoreGame.bonesBonusMultiplier);
         if (Random.value < criticalChance)
         {
-            reward = rewardBonesCritical;
+            reward = Mathf.CeilToInt(rewardBonesCritical * CoreGame.bonesBonusMultiplier);
             CoreGame.inst.CreateIconPopUp(t.position, $"{"CRITICAL!".Size(50)}\n+{reward}", CoreGame.inst.allResources[2].icon);
         }
         else

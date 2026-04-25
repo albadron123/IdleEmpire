@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [DefaultExecutionOrder(-9999)]
 public static class Bootloader
@@ -10,7 +11,9 @@ public static class Bootloader
     {
         Debug.Log("---Init game---");
 
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
+        DOTween.Init(recycleAllByDefault: true, useSafeMode: true).SetCapacity(2000, 200);
+
 
         //Initializing global services
         GameObject staticContainer = new GameObject("===Global Managers===");
@@ -32,6 +35,7 @@ public static class Bootloader
         DataStorage.LoadSound();
         DataStorage.LoadBuildings();
         DataStorage.LoadUpgrades();
+        DataStorage.LoadEnemies();
 
         G.equippedBuildingsCapacity = 6;
         G.bonesSpent = 0;

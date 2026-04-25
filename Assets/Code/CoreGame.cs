@@ -201,7 +201,7 @@ public class CoreGame : MonoBehaviour
         }
         if (G.upgradeStates[(int)UpgradeHandle.ClickHeal].upgradeLvl > 0)
         {
-            hasAttackCursor = true;
+            hasHealCursor = true;
         }
 
         currentCursor = FunctionalCursor.Basic;
@@ -262,8 +262,25 @@ public class CoreGame : MonoBehaviour
     }
 
 
+
+    List<GameObject> easyEnemyGroups = new List<GameObject>();
+    List<GameObject> mediumEnemyGroups = new List<GameObject>();
+    [SerializeField] GameObject bossGroup;
+
+
+    void InitEnemyGroups()
+    {
+        easyEnemyGroups = new List<GameObject>();
+        easyEnemyGroups.AddRange(Resources.LoadAll<GameObject>("Prefabs/Groups/Easy"));
+        mediumEnemyGroups = new List<GameObject>();
+        mediumEnemyGroups.AddRange(easyEnemyGroups);
+        mediumEnemyGroups.AddRange(Resources.LoadAll<GameObject>("Prefabs/Groups/Medium"));
+    }
+
     void Start()
     {
+
+        InitEnemyGroups();
         InitRunFromUpgrades();
         G.InitBuildingStates();
 
@@ -274,9 +291,13 @@ public class CoreGame : MonoBehaviour
         InitializeBuildingButtons();
 
         specialLrs = MaximUtils.CreateLineRendererBatch("_CIRCLE LR (generated)_", 17, specialLrColor, specialLrMaterial, specialLrThikness);
+
+
+        CreatePopupPool();
     }
 
-    [SerializeField] List<GameObject> enemyGroups = new List<GameObject>();
+
+
 
 
 
@@ -299,13 +320,30 @@ public class CoreGame : MonoBehaviour
         attackTe.text = "";
         StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, "NEW WAVE BEGINS!!!", 0.05f, 1, 0.5f));
 
-        for (int i = 0; i < attackCount; ++i)
+        int groupsCount = Mathf.Clamp(Mathf.CeilToInt(Mathf.Pow(1.7f, attackCount)), 1, 200);
+        float waitingTime = Mathf.Clamp(0.5f - 0.06f * attackCount, 0.1f, 0.5f);
+        List<GameObject> correctPool = (attackCount > 3) ? mediumEnemyGroups : easyEnemyGroups;
+        if (attackCount == 5)
+        {
+            StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, "THE BLOB-BOSS COMES!!!".Color("#ff3333"), 0.05f, 1, 0.5f));
+
+            float angle = 0;
+            Instantiate(bossGroup,
+                mainTower.transform.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 6f,
+                Quaternion.identity);   
+        }
+        else
+        {
+            StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, "NEW WAVE BEGINS!!!", 0.05f, 1, 0.5f));
+        }
+
+        for (int i = 0; i < groupsCount; ++i)
         {
             float angle = Random.Range(0, Mathf.PI * 2);
-            Instantiate(enemyGroups[Random.Range(0, enemyGroups.Count)],
+            Instantiate(correctPool[Random.Range(0, correctPool.Count)],
                 mainTower.transform.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 6f,
                 Quaternion.identity);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(waitingTime);
         }
         ++attackCount;
         StartCoroutine(PrepareTheNextAttack());
@@ -614,8 +652,18 @@ public class CoreGame : MonoBehaviour
                         enemyCols[i].GetComponent<DestructableObject>().ChangeHealth(-clickDamage);
                     }
                 }
-                // gather resources
 
+                //heal towers
+                if (currentCursor == FunctionalCursor.Wand)
+                {
+                    List<Collider2D> buildingCols = MaximUtils.GetAllOverlappedWithTag2D(mousePosition, clickHealRadius, TAG_BUILDING);
+                    for (int i = 0; i < buildingCols.Count; ++i)
+                    {
+                        buildingCols[i].GetComponent<DestructableObject>().ChangeHealth(clickHeal);
+                    }
+                }
+
+                // gather resources
                 Collider2D resourseCol = MaximUtils.GetNearestOverlappedWithTag2D(mousePosition, 0.1f, TAG_CLICKABLE_RESOURCE);
                 if (resourseCol != null)
                 {
@@ -672,28 +720,89 @@ public class CoreGame : MonoBehaviour
         allResources[(int)type].te.text = $"{allResources[(int)type].value}";
     }
 
-
-    public void CreateIconPopUp(Vector2 initialPosition, string text, Sprite icon, float fading = 1.5f)
+    struct PooledPopup
     {
+        public Transform t;
+        public TMPro.TMP_Text te;
+        public SpriteRenderer sr;
+    };
+    const int POOL_CAPACITY = 500;
+    PooledPopup[] popupPool;
+    int nextPoolId = 0;
+    private void CreatePopupPool()
+    {
+        popupPool = new PooledPopup[POOL_CAPACITY];
+        for (int i = 0; i < POOL_CAPACITY; ++i)
+        {
+            GameObject inst = Instantiate(moreResourcePfb);
+            TMPro.TMP_Text te = inst.GetComponent<TMPro.TMP_Text>();
+            SpriteRenderer sr = inst.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            inst.SetActive(false);
+            PooledPopup current = new PooledPopup();
+            current.t = inst.transform;
+            current.te = te;
+            current.sr = sr;
+            popupPool[i] = current;
+        }
+    }
 
-        GameObject inst = Instantiate(moreResourcePfb, (Vector3)initialPosition + new Vector3(-1.2f, 0.7f, -9), Quaternion.identity);
-        TMPro.TMP_Text te = inst.GetComponent<TMPro.TMP_Text>();
-        te.text = text;
-        SpriteRenderer sr = inst.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        sr.sprite = icon;
 
 
-        DOTween.Sequence()
-            .Append(inst.transform.DOJump(inst.transform.position + new Vector3(Random.Range(-0.4f, 0.4f), 0.15f, 0), Random.Range(0.3f, 0.6f), 1, fading * 0.66f))
-            .Join(inst.transform.DOScale(0.12f, fading * 0.66f))
-            .Join(
-                DOTween.Sequence()
-                .AppendInterval(0.5f * fading)
-                .Join(sr.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
-                .Join(te.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
-            )
-            .Join(inst.transform.DOMoveZ(1, fading));
-        Destroy(inst, fading);
+    public void CreateIconPopUp(Vector2 initialPosition, string text, Sprite icon, float fading = 1.5f, bool doPool = true)
+    {
+        if (doPool)
+        {
+            DOTween.Kill(popupPool[nextPoolId].t);
+            popupPool[nextPoolId].t.gameObject.SetActive(true);
+
+            popupPool[nextPoolId].t.position = (Vector3)initialPosition + new Vector3(-1.2f, 0.7f, -9);
+            popupPool[nextPoolId].te.text = text;
+            popupPool[nextPoolId].sr.sprite = icon;
+            popupPool[nextPoolId].sr.color = Color.white;
+            popupPool[nextPoolId].te.color = Color.white;
+
+            DOTween.Sequence()
+               .Append(popupPool[nextPoolId].t.DOJump(popupPool[nextPoolId].t.position + new Vector3(Random.Range(-0.4f, 0.4f), 0.15f, 0), Random.Range(0.3f, 0.6f), 1, fading * 0.66f))
+               .Join(popupPool[nextPoolId].t.DOScale(0.12f, fading * 0.66f))
+               .Join(
+                   DOTween.Sequence()
+                   .AppendInterval(0.5f * fading)
+                   .Join(popupPool[nextPoolId].sr.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
+                   .Join(popupPool[nextPoolId].te.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
+               )
+               .Join(popupPool[nextPoolId].t.DOMoveZ(1, fading))
+               .JoinCallback(() => popupPool[nextPoolId].t.gameObject.SetActive(false))
+               .OnComplete(() => popupPool[nextPoolId].t.gameObject.SetActive(false))
+               .OnKill(() => popupPool[nextPoolId].t.gameObject.SetActive(false));
+               //.SetRecyclable(true);
+            nextPoolId = (nextPoolId + 1) % POOL_CAPACITY;
+        }
+        /*
+        else
+        {
+            GameObject inst = Instantiate(moreResourcePfb, (Vector3)initialPosition + new Vector3(-1.2f, 0.7f, -9), Quaternion.identity);
+            TMPro.TMP_Text te = inst.GetComponent<TMPro.TMP_Text>();
+            te.text = text;
+            SpriteRenderer sr = inst.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            sr.sprite = icon;
+
+
+            DOTween.Sequence()
+                .Append(inst.transform.DOJump(inst.transform.position + new Vector3(Random.Range(-0.4f, 0.4f), 0.15f, 0), Random.Range(0.3f, 0.6f), 1, fading * 0.66f))
+                .Join(inst.transform.DOScale(0.12f, fading * 0.66f))
+                .Join(
+                    DOTween.Sequence()
+                    .AppendInterval(0.5f * fading)
+                    .Join(sr.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
+                    .Join(te.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
+                )
+                .Join(inst.transform.DOMoveZ(1, fading))
+                .SetRecyclable(true);
+
+            Destroy(inst, fading);
+        }
+        */
+        
     }
 
     // --- Upgrades sections --- 

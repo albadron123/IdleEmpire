@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6347066730907442632}
   - component: {fileID: 2557150990736636991}
   m_Layer: 0
-  m_Name: Tumbo_1
+  m_Name: Tumbo_2
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,12 +64,12 @@ MonoBehaviour:
   - {fileID: 4004672482230805829}
   outline: {fileID: 6032659927789449204}
   rotationPart: {fileID: 0}
-  baseProjectileSize: 1.15
-  baseShootingSpeed: 1.5
+  baseProjectileSize: 1.25
+  baseShootingSpeed: 0.75
   projectileDamageLevel: 0
   shootingSpeedLevel: 0
   projectileSizeLevel: 0
-  baseProductionTime: 1.5
+  baseProductionTime: 0.75
   productionTimeLevel: 0
   productionAmountLevel: 0
   cacti1Spr: {fileID: 0}
@@ -112,8 +112,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.4738406, y: 0.14554712}
-    oldSize: {x: 0.94, y: 1.11}
+    pivot: {x: 0.5227689, y: 0.18638651}
+    oldSize: {x: 1.07, y: 1.14}
     newSize: {x: 0.62, y: 0.82}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -163,7 +163,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1294682916, guid: f4f59f5f05b583b49b0b2cf5bc759e6a, type: 3}
+  m_Sprite: {fileID: -1591625002, guid: f4f59f5f05b583b49b0b2cf5bc759e6a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -320,7 +320,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.37942922, y: 0.08411739, z: -0.199425, w: 0.8995485}
   m_LocalPosition: {x: 0.11, y: 0.13, z: 0.13}
-  m_LocalScale: {x: 1, y: 1.5477, z: 1}
+  m_LocalScale: {x: 0.66, y: 1.27, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6324873789740083489}
@@ -366,7 +366,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1294682916, guid: f4f59f5f05b583b49b0b2cf5bc759e6a, type: 3}
+  m_Sprite: {fileID: -1591625002, guid: f4f59f5f05b583b49b0b2cf5bc759e6a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -703,7 +703,7 @@ Transform:
   m_GameObject: {fileID: 5543333096776898637}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.028, y: 0.0619, z: 1}
+  m_LocalPosition: {x: 0.028, y: 0.04, z: 1}
   m_LocalScale: {x: 0.9372741, y: 0.503776, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -938,6 +938,10 @@ PrefabInstance:
     - target: {fileID: 197335513504694848, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 197335513504694848, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 394592022157804539, guid: 868b2ae7fb78bff4dacb6f493b5313f2, type: 3}
       propertyPath: m_LocalPosition.x

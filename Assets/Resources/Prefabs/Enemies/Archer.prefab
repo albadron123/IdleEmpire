@@ -404,6 +404,7 @@ MonoBehaviour:
   rewardBones: 2
   rewardBonesCritical: 3
   criticalChance: 0.15
+  myHandle: 2
   projectilePrefab: {fileID: 8832960570407501365, guid: a4ff3b03fc2d6cf41b946b26a94e5466, type: 3}
   shootingPlace: {fileID: 3212130855568767753}
   arrorVelocity: 1.5

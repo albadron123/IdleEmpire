@@ -285,7 +285,7 @@ public class Node : MonoBehaviour
 
         List<UpgradeHandle> upgradeHandles = new List<UpgradeHandle>();
 
-        bool spectialCondition = lvl == 1 && (myHandle == UpgradeHandle.Cubo || myHandle == UpgradeHandle.Bubil || myHandle == UpgradeHandle.Tawa);
+        bool spectialCondition = lvl == 1 && (myHandle == UpgradeHandle.Cubo || myHandle == UpgradeHandle.Bubil || myHandle == UpgradeHandle.Tumbo);
         if (lvl == 0 || spectialCondition)
         {
             foreach (Edge e in Meta.inst.edges)

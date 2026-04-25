@@ -93,6 +93,20 @@ public class UpgradeButton : MonoBehaviour
         switch (myType)
         {
             case UpgradeType.productionAmount:
+                return (int)(Mathf.Pow(3f, bObj.productionAmountLevel + 3));
+            case UpgradeType.productionTime:
+                return (int)(Mathf.Pow(3f, bObj.productionTimeLevel + 3));
+            case UpgradeType.shootingSpeed:
+                return (int)(Mathf.Pow(1.7f, bObj.shootingSpeedLevel + 3));
+            case UpgradeType.projectileDamage:
+                return (int)(Mathf.Pow(1.7f, (bObj.shootingSpeedLevel + 3)));
+            case UpgradeType.projectileSize:
+                return (int)(Mathf.Pow(1.4f, (bObj.shootingSpeedLevel + 3)));
+        }
+        /*
+        switch (myType)
+        {
+            case UpgradeType.productionAmount:
                 return (int)(2 + (bObj.productionAmountLevel + 1) * 1.6f);
             case UpgradeType.productionTime:
                 return (int)(0 + (bObj.productionTimeLevel + 1) * 1.4f);
@@ -103,6 +117,7 @@ public class UpgradeButton : MonoBehaviour
             case UpgradeType.projectileSize:
                 return (int)(0 + (bObj.projectileSizeLevel + 1) * 1.4f);
         }
+        */
         return 0;
     }
 

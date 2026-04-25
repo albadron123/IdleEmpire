@@ -503,7 +503,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -1529834268, guid: f4f59f5f05b583b49b0b2cf5bc759e6a, type: 3}
-  m_Color: {r: 0.6431373, g: 0.909804, b: 0.9490197, a: 1}
+  m_Color: {r: 1, g: 0.87058824, b: 0.5882353, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -959,7 +959,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5945657803197764565}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.13, y: 3.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1015,7 +1015,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 530242438, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
+  m_Sprite: {fileID: -623792174, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1041,7 +1041,19 @@ MonoBehaviour:
   isInteractive: 1
   e:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CoreGame, Assembly-CSharp
+        m_MethodName: PressBuildingButton
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7859877125115540475}
+          m_ObjectArgumentAssemblyTypeName: BuildingButton, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   mouseEnterCustomEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1085,7 +1097,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.26, y: 0.97}
+    oldSize: {x: 3.3, y: 0.98}
     newSize: {x: 4.5277777, y: 1.3472222}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1121,8 +1133,8 @@ MonoBehaviour:
   - {fileID: 9116046677394913768}
   levelColors:
   - {r: 1, g: 1, b: 1, a: 1}
-  - {r: 0.6431373, g: 0.9098039, b: 0.9490196, a: 1}
-  - {r: 0.27058825, g: 0.7058824, b: 0.78431374, a: 1}
+  - {r: 1, g: 0.8696448, b: 0.5896226, a: 1}
+  - {r: 1, g: 0.68235296, b: 0, a: 1}
 --- !u!1 &6028029358183727168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,7 +1558,7 @@ SpriteRenderer:
   m_Size: {x: 0.8472222, y: 0.7916667}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7224673045250431482
@@ -1710,7 +1722,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -1529834268, guid: f4f59f5f05b583b49b0b2cf5bc759e6a, type: 3}
-  m_Color: {r: 0.27058825, g: 0.7058824, b: 0.7843138, a: 1}
+  m_Color: {r: 1, g: 0.68235296, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
