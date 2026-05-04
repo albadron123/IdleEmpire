@@ -73,6 +73,8 @@ public enum EnemyHandle
     Summmoner,
     Boss,
 
+    EnemyHut,
+
     Count
 };
 
@@ -165,7 +167,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 3,
             initialPricePerLevel = new int[3] { 5, 10, 15 },
             priceMultiplierPerLevel = new float[3] { 2, 2, 2 },
-            maxHealthPerLevel = new int[3] { 15, 15, 15 },
+            maxHealthPerLevel = new int[3] { 100, 150, 200},
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/Tawa_1"),
@@ -179,7 +181,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 3,
             initialPricePerLevel = new int[3] { 5, 10, 15 },
             priceMultiplierPerLevel = new float[3] { 2, 2, 2 },
-            maxHealthPerLevel = new int[3] { 15, 15, 15 },
+            maxHealthPerLevel = new int[3] { 100, 150, 200 },
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/Cubo_1"),
@@ -193,7 +195,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 3,
             initialPricePerLevel = new int[3] { 5, 10, 15 },
             priceMultiplierPerLevel = new float[3] { 2, 2, 2 },
-            maxHealthPerLevel = new int[3] { 15, 15, 15 },
+            maxHealthPerLevel = new int[3] { 100, 150, 200 },
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/Bubil_1"),
@@ -207,7 +209,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 1,
             initialPricePerLevel = new int[1] {15},
             priceMultiplierPerLevel = new float[1] {2},
-            maxHealthPerLevel = new int[1] { 50 },
+            maxHealthPerLevel = new int[1] { 150 },
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/MainTower"),
@@ -219,7 +221,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 2,
             initialPricePerLevel = new int[2] { 5, 10 },
             priceMultiplierPerLevel = new float[2] {2, 2},
-            maxHealthPerLevel = new int[2] { 15, 15 },
+            maxHealthPerLevel = new int[2] { 100, 150 },
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/Tumbo_1"),
@@ -232,7 +234,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },
             priceMultiplierPerLevel = new float[1] { 2 },
-            maxHealthPerLevel = new int[1] { 15 },
+            maxHealthPerLevel = new int[1] { 100 },
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/Flawa_1"),
@@ -244,7 +246,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },
             priceMultiplierPerLevel = new float[1] { 2 },
-            maxHealthPerLevel = new int[1] { 15 },
+            maxHealthPerLevel = new int[1] { 100 },
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/Magno_1"),
@@ -256,7 +258,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },
             priceMultiplierPerLevel = new float[1] { 2 },
-            maxHealthPerLevel = new int[1] { 15 },
+            maxHealthPerLevel = new int[1] { 100 },
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/Custik_1"),
@@ -268,7 +270,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },
             priceMultiplierPerLevel = new float[1] { 2 },
-            maxHealthPerLevel = new int[1] { 15 },
+            maxHealthPerLevel = new int[1] { 100 },
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/Bombo_1"),
@@ -280,7 +282,7 @@ public class DataStorage : MonoBehaviour
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },
             priceMultiplierPerLevel = new float[1] { 2 },
-            maxHealthPerLevel = new int[1] { 15 },
+            maxHealthPerLevel = new int[1] { 200 },
 
             pfbs = new GameObject[] {
                 Resources.Load<GameObject>("Prefabs/Buildings/Cacti_1"),
@@ -597,6 +599,13 @@ public class DataStorage : MonoBehaviour
             bonesRewardCritial = 100,
             maxHealth = 200,
             simpleDamage = 5,
+        };
+        allEnemies[(int)EnemyHandle.EnemyHut] = new EnemyData()
+        {
+            bonesReward = 10,
+            bonesRewardCritial = 15,
+            maxHealth = 10,
+            simpleDamage = 0,
         };
     }
 

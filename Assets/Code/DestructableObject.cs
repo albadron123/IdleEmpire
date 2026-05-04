@@ -24,8 +24,11 @@ public class DestructableObject : MonoBehaviour
     List<SpriteRenderer> srList = new List<SpriteRenderer>();
 
 
+    TMPro.TMP_Text healthText;
+
     void Start()
     {
+        
         specificDestruction = GetComponent<IDestructable>();
         InitHealth();
     }
@@ -38,7 +41,9 @@ public class DestructableObject : MonoBehaviour
 
     public void InitHealth()
     {
+        healthText = sliderContainer.GetComponentInChildren<TMPro.TMP_Text>();
         health = maxHealth;
+        healthText.text = $"{health}hp";
         sliderT.transform.localPosition = new Vector3(sliderMaxX, 0, sliderT.transform.localPosition.z);
         sliderContainer.SetActive(false);
     }
@@ -66,6 +71,9 @@ public class DestructableObject : MonoBehaviour
         {
             sliderContainer.SetActive(true);
         }
+
+        healthText.text = $"{health}hp";
+
         // Display health on the slider
         sliderT.transform.DOKill();
         sliderT.transform.DOLocalMove(new Vector3(GetSliderDestinationX(), 0, sliderT.transform.localPosition.z), 0.5f);

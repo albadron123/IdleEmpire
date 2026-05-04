@@ -35,3 +35,5 @@
 *.opendb
 *.VC.db
 *.VC.opendb
+
+*.zip

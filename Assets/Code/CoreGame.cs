@@ -110,7 +110,7 @@ public class CoreGame : MonoBehaviour
 
 
     //Remove later
-    float personPrice = 20;
+    float personPrice = 5;
     [SerializeField] TMPro.TMP_Text personPriceTe;
     [SerializeField] GameObject blobPfb;
 
@@ -188,6 +188,11 @@ public class CoreGame : MonoBehaviour
         bombDamage = DataStorage.bombDamagePerLevel[G.GetUpgradeLvl(UpgradeHandle.BombikDamage)];
 
         autoGatherResource = (G.GetUpgradeLvl(UpgradeHandle.AutoResourceGather) > 0);
+
+        //REMOVE THIS LATER
+        //BOBBY BUY PRICE
+        personPrice = 5;
+        personPriceTe.text = personPrice.ToString();
     }
 
     void InitCursorButtons()

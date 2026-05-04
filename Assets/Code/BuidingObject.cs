@@ -83,8 +83,11 @@ public class BuildingObject : MonoBehaviour, IDestructable
     {
         sr = GetComponent<SpriteRenderer>();
         dObj = GetComponent<DestructableObject>();
+        
         dObj.maxHealth = DataStorage.allBuildings[(int)b.myType].maxHealthPerLevel[(int)b.myLvl];
-
+        dObj.health = dObj.maxHealth;
+        dObj.InitHealth();
+         
         RegisterBuilding();
 
         t = transform;
