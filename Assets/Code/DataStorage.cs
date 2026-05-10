@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using System.IO;
+using System;
 
 [System.Serializable]
 public struct BuildingData
@@ -53,6 +55,7 @@ public enum UpgradeHandle
     Count
 };
 
+[System.Serializable]
 public struct UpgradeData
 {
     public string title;
@@ -78,6 +81,7 @@ public enum EnemyHandle
     Count
 };
 
+[System.Serializable]
 public struct EnemyData
 {
     public int bonesReward;
@@ -90,6 +94,13 @@ public struct EnemyData
 
 public class DataStorage : MonoBehaviour
 {
+    [System.Serializable]
+    private class SerializeData
+    {
+        public BuildingData[] allBuildings;
+        public UpgradeData[] allUpgrades;
+        public EnemyData[] allEnemies;
+    }
 
     [HideInInspector]
     public static AudioClip SFX_PRODUCE_CUBO;
@@ -154,6 +165,51 @@ public class DataStorage : MonoBehaviour
         SOUND_BROWN_NOISE = Resources.Load<AudioClip>("Sound/BrownNoise");
         SOUND_FIREPLACE = Resources.Load<AudioClip>("Sound/Fireplace");
         SOUND_FIREPLACE_MUSIC = Resources.Load<AudioClip>("Sound/FireplaceMusic");
+    }
+
+
+    public static void SerializeAll()
+    {
+        SerializeData data = new SerializeData();
+        data.allBuildings = allBuildings;
+        data.allEnemies = allEnemies;
+        data.allUpgrades = allUpgrades;
+        string dataStr = JsonUtility.ToJson(data, true);
+        File.WriteAllText($"{Application.dataPath}/balance.json", dataStr);
+    }
+
+    public static bool DeserializeAll()
+    {
+        SerializeData data = null;
+        if (!File.Exists($"{Application.dataPath}/balance.json"))
+        {
+            Debug.Log("balance.json not found!");
+            return false;
+        }
+        string dataStr = File.ReadAllText($"{Application.dataPath}/balance.json");
+        if (string.IsNullOrEmpty(dataStr))
+        {
+            Debug.Log("Json string is empty");
+            return false;
+        }
+        try
+        {
+            data = JsonUtility.FromJson<SerializeData>(dataStr);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Deserialization failed");
+            return false;
+        }
+        if (data == null)
+        {
+            Debug.Log("Deserialized object is null");
+            return false;
+        }
+        allBuildings = data.allBuildings;
+        allUpgrades = data.allUpgrades;
+        allEnemies = data.allEnemies;
+        return true;
     }
 
     public static void LoadBuildings()
@@ -276,7 +332,8 @@ public class DataStorage : MonoBehaviour
                 Resources.Load<GameObject>("Prefabs/Buildings/Bombo_1"),
             }
         };
-        allBuildings[(int)Building.BuildingType.Cacti] = new BuildingData() { 
+        allBuildings[(int)Building.BuildingType.Cacti] = new BuildingData()
+        {
             title = "Cacti",
             icon = sprites[(int)Building.BuildingType.Cacti],
             maxLevels = 1,
@@ -288,6 +345,8 @@ public class DataStorage : MonoBehaviour
                 Resources.Load<GameObject>("Prefabs/Buildings/Cacti_1"),
             }
         };
+
+        Debug.Log(JsonUtility.ToJson(allBuildings[0]));
     }
 
 

@@ -1,0 +1,593 @@
+{
+    "allBuildings": [
+        {
+            "title": "Tawa",
+            "icon": {
+                "instanceID": 32162
+            },
+            "maxLevels": 3,
+            "initialPricePerLevel": [
+                5,
+                10,
+                15
+            ],
+            "priceMultiplierPerLevel": [
+                2.0,
+                2.0,
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                100,
+                150,
+                200
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 29468
+                },
+                {
+                    "instanceID": 29474
+                },
+                {
+                    "instanceID": 29476
+                }
+            ]
+        },
+        {
+            "title": "Cubo",
+            "icon": {
+                "instanceID": 32164
+            },
+            "maxLevels": 3,
+            "initialPricePerLevel": [
+                5,
+                10,
+                15
+            ],
+            "priceMultiplierPerLevel": [
+                2.0,
+                2.0,
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                100,
+                150,
+                200
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 29464
+                },
+                {
+                    "instanceID": 29470
+                },
+                {
+                    "instanceID": 29472
+                }
+            ]
+        },
+        {
+            "title": "Bubil",
+            "icon": {
+                "instanceID": 32166
+            },
+            "maxLevels": 3,
+            "initialPricePerLevel": [
+                5,
+                10,
+                15
+            ],
+            "priceMultiplierPerLevel": [
+                2.0,
+                2.0,
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                100,
+                150,
+                200
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 29466
+                },
+                {
+                    "instanceID": 29478
+                },
+                {
+                    "instanceID": 29480
+                }
+            ]
+        },
+        {
+            "title": "Hutka Grande",
+            "icon": {
+                "instanceID": 32168
+            },
+            "maxLevels": 1,
+            "initialPricePerLevel": [
+                15
+            ],
+            "priceMultiplierPerLevel": [
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                150
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 29534
+                }
+            ]
+        },
+        {
+            "title": "Tumbo",
+            "icon": {
+                "instanceID": 32170
+            },
+            "maxLevels": 2,
+            "initialPricePerLevel": [
+                5,
+                10
+            ],
+            "priceMultiplierPerLevel": [
+                2.0,
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                100,
+                150
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 32576
+                },
+                {
+                    "instanceID": 32580
+                }
+            ]
+        },
+        {
+            "title": "Flawa",
+            "icon": {
+                "instanceID": 32172
+            },
+            "maxLevels": 1,
+            "initialPricePerLevel": [
+                15
+            ],
+            "priceMultiplierPerLevel": [
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                100
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 32466
+                }
+            ]
+        },
+        {
+            "title": "Magno",
+            "icon": {
+                "instanceID": 32174
+            },
+            "maxLevels": 1,
+            "initialPricePerLevel": [
+                15
+            ],
+            "priceMultiplierPerLevel": [
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                100
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 32362
+                }
+            ]
+        },
+        {
+            "title": "Custik",
+            "icon": {
+                "instanceID": 32176
+            },
+            "maxLevels": 1,
+            "initialPricePerLevel": [
+                15
+            ],
+            "priceMultiplierPerLevel": [
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                100
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 32498
+                }
+            ]
+        },
+        {
+            "title": "Bombo",
+            "icon": {
+                "instanceID": 32178
+            },
+            "maxLevels": 1,
+            "initialPricePerLevel": [
+                15
+            ],
+            "priceMultiplierPerLevel": [
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                100
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 32092
+                }
+            ]
+        },
+        {
+            "title": "Cacti",
+            "icon": {
+                "instanceID": 32180
+            },
+            "maxLevels": 1,
+            "initialPricePerLevel": [
+                15
+            ],
+            "priceMultiplierPerLevel": [
+                2.0
+            ],
+            "maxHealthPerLevel": [
+                200
+            ],
+            "pfbs": [
+                {
+                    "instanceID": 31920
+                }
+            ]
+        }
+    ],
+    "allUpgrades": [
+        {
+            "title": "Tawa",
+            "icon": {
+                "instanceID": 32018
+            },
+            "maxLvls": 3,
+            "pricePerLevel": [
+                10,
+                30,
+                400
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Cubo",
+            "icon": {
+                "instanceID": 32020
+            },
+            "maxLvls": 3,
+            "pricePerLevel": [
+                0,
+                5,
+                100
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Bubil",
+            "icon": {
+                "instanceID": 32022
+            },
+            "maxLvls": 3,
+            "pricePerLevel": [
+                0,
+                5,
+                100
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Hutka Grande",
+            "icon": {
+                "instanceID": 32024
+            },
+            "maxLvls": 1,
+            "pricePerLevel": [
+                10
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Tumbo",
+            "icon": {
+                "instanceID": 32026
+            },
+            "maxLvls": 2,
+            "pricePerLevel": [
+                0,
+                5
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Flawa",
+            "icon": {
+                "instanceID": 32028
+            },
+            "maxLvls": 1,
+            "pricePerLevel": [
+                750
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Magno",
+            "icon": {
+                "instanceID": 32030
+            },
+            "maxLvls": 1,
+            "pricePerLevel": [
+                1000
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Custik",
+            "icon": {
+                "instanceID": 32032
+            },
+            "maxLvls": 1,
+            "pricePerLevel": [
+                100
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Bombo",
+            "icon": {
+                "instanceID": 32034
+            },
+            "maxLvls": 1,
+            "pricePerLevel": [
+                1000
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Cacti",
+            "icon": {
+                "instanceID": 32036
+            },
+            "maxLvls": 1,
+            "pricePerLevel": [
+                1000
+            ],
+            "isBuildingUpdrade": true
+        },
+        {
+            "title": "Gather Resources without clicking",
+            "icon": {
+                "instanceID": 32038
+            },
+            "maxLvls": 1,
+            "pricePerLevel": [
+                20000
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "Bobby killin damaga",
+            "icon": {
+                "instanceID": 32040
+            },
+            "maxLvls": 5,
+            "pricePerLevel": [
+                10,
+                20,
+                100,
+                500,
+                10000
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "Bobby spiddin",
+            "icon": {
+                "instanceID": 32042
+            },
+            "maxLvls": 3,
+            "pricePerLevel": [
+                20,
+                40,
+                500
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "Spawn More Cubo",
+            "icon": {
+                "instanceID": 32044
+            },
+            "maxLvls": 4,
+            "pricePerLevel": [
+                10,
+                20,
+                40,
+                100
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "Spawn More Bubil",
+            "icon": {
+                "instanceID": 32046
+            },
+            "maxLvls": 4,
+            "pricePerLevel": [
+                10,
+                20,
+                40,
+                100
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "More Bones",
+            "icon": {
+                "instanceID": 32048
+            },
+            "maxLvls": 4,
+            "pricePerLevel": [
+                10,
+                20,
+                30,
+                40
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "Click Attack Dmg",
+            "icon": {
+                "instanceID": 32050
+            },
+            "maxLvls": 5,
+            "pricePerLevel": [
+                10,
+                25,
+                500,
+                20000,
+                100000
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "Click Attack Range",
+            "icon": {
+                "instanceID": 32052
+            },
+            "maxLvls": 5,
+            "pricePerLevel": [
+                20,
+                150,
+                7000,
+                15000,
+                50000
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "Click Heal Amount",
+            "icon": {
+                "instanceID": 32054
+            },
+            "maxLvls": 5,
+            "pricePerLevel": [
+                2000,
+                5000,
+                20000,
+                50000,
+                100000
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "Click Heal Range",
+            "icon": {
+                "instanceID": 32056
+            },
+            "maxLvls": 5,
+            "pricePerLevel": [
+                3000,
+                7000,
+                40000,
+                80000,
+                150000
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "+ Bombik Dmg",
+            "icon": {
+                "instanceID": 32058
+            },
+            "maxLvls": 3,
+            "pricePerLevel": [
+                1000,
+                5000,
+                30000
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "+ Bombik Range",
+            "icon": {
+                "instanceID": 32060
+            },
+            "maxLvls": 3,
+            "pricePerLevel": [
+                1000,
+                10000,
+                100000
+            ],
+            "isBuildingUpdrade": false
+        },
+        {
+            "title": "More building slots",
+            "icon": {
+                "instanceID": 32062
+            },
+            "maxLvls": 3,
+            "pricePerLevel": [
+                25,
+                2500,
+                25000
+            ],
+            "isBuildingUpdrade": false
+        }
+    ],
+    "allEnemies": [
+        {
+            "bonesReward": 1,
+            "bonesRewardCritial": 2,
+            "maxHealth": 10,
+            "simpleDamage": 1
+        },
+        {
+            "bonesReward": 2,
+            "bonesRewardCritial": 3,
+            "maxHealth": 25,
+            "simpleDamage": 2
+        },
+        {
+            "bonesReward": 2,
+            "bonesRewardCritial": 3,
+            "maxHealth": 20,
+            "simpleDamage": 3
+        },
+        {
+            "bonesReward": 3,
+            "bonesRewardCritial": 5,
+            "maxHealth": 40,
+            "simpleDamage": 0
+        },
+        {
+            "bonesReward": 100,
+            "bonesRewardCritial": 100,
+            "maxHealth": 200,
+            "simpleDamage": 5
+        },
+        {
+            "bonesReward": 10,
+            "bonesRewardCritial": 15,
+            "maxHealth": 10,
+            "simpleDamage": 0
+        }
+    ]
+}
