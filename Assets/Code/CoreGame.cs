@@ -92,6 +92,10 @@ public class CoreGame : MonoBehaviour
 
     Vector2 mousePosition;
 
+    [Header("Attack params")]
+    [SerializeField] Rect outerAttackRect;
+    [SerializeField] Rect innerAttackRect;
+
     float attackTimer = 0;
     float attackCount = 1;
     float attackTimeScale = 1;
@@ -323,14 +327,15 @@ public class CoreGame : MonoBehaviour
     {
         //Notify all
         attackTe.text = "";
-        StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, "NEW WAVE BEGINS!!!", 0.05f, 1, 0.5f));
+        
 
         int groupsCount = Mathf.Clamp(Mathf.CeilToInt(Mathf.Pow(1.7f, attackCount)), 1, 200);
         float waitingTime = Mathf.Clamp(0.5f - 0.06f * attackCount, 0.1f, 0.5f);
         List<GameObject> correctPool = (attackCount > 3) ? mediumEnemyGroups : easyEnemyGroups;
+        // boss 
         if (attackCount == 5)
         {
-            StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, "THE BLOB-BOSS COMES!!!".Color("#ff3333"), 0.05f, 1, 0.5f));
+            StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, "THE BLOB-BOSS COMES!!!", 0.05f, 1, 0.5f));
 
             float angle = 0;
             Instantiate(bossGroup,
@@ -339,19 +344,42 @@ public class CoreGame : MonoBehaviour
         }
         else
         {
-            StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, "NEW WAVE BEGINS!!!", 0.05f, 1, 0.5f));
+            StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, $"WAVE {attackCount + 1} BEGINS!!!", 0.05f, 1, 0.5f));
         }
+
+        //Get Random Position On the field
+        
 
         for (int i = 0; i < groupsCount; ++i)
         {
             float angle = Random.Range(0, Mathf.PI * 2);
             Instantiate(correctPool[Random.Range(0, correctPool.Count)],
-                mainTower.transform.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 6f,
+                mainTower.transform.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) ,
                 Quaternion.identity);
             yield return new WaitForSeconds(waitingTime);
         }
         ++attackCount;
         StartCoroutine(PrepareTheNextAttack());
+    }
+
+    private void OnDrawGizmos()
+    {
+        //draw outer radius
+        Vector3[] outerAttackRadius = new Vector3[4];
+        outerAttackRadius[0] = new Vector3(outerAttackRect.x, outerAttackRect.y, -9);
+        outerAttackRadius[1] = new Vector3(outerAttackRect.x+outerAttackRect.width, outerAttackRect.y, -9);
+        outerAttackRadius[2] = new Vector3(outerAttackRect.x+outerAttackRect.width, outerAttackRect.y+outerAttackRect.height, -9);
+        outerAttackRadius[3] = new Vector3(outerAttackRect.x, outerAttackRect.y+outerAttackRect.height, -9);
+        Gizmos.DrawLineStrip(outerAttackRadius,
+                             true);
+        //draw inner radius
+        Vector3[] innerAttackRadius = new Vector3[4];
+        innerAttackRadius[0] = new Vector3(innerAttackRect.x, innerAttackRect.y, -9);
+        innerAttackRadius[1] = new Vector3(innerAttackRect.x + innerAttackRect.width, innerAttackRect.y, -9);
+        innerAttackRadius[2] = new Vector3(innerAttackRect.x + innerAttackRect.width, innerAttackRect.y + innerAttackRect.height, -9);
+        innerAttackRadius[3] = new Vector3(innerAttackRect.x, innerAttackRect.y + innerAttackRect.height, -9);
+        Gizmos.DrawLineStrip(innerAttackRadius,
+                             true);
     }
 
     IEnumerator PrepareTheNextAttack()

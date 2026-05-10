@@ -4393,6 +4393,18 @@ MonoBehaviour:
   selectedBuilding: {fileID: 0}
   canDrag: 1
   canBuild: 1
+  outerAttackRect:
+    serializedVersion: 2
+    x: -5.26
+    y: -4.8
+    width: 13.9
+    height: 9.17
+  innerAttackRect:
+    serializedVersion: 2
+    x: -3.07
+    y: -3.05
+    width: 10.17
+    height: 5.83
   attackTe: {fileID: 1252822644}
   attantionTe: {fileID: 488070161}
   allWhiteMaterial: {fileID: 2100000, guid: 0fb803795b5c0324e9ee4c7c51c691a0, type: 2}

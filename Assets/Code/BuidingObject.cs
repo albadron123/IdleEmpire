@@ -436,7 +436,15 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
                 Projectile pr = inst.GetComponent<Projectile>();
                 pr.damage = damage;
-                pr.direction = ((Vector2)(nearestEnemy.transform.position - t.position)).normalized;
+
+                //finding the center of the enemy
+                Collider2D enemyCollider = nearestEnemy.GetComponent<Collider2D>();
+                if (enemyCollider == null)
+                {
+                    Debug.LogError("EnemyDoesnt have a collider");
+                }
+                Vector2 enemyShootingPosition = enemyCollider.offset + (Vector2)nearestEnemy.transform.position;
+                pr.direction = ((enemyShootingPosition - (Vector2)inst.transform.position)).normalized;
                 inst.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(pr.direction.y, pr.direction.x)*Mathf.Rad2Deg);
                 Destroy(inst, 0.75f);
             }
