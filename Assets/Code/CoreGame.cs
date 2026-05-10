@@ -97,7 +97,7 @@ public class CoreGame : MonoBehaviour
     [SerializeField] Rect innerAttackRect;
 
     float attackTimer = 0;
-    float attackCount = 1;
+    float attackCount = 10;
     float attackTimeScale = 1;
 
     [SerializeField] TMPro.TMP_Text attackTe;
@@ -275,6 +275,7 @@ public class CoreGame : MonoBehaviour
     List<GameObject> easyEnemyGroups = new List<GameObject>();
     List<GameObject> mediumEnemyGroups = new List<GameObject>();
     [SerializeField] GameObject bossGroup;
+    [SerializeField] GameObject enemyHutPfb;
 
 
     void InitEnemyGroups()
@@ -325,9 +326,7 @@ public class CoreGame : MonoBehaviour
 
     IEnumerator StartAttack()
     {
-        //Notify all
-        attackTe.text = "";
-        
+        attackTe.text = "";   
 
         int groupsCount = Mathf.Clamp(Mathf.CeilToInt(Mathf.Pow(1.7f, attackCount)), 1, 200);
         float waitingTime = Mathf.Clamp(0.5f - 0.06f * attackCount, 0.1f, 0.5f);
@@ -347,15 +346,29 @@ public class CoreGame : MonoBehaviour
             StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, $"WAVE {attackCount + 1} BEGINS!!!", 0.05f, 1, 0.5f));
         }
 
-        //Get Random Position On the field
         
-
         for (int i = 0; i < groupsCount; ++i)
         {
-            float angle = Random.Range(0, Mathf.PI * 2);
-            Instantiate(correctPool[Random.Range(0, correctPool.Count)],
-                mainTower.transform.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) ,
-                Quaternion.identity);
+            Vector2 randomPos = Vector2.zero;
+        
+            GameObject enemyHutInstance = Instantiate(enemyHutPfb, new Vector3(randomPos.x, randomPos.y, randomPos.y), Quaternion.identity);
+            enemyHutInstance.GetComponent<EnemyHut>().enemyGroup = correctPool[Random.Range(0, correctPool.Count)];
+        
+            Transform enemyHutT = enemyHutInstance.transform;
+            BoxCollider2D enemyHutCol = enemyHutInstance.GetComponent<BoxCollider2D>();
+
+            bool overlapped = false;
+            int attempts = 0;
+            do
+            {
+                randomPos = MaximUtils.RandomPositionInsideFrame(innerAttackRect, outerAttackRect);
+                overlapped = MaximUtils.DoSquareOverlapAny(randomPos - enemyHutCol.offset, enemyHutCol.size);
+                ++attempts;
+            } while(overlapped && attempts < 500);
+
+            enemyHutT.position = new Vector3(randomPos.x, randomPos.y, randomPos.y);
+            
+            
             yield return new WaitForSeconds(waitingTime);
         }
         ++attackCount;
@@ -384,7 +397,7 @@ public class CoreGame : MonoBehaviour
 
     IEnumerator PrepareTheNextAttack()
     {
-        const int EXTRA_TIME_FOR_DEFENCE_SEC = 10;
+        const int EXTRA_TIME_FOR_DEFENCE_SEC = 30;
         for (int i = 0; i < EXTRA_TIME_FOR_DEFENCE_SEC; ++i)
         {
             if (MaximUtils.CountGameObjectsWithTag(TAG_ENEMY) <= 0)

@@ -59,19 +59,57 @@ public class MaximUtils : MonoBehaviour
         return randomIds;
     }
 
+    /// <summary>
+    /// Returns a random dot inside the frame with bounds inner and outer. IMPORTANT!: inner should be contained inside outer. IMPORTANT!: X,Y are the lower-left X,Y.
+    /// </summary>
+    /// <param name="inner"></param>
+    /// <param name="outer"></param>
+    /// <returns></returns>
+    public static UnityEngine.Vector2 RandomPositionInsideFrame(Rect inner, Rect outer)
+    {
+        int part = Random.Range(0, 4);
+        switch (part)
+        {
+            case 0: return new UnityEngine.Vector2(Random.Range(outer.x, inner.x), Random.Range(outer.y, outer.y + outer.height));
+            case 1: return new UnityEngine.Vector2(Random.Range(inner.x + inner.width, outer.x + outer.width), Random.Range(outer.y, outer.y + outer.height));
+            case 2: return new UnityEngine.Vector2(Random.Range(inner.x, inner.x + inner.width), Random.Range(outer.y, inner.x));
+            case 3: return new UnityEngine.Vector2(Random.Range(inner.x, inner.x + inner.width), Random.Range(inner.y + inner.height, outer.y + outer.height));
+        }
+        // unreachable
+        Debug.LogError("An unreached section is reached in MaximUtils function");
+        return UnityEngine.Vector2.zero;
+    }
 
-    public static bool DoIOverlapTag2D(Collider2D col, string tag)
+    
+
+    public static bool DoIOverlap(Collider2D col)
     {
         List<Collider2D> overlapped = new List<Collider2D>();
         Physics2D.OverlapCollider(col, new ContactFilter2D().NoFilter(), overlapped);
         foreach (Collider2D other in overlapped)
         {
-            if(other.gameObject.CompareTag(tag))
+                return true;
+        }
+        return false;
+    }
+
+    public static bool DoIOverlapAndMatch(Collider2D col, System.Predicate<Collider2D> predicate)
+    {
+        List<Collider2D> overlapped = new List<Collider2D>();
+        Physics2D.OverlapCollider(col, new ContactFilter2D().NoFilter(), overlapped);
+        foreach (Collider2D other in overlapped)
+        {
+            if (predicate(other))
             {
                 return true;
             }
         }
         return false;
+    }
+
+    public static bool DoIOverlapTag2D(Collider2D col, string tag)
+    {
+        return DoIOverlapAndMatch(col, (col) => col.gameObject.tag == tag);
     }
 
     public static Collider2D GetAnyOverlappedWithTag2D(Collider2D col, string tag)
@@ -146,6 +184,12 @@ public class MaximUtils : MonoBehaviour
             }
         }
         return nearest;
+    }
+
+    public static bool DoSquareOverlapAny(UnityEngine.Vector2 position, UnityEngine.Vector2 size)
+    {
+        Collider2D overlapped = Physics2D.OverlapBox(position, size, 0f);
+        return overlapped != null;
     }
 
     public static Collider2D GetNearestOverlappedWithTag2D(UnityEngine.Vector2 point, float radius, string tag)
