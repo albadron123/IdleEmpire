@@ -97,7 +97,7 @@ public class CoreGame : MonoBehaviour
     [SerializeField] Rect innerAttackRect;
 
     float attackTimer = 0;
-    float attackCount = 10;
+    float attackCount = 0;
     float attackTimeScale = 1;
 
     [SerializeField] TMPro.TMP_Text attackTe;

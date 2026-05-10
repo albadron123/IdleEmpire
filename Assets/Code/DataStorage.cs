@@ -100,6 +100,18 @@ public class DataStorage : MonoBehaviour
         public BuildingData[] allBuildings;
         public UpgradeData[] allUpgrades;
         public EnemyData[] allEnemies;
+        public int[] bobbyDmgPerLevel;
+        public float[] bobbyVelocityPerLevel;
+        public int[] clickBaseAttackPerLevel;
+        public float[] clickAttackRadiusPerLevel;
+        public int[] clickHealAmountPerLevel;
+        public float[] clickHealRadiusPerLevel;
+        public float[] cuboSpawnTimePerLevel;
+        public float[] bubilSpawnTimePerLevel;
+        public float[] bonesMultiplierPerLevel;
+        public float[] bombRadiusPerLevel;
+        public int[] bombDamagePerLevel;
+        //public int[] hutsPerLevel;
     }
 
     [HideInInspector]
@@ -174,6 +186,17 @@ public class DataStorage : MonoBehaviour
         data.allBuildings = allBuildings;
         data.allEnemies = allEnemies;
         data.allUpgrades = allUpgrades;
+        data.bobbyDmgPerLevel = bobbyDmgPerLevel;
+        data.bobbyVelocityPerLevel = bobbyVelocityPerLevel;
+        data.clickBaseAttackPerLevel = clickBaseAttackPerLevel;
+        data.clickAttackRadiusPerLevel = clickAttackRadiusPerLevel;
+        data.clickHealAmountPerLevel = clickHealAmountPerLevel;
+        data.clickHealRadiusPerLevel = clickHealRadiusPerLevel;
+        data.cuboSpawnTimePerLevel = cuboSpawnTimePerLevel;
+        data.bubilSpawnTimePerLevel = bubilSpawnTimePerLevel;
+        data.bonesMultiplierPerLevel = bonesMultiplierPerLevel;
+        data.bombRadiusPerLevel = bombRadiusPerLevel;
+        data.bombDamagePerLevel = bombDamagePerLevel;
         string dataStr = JsonUtility.ToJson(data, true);
         File.WriteAllText($"{Application.dataPath}/balance.json", dataStr);
     }
@@ -209,6 +232,17 @@ public class DataStorage : MonoBehaviour
         allBuildings = data.allBuildings;
         allUpgrades = data.allUpgrades;
         allEnemies = data.allEnemies;
+        bobbyDmgPerLevel = data.bobbyDmgPerLevel;
+        bobbyVelocityPerLevel = data.bobbyVelocityPerLevel;
+        clickBaseAttackPerLevel = data.clickBaseAttackPerLevel;
+        clickAttackRadiusPerLevel = data.clickAttackRadiusPerLevel;
+        clickHealAmountPerLevel = data.clickHealAmountPerLevel;
+        clickHealRadiusPerLevel = data.clickHealRadiusPerLevel;
+        cuboSpawnTimePerLevel = data.cuboSpawnTimePerLevel;
+        bubilSpawnTimePerLevel = data.bubilSpawnTimePerLevel;
+        bonesMultiplierPerLevel = data.bonesMultiplierPerLevel;
+        bombRadiusPerLevel = data.bombRadiusPerLevel;
+        bombDamagePerLevel = data.bombDamagePerLevel;
         return true;
     }
 

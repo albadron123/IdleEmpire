@@ -556,13 +556,13 @@
         {
             "bonesReward": 1,
             "bonesRewardCritial": 2,
-            "maxHealth": 10,
+            "maxHealth": 5,
             "simpleDamage": 1
         },
         {
             "bonesReward": 2,
             "bonesRewardCritial": 3,
-            "maxHealth": 25,
+            "maxHealth": 10,
             "simpleDamage": 2
         },
         {
@@ -589,5 +589,84 @@
             "maxHealth": 10,
             "simpleDamage": 0
         }
+    ],
+    "bobbyDmgPerLevel": [
+        1,
+        3,
+        10,
+        20,
+        60,
+        100
+    ],
+    "bobbyVelocityPerLevel": [
+        2.0,
+        3.0,
+        4.5,
+        5.5
+    ],
+    "clickBaseAttackPerLevel": [
+        0,
+        1,
+        2,
+        5,
+        10,
+        20
+    ],
+    "clickAttackRadiusPerLevel": [
+        0.15000000596046449,
+        0.30000001192092898,
+        0.44999998807907107,
+        0.6000000238418579,
+        0.75,
+        1.0
+    ],
+    "clickHealAmountPerLevel": [
+        0,
+        1,
+        2,
+        5,
+        10,
+        20
+    ],
+    "clickHealRadiusPerLevel": [
+        0.15000000596046449,
+        0.5,
+        0.699999988079071,
+        0.8999999761581421,
+        1.25,
+        2.0
+    ],
+    "cuboSpawnTimePerLevel": [
+        7.0,
+        5.0,
+        3.0,
+        1.5,
+        0.5
+    ],
+    "bubilSpawnTimePerLevel": [
+        7.0,
+        5.0,
+        3.0,
+        1.5,
+        0.5
+    ],
+    "bonesMultiplierPerLevel": [
+        1.0,
+        2.0,
+        3.0,
+        5.0,
+        10.0
+    ],
+    "bombRadiusPerLevel": [
+        0.30000001192092898,
+        1.0,
+        1.5,
+        2.0
+    ],
+    "bombDamagePerLevel": [
+        0,
+        20,
+        50,
+        100
     ]
 }
