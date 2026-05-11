@@ -158,6 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zDivider: {fileID: 1745304050749143591}
   healthText: {fileID: 3481597901138319502}
+  destroyedBuildingSpr: {fileID: 0}
   b:
     myType: 3
     buildingPfb: {fileID: 6996129902443490374}

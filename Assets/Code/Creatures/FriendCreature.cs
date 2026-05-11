@@ -80,6 +80,19 @@ public class FriendCreature : Creature
         }
     }
 
+    private void OnMouseExit()
+    {
+        foreach (LineRenderer lr in CoreGame.inst.specialLrs2)
+        {
+            lr.positionCount = 0;
+        }
+    }
+
+    private void OnMouseOver()
+    {
+        MaximUtils.RenderDashedCircle(CoreGame.inst.specialLrs2, t.position, 0.55f, Time.time, 7);
+    }
+
     protected override IEnumerator IdleWalking()
     {
 

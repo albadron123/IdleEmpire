@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Linq;
-using System.Numerics;
 using DG.Tweening;
 
 public class MaximUtils : MonoBehaviour
@@ -80,6 +79,25 @@ public class MaximUtils : MonoBehaviour
         return UnityEngine.Vector2.zero;
     }
 
+
+    public static bool MouseOverCollider(Collider2D col, float radius)
+    {
+        Vector2 mousePosition = MousePosition();
+        Collider2D[] overlapped = Physics2D.OverlapCircleAll(mousePosition, radius);
+        foreach (var overlappedCol in overlapped)
+        {
+            if(overlappedCol == col)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Vector2 MousePosition()
+    {
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
     
 
     public static bool DoIOverlap(Collider2D col)

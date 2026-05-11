@@ -75,6 +75,7 @@ public class CoreGame : MonoBehaviour
     Color specialLrColor = Color.white;
     public Material specialLrMaterial;
     LineRenderer[] specialLrs;
+    public LineRenderer[] specialLrs2;
 
 
 
@@ -301,6 +302,7 @@ public class CoreGame : MonoBehaviour
         InitializeBuildingButtons();
 
         specialLrs = MaximUtils.CreateLineRendererBatch("_CIRCLE LR (generated)_", 17, specialLrColor, specialLrMaterial, specialLrThikness);
+        specialLrs2 = MaximUtils.CreateLineRendererBatch("_CIRCLE LR 2 (generated)_", 17, specialLrColor, specialLrMaterial, specialLrThikness);
 
 
         CreatePopupPool();

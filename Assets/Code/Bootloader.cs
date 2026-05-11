@@ -36,10 +36,12 @@ public static class Bootloader
         DataStorage.LoadBuildings();
         DataStorage.LoadUpgrades();
         DataStorage.LoadEnemies();
+        /*
         if (!DataStorage.DeserializeAll())
         {
             DataStorage.SerializeAll();
         }
+        */
 
         G.equippedBuildingsCapacity = 6;
         G.bonesSpent = 0;
