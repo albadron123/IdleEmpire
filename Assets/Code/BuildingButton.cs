@@ -9,7 +9,6 @@ public class BuildingButton : MonoBehaviour
     [HideInInspector]
     public Building.BuildingType type;    
 
-
     [Header("View")]
 
     [SerializeField] TMPro.TMP_Text titleTe;
@@ -21,19 +20,29 @@ public class BuildingButton : MonoBehaviour
     [SerializeField] GameObject[] changeButtons;
 
 
+
     [Header("Extra")]
 
     [SerializeField] Color[] levelColors;
     const float minLevelButtonX = 1.55f;
     const float maxLevelButtonX = 1.7f;
 
+    private Interactable interactable;
+
     void Start()
     {
-        
+
+    }
+
+    public void PerformCancelAction()
+    {
+        interactable.PerformCancelAction();
     }
 
     public void Init(Building.BuildingType buildingType)
     {
+        interactable = GetComponent<Interactable>();
+
         int level = G.buildingStates[(int)buildingType].upgradeLvlUnlocked;
         
         for (int i = 0; i < changeButtons.Length; ++i)

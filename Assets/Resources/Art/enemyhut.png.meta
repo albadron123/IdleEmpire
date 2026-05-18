@@ -303,6 +303,195 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: enemyhut_8
+      rect:
+        serializedVersion: 2
+        x: 1201
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.439493, y: 0.15712786}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 988c11570bb57124fa096ffa7f8df8a3
+      internalID: 1284901793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyhut_9
+      rect:
+        serializedVersion: 2
+        x: 1350
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.42335775, y: 0.096620984}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5417bbf9383da084da5a2af9d12efc7b
+      internalID: 437058646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyhut_10
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.41610515, y: 0.13296391}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99398af437eb8bb49ad9a940225207c6
+      internalID: 58400393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyhut_11
+      rect:
+        serializedVersion: 2
+        x: 1650
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.45280844, y: 0.122477174}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bda826d8ca40b894e939465b9b77876a
+      internalID: -708005684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyhut_12
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.460673, y: 0.13034223}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 103c934acab88e549aa785ee400e529f
+      internalID: 1700457648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyhut_13
+      rect:
+        serializedVersion: 2
+        x: 1950
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.4475651, y: 0.11461211}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74d58b7364fe8d947a8611fc2dca73d9
+      internalID: 1393404372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyhut_14
+      rect:
+        serializedVersion: 2
+        x: 2100
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.43445638, y: 0.13034223}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec188de108732f9458ad8e40bbd8e60f
+      internalID: -428360060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyhut_15
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.4397005, y: 0.122477174}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a17b3d72179e184b9233138c325ade6
+      internalID: 1708990637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyhut_16
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.4397005, y: 0.122477174}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab1fcd7e9ab6e4a4a9eee6615501e8ab
+      internalID: 1323821716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -316,12 +505,21 @@ TextureImporter:
     nameFileIdTable:
       enemyhut_0: 1048088848
       enemyhut_1: -1898239059
+      enemyhut_10: 58400393
+      enemyhut_11: -708005684
+      enemyhut_12: 1700457648
+      enemyhut_13: 1393404372
+      enemyhut_14: -428360060
+      enemyhut_15: 1708990637
+      enemyhut_16: 1323821716
       enemyhut_2: 1225804290
       enemyhut_3: 1340397683
       enemyhut_4: 2107017119
       enemyhut_5: -147967651
       enemyhut_6: -74759025
       enemyhut_7: -1300004641
+      enemyhut_8: 1284901793
+      enemyhut_9: 437058646
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

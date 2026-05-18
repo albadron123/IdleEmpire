@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library:
+  - m_Name: BasicHut
+    m_Hash: 687180792
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: enemyhut_0
+      m_Hash: 587464478
+      m_Sprite: {fileID: 1048088848, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+      m_FromMain: 1
+      m_SpriteOverride: {fileID: 1284901793, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+    - m_Name: enemyhut_1
+      m_Hash: 335859592
+      m_Sprite: {fileID: -1898239059, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+      m_FromMain: 1
+      m_SpriteOverride: {fileID: 437058646, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+    - m_Name: enemyhut_2
+      m_Hash: 218996274
+      m_Sprite: {fileID: 1225804290, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+      m_FromMain: 1
+      m_SpriteOverride: {fileID: 58400393, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+    - m_Name: enemyhut_3
+      m_Hash: 973778596
+      m_Sprite: {fileID: 1340397683, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+      m_FromMain: 1
+      m_SpriteOverride: {fileID: -708005684, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+    - m_Name: enemyhut_4
+      m_Hash: 611203847
+      m_Sprite: {fileID: 2107017119, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+      m_FromMain: 1
+      m_SpriteOverride: {fileID: 1700457648, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+    - m_Name: enemyhut_5
+      m_Hash: 325651345
+      m_Sprite: {fileID: -147967651, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+      m_FromMain: 1
+      m_SpriteOverride: {fileID: 1393404372, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+    - m_Name: enemyhut_6
+      m_Hash: 174086699
+      m_Sprite: {fileID: -74759025, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+      m_FromMain: 1
+      m_SpriteOverride: {fileID: -428360060, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+    - m_Name: enemyhut_7
+      m_Hash: 1030187709
+      m_Sprite: {fileID: -1300004641, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+      m_FromMain: 1
+      m_SpriteOverride: {fileID: 1708990637, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+    m_FromMain: 1
+    m_EntryOverrideCount: 8
+  m_PrimaryLibraryGUID: da02dcc35e302574eb6335588a8d5082
+  m_ModificationHash: 639147125594121605
+  m_Version: 1

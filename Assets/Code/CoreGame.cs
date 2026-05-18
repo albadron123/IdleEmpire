@@ -52,6 +52,8 @@ public class CoreGame : MonoBehaviour
     public static string TAG_BOMB = "Bomb";
     public static string TAG_BUILDING = "Building";
 
+    public static string BLOB_ICON_STR = "<sprite=1>";
+
     //public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] { "Tawa", "Cubo", "Bubil", "Major", "Tumba", "Flawa", "Magnik", "Plomo", "Bombik", "Cacti"};
 
     public List<Building> allBuidlings = new List<Building>();
@@ -197,7 +199,7 @@ public class CoreGame : MonoBehaviour
         //REMOVE THIS LATER
         //BOBBY BUY PRICE
         personPrice = 5;
-        personPriceTe.text = personPrice.ToString();
+        personPriceTe.text = BLOB_ICON_STR + ((int)personPrice).ToString();
     }
 
     void InitCursorButtons()
@@ -460,13 +462,17 @@ public class CoreGame : MonoBehaviour
         {
             StartBuilding(bb);
         }
+        else
+        {
+            bb.PerformCancelAction();
+        }
     }
 
 
 
 
 
-    public void PressBuyPersonButton()
+    public void PressBuyPersonButton(Interactable interactable)
     {
         if ((int)personPrice <= allResources[(int)Resource.ResourceType.Bubil].value)
         {
@@ -479,7 +485,11 @@ public class CoreGame : MonoBehaviour
                 Quaternion.identity);
             //Inflate price
             personPrice *= 1.3f;
-            personPriceTe.text = ((int)personPrice).ToString();
+            personPriceTe.text = BLOB_ICON_STR + ((int)personPrice).ToString();
+        }
+        else
+        {
+            interactable.PerformCancelAction();
         }
     }
 

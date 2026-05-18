@@ -870,6 +870,195 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Atlas_3
+      rect:
+        serializedVersion: 2
+        x: 934
+        y: 282
+        width: 78
+        height: 66
+      alignment: 9
+      pivot: {x: 0.49657187, y: 0.054698136}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f55d40d08d613a41b22490e7be29c7c
+      internalID: -119375449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_4
+      rect:
+        serializedVersion: 2
+        x: 934
+        y: 207
+        width: 77
+        height: 66
+      alignment: 9
+      pivot: {x: 0.5049018, y: 0.059700012}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6aff28c420bd93a4c983c7f9a6940c5b
+      internalID: 1096920074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_5
+      rect:
+        serializedVersion: 2
+        x: 1036
+        y: 264
+        width: 51
+        height: 88
+      alignment: 9
+      pivot: {x: 0.47902784, y: 0.050349843}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3f94ea991948f64195ac4892fab913b
+      internalID: -1250974801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_6
+      rect:
+        serializedVersion: 2
+        x: 1111
+        y: 264
+        width: 51
+        height: 88
+      alignment: 9
+      pivot: {x: 0.48951393, y: 0.050349843}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3769945531e607947b50d94b945e8935
+      internalID: 224318766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_7
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 231
+        width: 63
+        height: 73
+      alignment: 9
+      pivot: {x: 0.48442635, y: 0.04975285}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4bc82b47149cfb4db8c660fac34c584
+      internalID: -136652582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_8
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 228
+        width: 62
+        height: 81
+      alignment: 9
+      pivot: {x: 0.51186866, y: 0.0942217}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 637a9be8fb8db7f4d9997ef55aff2458
+      internalID: -1365010059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_9
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 230
+        width: 54
+        height: 77
+      alignment: 9
+      pivot: {x: 0.45003483, y: 0.04128731}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6565fd0f8d03f68418f0195bdb96abc6
+      internalID: 680658494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_10
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 168
+        width: 41
+        height: 38
+      alignment: 9
+      pivot: {x: 0.53589535, y: 0.15789354}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eea8dead3a94b51448811458071d3df5
+      internalID: 1420356929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_11
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 165
+        width: 38
+        height: 34
+      alignment: 9
+      pivot: {x: 0.5064549, y: 0.16814557}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b196cdaba07f71a45b73a2b50f361ccd
+      internalID: -1133335964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -883,7 +1072,17 @@ TextureImporter:
     nameFileIdTable:
       Atlas_0: -50325686
       Atlas_1: 1203614579
+      Atlas_10: 1420356929
+      Atlas_11: -1133335964
+      Atlas_12: 946695916
       Atlas_2: 602905719
+      Atlas_3: -119375449
+      Atlas_4: 1096920074
+      Atlas_5: -1250974801
+      Atlas_6: 224318766
+      Atlas_7: -136652582
+      Atlas_8: -1365010059
+      Atlas_9: 680658494
       BubilSpr: 1629890750
       CuboSpr: -585427501
       Sprite-0003_0: 634578180

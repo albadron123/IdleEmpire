@@ -38,6 +38,17 @@ public class Interactable : MonoBehaviour
         
     }
 
+    public void PerformCancelAction()
+    {
+        t.DOKill();
+        Sequence seq = DOTween.Sequence();
+        seq.Append(t.DORotate(new Vector3(0, 0, 5), 0.04f));
+        seq.Append(t.DORotate(new Vector3(0, 0, -5), 0.08f));
+        seq.Append(t.DORotate(new Vector3(0, 0, 0), 0.04f));
+        seq.SetLoops(2);
+        seq.OnKill(() => { t.rotation = Quaternion.identity; });
+    }
+
 
     private void OnMouseEnter()
     {
