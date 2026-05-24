@@ -38,6 +38,11 @@ public class G : MonoBehaviour
     static GameObject cursor;
     static SpriteRenderer cursorSr;
 
+    public static Transform describerT;
+    public static TMPro.TMP_Text describerTe;
+
+    public static Vector2 mousePosition;
+
     void Start()
     {
         if (inst != null)
@@ -48,6 +53,13 @@ public class G : MonoBehaviour
         inst = this;
 
         LoadCursor();
+
+        //create a descripber
+        GameObject describerPfb = Resources.Load<GameObject>("Prefabs/Describer");
+        describerT = Instantiate(describerPfb, Vector3.zero, Quaternion.identity).transform;
+        Object.DontDestroyOnLoad(describerT.gameObject);
+        describerTe = describerT.GetChild(0).GetComponent<TMPro.TMP_Text>();
+        describerT.gameObject.SetActive(false);
     }
 
 
@@ -218,7 +230,7 @@ public class G : MonoBehaviour
 
     void Update()
     {
-        Vector2 mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         cursor.transform.position = new Vector3(mousePosition.x, mousePosition.y, -9.6f);
 
         if (Input.GetMouseButtonDown(0))
@@ -243,4 +255,5 @@ public class G : MonoBehaviour
     {
         return upgradeStates[(int)h].upgradeLvl;
     }
+
 }

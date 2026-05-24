@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using UnityEngine.EventSystems;
+
+[System.Serializable]
+public class StringContainer
+{
+    public string str;
+}
 
 public class Interactable : MonoBehaviour
 {
     public bool isInteractive = true;
+    public bool canBeDescribed = false;
     
     [SerializeField]
     UnityEvent e;
@@ -16,6 +24,8 @@ public class Interactable : MonoBehaviour
     [SerializeField]
     UnityEvent mouseExitCustomEvent;
 
+    [HideInInspector]
+    public UnityEvent<StringContainer> getDescriptionEvent;
 
     Transform t;
 
@@ -29,8 +39,10 @@ public class Interactable : MonoBehaviour
     void Awake()
     {
         t = transform;
-        initialScale = t.localScale;        
+        initialScale = t.localScale;
+
     }
+
 
     // Update is called once per frame
     void Update()
@@ -50,8 +62,16 @@ public class Interactable : MonoBehaviour
     }
 
 
-    private void OnMouseEnter()
+    public void OnMouseEnter()
     {
+        if(canBeDescribed)
+        {
+            G.describerT.gameObject.SetActive(true);
+            G.describerT.position = (Vector3)G.mousePosition + Vector3.up * 1.5f;
+            StringContainer strCont = new StringContainer();
+            getDescriptionEvent?.Invoke(strCont);
+            G.describerTe.text = strCont.str;
+        }
         if (lastTween != null)
         {
             lastTween.Kill();
@@ -61,9 +81,20 @@ public class Interactable : MonoBehaviour
 
         mouseEnterCustomEvent.Invoke();
     }
-
-    private void OnMouseExit()
+    private void OnMouseOver()
     {
+        if (canBeDescribed)
+        {
+            G.describerT.position = (Vector3)G.mousePosition + Vector3.up * 1.5f;
+        }
+    }
+
+    public void OnMouseExit()
+    {
+        if (canBeDescribed)
+        {
+            G.describerT.gameObject.SetActive(false);
+        }
         if (lastTween != null)
         {
             lastTween.Kill();

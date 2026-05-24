@@ -18,7 +18,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     private Transform t;
     private DestructableObject dObj;
-    private SpriteRenderer sr;
+    public SpriteRenderer sr;
+
 
     public Building b;
 
@@ -31,7 +32,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
 
 
-    public GameObject outline;
+    
 
     public GameObject rotationPart = null;
 
@@ -236,6 +237,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
     {
         int processId = blobPlaces.LastIndexOf(blobPlace);
         blobs[processId] = blob;
+        blob.transform.parent = t;
 
         
         //TOWER SPECIFIC
@@ -259,6 +261,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
     {
         int processId = blobPlaces.LastIndexOf(blobPlace);
         blobs[processId] = null;
+        blob.transform.parent = null;
 
         if (processes[processId] != null)
         {   
@@ -282,6 +285,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
             }
 
             Blob b = blobs[processId];
+            b.transform.parent = null;
+
             DOTween.Sequence()
                 .Append(b.transform.DOJump(t.position - 0.3f * Vector3.up + (Vector3)MaximUtils.RandomVector2(0.4f), Random.Range(0.7f, 0.9f), 1, 0.6f))
                 .AppendCallback(() => { b.GetComponent<Creature>().StartSimulation(); Debug.Log("b is simulated"); });
@@ -367,43 +372,21 @@ public class BuildingObject : MonoBehaviour, IDestructable
             }
             while (true)
             {
-                //REDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-                float shootingSpeed = GetShootingSpeed();
-                float projectileSize = GetProjectileSize();
-                int damage = GetDamage();
+                float shootingSpeed = GetShootingSpeed(); 
+                Vector3 direction = towerAnglePerPlace[processId] switch
+                {
+                    0 => Vector3.right,
+                    1 => Vector3.up,
+                    2 => Vector3.left,
+                    _ => Vector3.down
+                };
 
-                SoundManager.inst.PlaySfx(DataStorage.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
-                GameObject inst = Instantiate(myProjectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
-                inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
-                Projectile pr = inst.GetComponent<Projectile>();
-                pr.damage = damage;
-                pr.ignoreList.Add(gameObject);
-                if (b.myType == Building.BuildingType.Flawa)
-                {
-                    pr.doAffectBlobs = false;    
-                }
-                else
-                {
-                    pr.doAffectBlobs = true;
-                }
-
-                if (towerAnglePerPlace[processId] == 0)
-                {
-                    pr.direction = Vector3.right;
-                }
-                else if (towerAnglePerPlace[processId] == 1)
-                {
-                    pr.direction = Vector3.up;
-                }
-                else if (towerAnglePerPlace[processId] == 2)
-                {
-                    pr.direction = Vector3.left;
-                }
-                else
-                {
-                    pr.direction = Vector3.down;
-                }
-                Destroy(inst, 2.1f);
+                ShootProjectile(projectilePfb: myProjectilePfb,
+                                projectilePosition: (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9),
+                                direction: direction,
+                                destroyTime: 2.1f,
+                                rotation: Quaternion.identity,
+                                doAffectBlobs: b.myType != Building.BuildingType.Flawa);
                 yield return new WaitForSeconds(shootingSpeed);
             }
         }
@@ -412,41 +395,49 @@ public class BuildingObject : MonoBehaviour, IDestructable
             while (true)
             {
                 float shootingSpeed = GetShootingSpeed();
+
                 float projectileSize = GetProjectileSize();
                 int damage = GetDamage();
 
 
                 GameObject sliderInst = Instantiate(CoreGame.inst.sliderPfb, blobs[processId].transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
                 sliderInst.transform.GetChild(0).transform.DOLocalMove(new Vector3(0, 0, 0), shootingSpeed);
+                sliders[processId] = sliderInst;
                 yield return new WaitForSeconds(shootingSpeed);
 
 
                 GameObject nearestEnemy = MaximUtils.GetNearestWithTag(t.position, CoreGame.TAG_ENEMY);
-                if (nearestEnemy == null)
+
+                bool waiting = false;
+                while (nearestEnemy == null)
                 {
+                    if (!waiting)
+                    {
+                        sliderInst.transform.GetChild(0).GetComponent<SpriteRenderer>().color = CoreGame.YELLOW_COLOR;
+                        waiting = true;
+                    }
+                    sliderInst.transform.DOShakePosition(shootingSpeed, 0.05f, 100, 90, false, false, ShakeRandomnessMode.Harmonic);
                     yield return new WaitForSeconds(shootingSpeed);
-                    continue;
+                    nearestEnemy = MaximUtils.GetNearestWithTag(t.position, CoreGame.TAG_ENEMY);
                 }
 
                 Destroy(sliderInst);
 
-
-                SoundManager.inst.PlaySfx(DataStorage.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
-                GameObject inst = Instantiate(CoreGame.inst.arrowProjectilePfb, (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9), Quaternion.identity);
-                inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
-                Projectile pr = inst.GetComponent<Projectile>();
-                pr.damage = damage;
-
-                //finding the center of the enemy
                 Collider2D enemyCollider = nearestEnemy.GetComponent<Collider2D>();
                 if (enemyCollider == null)
                 {
                     Debug.LogError("EnemyDoesnt have a collider");
                 }
                 Vector2 enemyShootingPosition = enemyCollider.offset + (Vector2)nearestEnemy.transform.position;
-                pr.direction = ((enemyShootingPosition - (Vector2)inst.transform.position)).normalized;
-                inst.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(pr.direction.y, pr.direction.x)*Mathf.Rad2Deg);
-                Destroy(inst, 0.75f);
+                Vector3 position = (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9);
+                Vector3 direction = (enemyShootingPosition - (Vector2)position).normalized;
+                Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+                ShootProjectile(projectilePfb: CoreGame.inst.arrowProjectilePfb,
+                                projectilePosition: (Vector3)(Vector2)blobs[processId].transform.position + new Vector3(0, 0, -9),
+                                destroyTime: 0.75f,
+                                direction: direction,
+                                rotation: rotation,
+                                doAffectBlobs: b.myType != Building.BuildingType.Flawa);
             }
         }
         else if (b.myType == Building.BuildingType.Custik)
@@ -519,6 +510,24 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 CoreGame.inst.ShowUpgrades(upgradeTypes, this);
             }
         }
+    }
+
+    private void ShootProjectile(GameObject projectilePfb, Vector3 projectilePosition, Vector3 direction, float destroyTime, Quaternion rotation, bool doAffectBlobs = true)
+    {
+        float projectileSize = GetProjectileSize();
+        int damage = GetDamage();
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
+        GameObject inst = Instantiate(projectilePfb, projectilePosition, rotation);
+        //inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
+        Projectile pr = inst.GetComponent<Projectile>();
+        pr.damage = damage;
+        pr.ignoreList.Add(gameObject);
+        pr.size = projectileSize;
+        pr.doAffectBlobs = doAffectBlobs;
+        pr.direction = direction;
+
+        pr.StartCoroutine(pr.ProjectileLifeCycle(destroyTime));
     }
 
     public int GetProductionAmount()

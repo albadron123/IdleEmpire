@@ -10,6 +10,7 @@ using System;
 public struct BuildingData
 {
     public string title;
+    public string description;
     public Sprite icon;
     public int maxLevels;
     public int[] initialPricePerLevel;
@@ -253,6 +254,7 @@ public class DataStorage : MonoBehaviour
         List<Sprite> sprites = (Resources.LoadAll<Sprite>("Art/Icons")).ToList<Sprite>();
         allBuildings[(int)Building.BuildingType.Tawa] = new BuildingData() {
             title = "Tawa",
+            description = $"<align=\"center\"><b>Tawa</b></align>\nShoots bullets in 4 directions. Change direction by clicking on <sprite=0>.",
             icon = sprites[(int)Building.BuildingType.Tawa],
             maxLevels = 3,
             initialPricePerLevel = new int[3] { 5, 10, 15 },
@@ -267,6 +269,7 @@ public class DataStorage : MonoBehaviour
         };
         allBuildings[(int)Building.BuildingType.CuboProduction] = new BuildingData() { 
             title = "Cubo",
+            description = $"<align=\"center\"><b>Cubo</b></align>\nProduces <sprite=4> that it used to build new <i>marvels</i>.",
             icon = sprites[(int)Building.BuildingType.CuboProduction],
             maxLevels = 3,
             initialPricePerLevel = new int[3] { 5, 10, 15 },
@@ -281,6 +284,7 @@ public class DataStorage : MonoBehaviour
         };
         allBuildings[(int)Building.BuildingType.BubilProduction] = new BuildingData() { 
             title = "Bubil",
+            description = $"<align=\"center\"><b>Bubil</b></align>\nProduces <sprite=1> that it used to create new <i>heroes</i>.",
             icon = sprites[(int)Building.BuildingType.BubilProduction],
             maxLevels = 3,
             initialPricePerLevel = new int[3] { 5, 10, 15 },
@@ -295,6 +299,7 @@ public class DataStorage : MonoBehaviour
         };
         allBuildings[(int)Building.BuildingType.HutkaGrande] = new BuildingData() { 
             title = "Hutka Grande",
+            description = $"<align=\"center\"><b>Hutka Grande</b></align>\nYou live in here, protect it.",
             icon = sprites[(int)Building.BuildingType.HutkaGrande],
             maxLevels = 1,
             initialPricePerLevel = new int[1] {15},
@@ -307,6 +312,7 @@ public class DataStorage : MonoBehaviour
         };
         allBuildings[(int)Building.BuildingType.Tumbo] = new BuildingData() { 
             title = "Tumbo",
+            description = $"<align=\"center\"><b>Tumbo</b></align>\nShoots bulets at the nearest enemies.",
             icon = sprites[(int)Building.BuildingType.Tumbo],
             maxLevels = 2,
             initialPricePerLevel = new int[2] { 5, 10 },
@@ -320,6 +326,7 @@ public class DataStorage : MonoBehaviour
         };
         allBuildings[(int)Building.BuildingType.Flawa] = new BuildingData() { 
             title = "Flawa",
+            description = $"<align=\"center\"><b>Flawa</b></align>\nShoots healing orbs in 1 of 4 directions.",
             icon = sprites[(int)Building.BuildingType.Flawa],
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },
@@ -332,6 +339,7 @@ public class DataStorage : MonoBehaviour
         };
         allBuildings[(int)Building.BuildingType.Magno] = new BuildingData() {
             title = "Magno",
+            description = $"<align=\"center\"><b>Magno</b></align>\nAttracts enemies in one of 4 directions.",
             icon = sprites[(int)Building.BuildingType.Magno],
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },
@@ -344,6 +352,7 @@ public class DataStorage : MonoBehaviour
         };
         allBuildings[(int)Building.BuildingType.Custik] = new BuildingData() { 
             title = "Custik",
+            description = $"<align=\"center\"><b>Custik</b></align>\nAutogenerates <sprite=1> that it used to buy new <i>heroes</i>.",
             icon = sprites[(int)Building.BuildingType.Custik],
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },
@@ -356,6 +365,7 @@ public class DataStorage : MonoBehaviour
         };
         allBuildings[(int)Building.BuildingType.Bombo] = new BuildingData() { 
             title = "Bombo",
+            description = $"<align=\"center\"><b>Bombo</b></align>\nProduces <i>bombik</i> that can be placed to destroy enemies.",
             icon = sprites[(int)Building.BuildingType.Bombo],
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },
@@ -369,6 +379,7 @@ public class DataStorage : MonoBehaviour
         allBuildings[(int)Building.BuildingType.Cacti] = new BuildingData()
         {
             title = "Cacti",
+            description = $"<align=\"center\"><b>Cacti</b></align>\nIf <sprite=2> hit cacti, <sprite=2> lose health.",
             icon = sprites[(int)Building.BuildingType.Cacti],
             maxLevels = 1,
             initialPricePerLevel = new int[1] { 15 },

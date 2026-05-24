@@ -73,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -411332537
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -623792174, guid: 0fece5474f50de54db581cc5d940c3f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.6392157}
@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInteractive: 1
+  canBeDescribed: 0
   e:
     m_PersistentCalls:
       m_Calls:
@@ -119,6 +120,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   mouseExitCustomEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  getDescriptionEvent:
     m_PersistentCalls:
       m_Calls: []
   initialScale: {x: 0, y: 0, z: 0}
@@ -242,8 +246,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -411332537
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &6522823079003889459

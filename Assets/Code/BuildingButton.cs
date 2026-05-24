@@ -31,7 +31,7 @@ public class BuildingButton : MonoBehaviour
 
     void Start()
     {
-
+        
     }
 
     public void PerformCancelAction()
@@ -42,6 +42,7 @@ public class BuildingButton : MonoBehaviour
     public void Init(Building.BuildingType buildingType)
     {
         interactable = GetComponent<Interactable>();
+        interactable.getDescriptionEvent.AddListener(GetDescription);
 
         int level = G.buildingStates[(int)buildingType].upgradeLvlUnlocked;
         
@@ -86,6 +87,10 @@ public class BuildingButton : MonoBehaviour
         }
     }
 
+    public void GetDescription(StringContainer strContainer)
+    {
+        strContainer.str = DataStorage.allBuildings[(int)type].description;
+    }
 
     public void UpdatePrices()
     {

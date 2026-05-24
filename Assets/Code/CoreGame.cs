@@ -54,6 +54,9 @@ public class CoreGame : MonoBehaviour
 
     public static string BLOB_ICON_STR = "<sprite=1>";
 
+    public static Color BLOBPLACE_DEFAULT_COLOR = new Color(0.27f, 0.71f, 0.79f);
+    public static Color YELLOW_COLOR = new Color(0.99f, 0.73f, 0);
+
     //public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] { "Tawa", "Cubo", "Bubil", "Major", "Tumba", "Flawa", "Magnik", "Plomo", "Bombik", "Cacti"};
 
     public List<Building> allBuidlings = new List<Building>();
@@ -114,7 +117,7 @@ public class CoreGame : MonoBehaviour
     public GameObject healingProjectilePfb;
     public GameObject arrowProjectilePfb;
     public GameObject bombPfb;
-
+    public GameObject projectileDeathPlacePfb;
 
     //Remove later
     float personPrice = 5;
@@ -151,6 +154,19 @@ public class CoreGame : MonoBehaviour
     [Header("Left-Side UI")]
     [SerializeField] List<GameObject> buyBuildingButtons;
     [SerializeField] List<GameObject> buyBuildingButtonPlaceholders;
+
+    [Header("VFX")]
+    [SerializeField] ParticleSystem contactEffect;
+    ParticleSystem[] contactEffectsPool = new ParticleSystem[10];
+
+    [Header("Day-night cycle")]
+    [SerializeField]
+    SpriteRenderer dayNightBaseColorSr;
+    [SerializeField]
+    SpriteRenderer dayNightOutlinedSr;
+    [SerializeField]
+    SpriteRenderer lightingsSr;
+
 
 
     //===========RUN CONFIG PARAMS==============
@@ -308,12 +324,32 @@ public class CoreGame : MonoBehaviour
 
 
         CreatePopupPool();
+        CreateContactEffectsPool();
+
+        StartCoroutine(DayNightCycle());
     }
 
 
 
+    [SerializeField] Transform testSquare;
+    IEnumerator DayNightCycle()
+    {
 
-
+     
+        DOTween.Sequence()
+            .Append(dayNightBaseColorSr.DOFade(0.5f, 1.5f))
+            .Append(lightingsSr.material.DOFade(0.1f, 0))
+            .Append(dayNightOutlinedSr.material.DOFade(0.88f, 3))
+            .Join(dayNightBaseColorSr.DOFade(0.5f, 3))
+            .AppendInterval(10)
+            .Append(lightingsSr.material.DOFade(0, 0))
+            .Append(dayNightBaseColorSr.DOFade(0.2f, 3f))
+            .Join(dayNightOutlinedSr.material.DOFade(0f, 3f))
+            .Append(dayNightBaseColorSr.DOFade(0, 1.5f))
+            .AppendInterval(3)
+            .SetLoops(-1, LoopType.Restart);
+        yield return new WaitForSeconds(0.5f);
+    }
 
 
     IEnumerator WaitForAttack()
@@ -330,7 +366,7 @@ public class CoreGame : MonoBehaviour
 
     IEnumerator StartAttack()
     {
-        attackTe.text = "";   
+        attackTe.text = "";
 
         int groupsCount = Mathf.Clamp(Mathf.CeilToInt(Mathf.Pow(1.7f, attackCount)), 1, 200);
         float waitingTime = Mathf.Clamp(0.5f - 0.06f * attackCount, 0.1f, 0.5f);
@@ -343,21 +379,21 @@ public class CoreGame : MonoBehaviour
             float angle = 0;
             Instantiate(bossGroup,
                 mainTower.transform.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 6f,
-                Quaternion.identity);   
+                Quaternion.identity);
         }
         else
         {
             StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, $"WAVE {attackCount + 1} BEGINS!!!", 0.05f, 1, 0.5f));
         }
 
-        
+
         for (int i = 0; i < groupsCount; ++i)
         {
             Vector2 randomPos = Vector2.zero;
-        
+
             GameObject enemyHutInstance = Instantiate(enemyHutPfb, new Vector3(randomPos.x, randomPos.y, randomPos.y), Quaternion.identity);
             enemyHutInstance.GetComponent<EnemyHut>().enemyGroup = correctPool[Random.Range(0, correctPool.Count)];
-        
+
             Transform enemyHutT = enemyHutInstance.transform;
             BoxCollider2D enemyHutCol = enemyHutInstance.GetComponent<BoxCollider2D>();
 
@@ -368,11 +404,11 @@ public class CoreGame : MonoBehaviour
                 randomPos = MaximUtils.RandomPositionInsideFrame(innerAttackRect, outerAttackRect);
                 overlapped = MaximUtils.DoSquareOverlapAny(randomPos - enemyHutCol.offset, enemyHutCol.size);
                 ++attempts;
-            } while(overlapped && attempts < 500);
+            } while (overlapped && attempts < 500);
 
             enemyHutT.position = new Vector3(randomPos.x, randomPos.y, randomPos.y);
-            
-            
+
+
             yield return new WaitForSeconds(waitingTime);
         }
         ++attackCount;
@@ -384,9 +420,9 @@ public class CoreGame : MonoBehaviour
         //draw outer radius
         Vector3[] outerAttackRadius = new Vector3[4];
         outerAttackRadius[0] = new Vector3(outerAttackRect.x, outerAttackRect.y, -9);
-        outerAttackRadius[1] = new Vector3(outerAttackRect.x+outerAttackRect.width, outerAttackRect.y, -9);
-        outerAttackRadius[2] = new Vector3(outerAttackRect.x+outerAttackRect.width, outerAttackRect.y+outerAttackRect.height, -9);
-        outerAttackRadius[3] = new Vector3(outerAttackRect.x, outerAttackRect.y+outerAttackRect.height, -9);
+        outerAttackRadius[1] = new Vector3(outerAttackRect.x + outerAttackRect.width, outerAttackRect.y, -9);
+        outerAttackRadius[2] = new Vector3(outerAttackRect.x + outerAttackRect.width, outerAttackRect.y + outerAttackRect.height, -9);
+        outerAttackRadius[3] = new Vector3(outerAttackRect.x, outerAttackRect.y + outerAttackRect.height, -9);
         Gizmos.DrawLineStrip(outerAttackRadius,
                              true);
         //draw inner radius
@@ -669,6 +705,12 @@ public class CoreGame : MonoBehaviour
             MaximUtils.RenderDashedCircle(specialLrs, mousePosition, radius, Time.time, 16);
         }
 
+        if (Input.GetMouseButtonDown(0) && !MaximUtils.DoSquareOverlapAny(mousePosition, new Vector2(0.05f, 0.05f)))
+        {
+            HideUpgrades();
+        }
+
+
         if (currentlyPlacingBuilding != null)
         {
             currentlyPlacingBuilding.transform.position = new Vector3(mousePosition.x, mousePosition.y, -5);
@@ -832,7 +874,7 @@ public class CoreGame : MonoBehaviour
                .JoinCallback(() => popupPool[nextPoolId].t.gameObject.SetActive(false))
                .OnComplete(() => popupPool[nextPoolId].t.gameObject.SetActive(false))
                .OnKill(() => popupPool[nextPoolId].t.gameObject.SetActive(false));
-               //.SetRecyclable(true);
+            //.SetRecyclable(true);
             nextPoolId = (nextPoolId + 1) % POOL_CAPACITY;
         }
         /*
@@ -860,10 +902,11 @@ public class CoreGame : MonoBehaviour
             Destroy(inst, fading);
         }
         */
-        
+
     }
 
     // --- Upgrades sections --- 
+
 
     public void ShowUpgrades(List<UpgradeType> upgradeTypes, BuildingObject buildingToUpgrade)
     {
@@ -871,7 +914,12 @@ public class CoreGame : MonoBehaviour
         HideUpgrades();
         // Outlining the building
         selectedBuilding = buildingToUpgrade;
-        selectedBuilding.outline.SetActive(true);
+        selectedBuilding.sr.material.SetFloat("_Strength", 0.0035f);
+        selectedBuilding.sr.material.SetColor("_Color", YELLOW_COLOR);
+        foreach (var blobPlace in selectedBuilding.blobPlaces)
+        {
+            blobPlace.GetComponent<SpriteRenderer>().color = YELLOW_COLOR;
+        }
         // Showing buttons
         upgradeButtons = new List<GameObject>();
         for (int i = 0; i < upgradeTypes.Count; ++i)
@@ -896,7 +944,12 @@ public class CoreGame : MonoBehaviour
         {
             if (selectedBuilding != null)
             {
-                selectedBuilding.outline.SetActive(false);
+                selectedBuilding.sr.material.SetFloat("_Strength", 0f);
+                selectedBuilding.sr.material.SetColor("_Color", new Color(0, 0, 0, 0));
+                foreach (var blobPlace in selectedBuilding.blobPlaces)
+                {
+                    blobPlace.GetComponent<SpriteRenderer>().color = BLOBPLACE_DEFAULT_COLOR;
+                }
                 selectedBuilding = null;
             }
             for (int i = 0; i < upgradeButtons.Count; ++i)
@@ -936,5 +989,22 @@ public class CoreGame : MonoBehaviour
         PlayerPrefs.Save();
 
         SceneManager.LoadScene("End");
+    }
+
+
+    private int contactEffectId = 0;
+    private void CreateContactEffectsPool()
+    {
+        for (int i = 0; i < contactEffectsPool.Length; ++i)
+        {
+            contactEffectsPool[i] = Instantiate(contactEffect, new Vector3(100, 100), Quaternion.identity);
+        }
+    }
+
+    public void PlayContactEffect(Vector3 pos)
+    {
+        contactEffectsPool[contactEffectId].gameObject.transform.position = pos;
+        contactEffectsPool[contactEffectId].Play();
+        contactEffectId = (contactEffectId + 1) % contactEffectsPool.Length;
     }
 }

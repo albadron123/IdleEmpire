@@ -20,7 +20,7 @@ TagManager:
   - Water
   - UI
   - Shadows
-  - 
+  - Lights
   - 
   - 
   - 
@@ -55,6 +55,12 @@ TagManager:
   - name: Slider
     uniqueID: 4282641081
     locked: 0
+  - name: DayNight:ayer
+    uniqueID: 1413864621
+    locked: 0
   - name: FORWARD
     uniqueID: 3883634759
+    locked: 0
+  - name: INFO-FORWARD
+    uniqueID: 378608435
     locked: 0

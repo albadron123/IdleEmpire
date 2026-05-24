@@ -41,7 +41,7 @@ public class MetaEconomy : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            UpdateBones(10);
+            UpdateBones(10000);
         }
     }
 

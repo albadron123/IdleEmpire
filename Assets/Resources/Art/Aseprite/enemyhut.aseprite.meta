@@ -128,8 +128,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 135
-      y: 235
+      x: 471
+      y: 288
       width: 27
       height: 29
     spriteID: 3788298e56df3a94d89b67db10669278
@@ -140,7 +140,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 135, y: 235}
+    uvTransform: {x: 471, y: 288}
   - name: enemyhut_Frame_1
     originalName: 
     pivot: {x: 0.64, y: -0.23728815}
@@ -148,8 +148,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 407
+      x: 353
+      y: 448
       width: 50
       height: 59
     spriteID: b1457c5776248ca458a791d8b72792e8
@@ -160,7 +160,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 407}
+    uvTransform: {x: 353, y: 448}
   - name: enemyhut_Frame_2
     originalName: 
     pivot: {x: 0.5346535, y: -0.18181819}
@@ -169,7 +169,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 135
-      y: 139
+      y: 417
       width: 101
       height: 88
     spriteID: 49e83ce9f7f77c4438ac1b741a02ff58
@@ -180,7 +180,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 135, y: 139}
+    uvTransform: {x: 135, y: 417}
   - name: enemyhut_Frame_3
     originalName: 
     pivot: {x: 0.5436893, y: -0.1632653}
@@ -188,8 +188,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 135
-      y: 274
+      x: 353
+      y: 342
       width: 103
       height: 98
     spriteID: 6244be117353f444f984070b34333fe2
@@ -200,7 +200,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 135, y: 274}
+    uvTransform: {x: 353, y: 342}
   - name: enemyhut_Frame_4
     originalName: 
     pivot: {x: 0.57009345, y: -0.125}
@@ -208,7 +208,7 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 135
+      x: 353
       y: 4
       width: 107
       height: 112
@@ -220,7 +220,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 135, y: 4}
+    uvTransform: {x: 353, y: 4}
   - name: enemyhut_Frame_5
     originalName: 
     pivot: {x: 0.5284553, y: -0.136}
@@ -281,6 +281,186 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 139}
+  - name: enemyhut_Frame_8
+    originalName: 
+    pivot: {x: 0.61290324, y: -0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 471
+      y: 242
+      width: 31
+      height: 38
+    spriteID: 4ebbe8cf711e4ca4f82f1babe1441d7a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 471, y: 242}
+  - name: enemyhut_Frame_9
+    originalName: 
+    pivot: {x: 0.6321839, y: -0.12857142}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 247
+      y: 140
+      width: 87
+      height: 70
+    spriteID: c875649bc92419e45a4e8e30b7cef741
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 247, y: 140}
+  - name: enemyhut_Frame_10
+    originalName: 
+    pivot: {x: 0.56363636, y: -0.13043478}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 353
+      y: 242
+      width: 110
+      height: 92
+    spriteID: 5ab54e9e6ea319f4ab80e501245a24f8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 353, y: 242}
+  - name: enemyhut_Frame_11
+    originalName: 
+    pivot: {x: 0.5603448, y: -0.13}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 407
+      width: 116
+      height: 100
+    spriteID: 343c7106b862cdd40a70f04e0eb341a1
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 407}
+  - name: enemyhut_Frame_12
+    originalName: 
+    pivot: {x: 0.5809524, y: -0.12727273}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 353
+      y: 124
+      width: 105
+      height: 110
+    spriteID: 35040224a56509246825ac1a18cfdfbc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 353, y: 124}
+  - name: enemyhut_Frame_13
+    originalName: 
+    pivot: {x: 0.6122449, y: -0.109375}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 247
+      y: 4
+      width: 98
+      height: 128
+    spriteID: 0664f1f1d2cef5a4b889a8493d1c13c6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 247, y: 4}
+  - name: enemyhut_Frame_14
+    originalName: 
+    pivot: {x: 0.63461536, y: -0.122137405}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 135
+      y: 4
+      width: 104
+      height: 131
+    spriteID: 9b4cdd4c4cc543041bf78c4353e45927
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 135, y: 4}
+  - name: enemyhut_Frame_15
+    originalName: 
+    pivot: {x: 0.6237624, y: -0.114503816}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 135
+      y: 143
+      width: 101
+      height: 131
+    spriteID: c78dacad9433bfe4092b8363a9316baa
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 135, y: 143}
+  - name: enemyhut_Frame_16
+    originalName: 
+    pivot: {x: 0.6237624, y: -0.12598425}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 135
+      y: 282
+      width: 101
+      height: 127
+    spriteID: f375e8c6af996ba458cd8db7a5a82ec2
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 135, y: 282}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -354,6 +534,78 @@ ScriptedImporter:
         width: 123
         height: 127
       spriteId: d0472a62081a057419e854ce3362214a
+    - name: enemyhut_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 56
+        y: 19
+        width: 31
+        height: 38
+      spriteId: 4ebbe8cf711e4ca4f82f1babe1441d7a
+    - name: enemyhut_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 20
+        y: 9
+        width: 87
+        height: 70
+      spriteId: c875649bc92419e45a4e8e30b7cef741
+    - name: enemyhut_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 13
+        y: 12
+        width: 110
+        height: 92
+      spriteId: 5ab54e9e6ea319f4ab80e501245a24f8
+    - name: enemyhut_Frame_11
+      frameIndex: 11
+      cellRect:
+        x: 10
+        y: 13
+        width: 116
+        height: 100
+      spriteId: 343c7106b862cdd40a70f04e0eb341a1
+    - name: enemyhut_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 14
+        y: 14
+        width: 105
+        height: 110
+      spriteId: 35040224a56509246825ac1a18cfdfbc
+    - name: enemyhut_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 15
+        y: 14
+        width: 98
+        height: 128
+      spriteId: 0664f1f1d2cef5a4b889a8493d1c13c6
+    - name: enemyhut_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 9
+        y: 16
+        width: 104
+        height: 131
+      spriteId: 9b4cdd4c4cc543041bf78c4353e45927
+    - name: enemyhut_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 12
+        y: 15
+        width: 101
+        height: 131
+      spriteId: c78dacad9433bfe4092b8363a9316baa
+    - name: enemyhut_Frame_16
+      frameIndex: 16
+      cellRect:
+        x: 12
+        y: 16
+        width: 101
+        height: 127
+      spriteId: f375e8c6af996ba458cd8db7a5a82ec2
     linkedCells: []
     parentIndex: -1
   platformSettings:
