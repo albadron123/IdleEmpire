@@ -124,7 +124,7 @@ public class Creature : MonoBehaviour, IDestructable
         //Classic variation
         if (targetObj == null)
         {
-            StartCoroutine(IdleWalking());
+            simulation = StartCoroutine(IdleWalking());
             yield break;
         }
 
@@ -140,7 +140,7 @@ public class Creature : MonoBehaviour, IDestructable
 
             if (targetObj == null)
             {
-                StartCoroutine(IdleWalking());
+                simulation = StartCoroutine(IdleWalking());
                 yield break;
             }
 
@@ -153,7 +153,7 @@ public class Creature : MonoBehaviour, IDestructable
         } while (Vector3.Distance(t.position, destination) >= 0.25f);
         a.SetBool("walk", false);
 
-        StartCoroutine(AttackTarget());
+        simulation = StartCoroutine(AttackTarget());
         yield break;
 
     }
@@ -163,7 +163,7 @@ public class Creature : MonoBehaviour, IDestructable
         // Classic variation
         if (target == null)
         {
-            StartCoroutine(IdleWalking());
+            simulation = StartCoroutine(IdleWalking());
             yield break;
         }
 
@@ -174,7 +174,7 @@ public class Creature : MonoBehaviour, IDestructable
 
         if (target == null)
         {
-            StartCoroutine(IdleWalking());
+            simulation = StartCoroutine(IdleWalking());
             a.SetBool("attack", false);
             yield break;
         }
@@ -187,12 +187,12 @@ public class Creature : MonoBehaviour, IDestructable
 
         if (target == null)
         {
-            StartCoroutine(IdleWalking());
+            simulation = StartCoroutine(IdleWalking());
             yield break;
             
         }
 
-        StartCoroutine(MoveToAttackTarget(target.gameObject));
+        simulation = StartCoroutine(MoveToAttackTarget(target.gameObject));
         yield break;
     }
 

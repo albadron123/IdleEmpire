@@ -64,3 +64,6 @@ TagManager:
   - name: INFO-FORWARD
     uniqueID: 378608435
     locked: 0
+  - name: BLACK_OVERLAY
+    uniqueID: 2294464797
+    locked: 0

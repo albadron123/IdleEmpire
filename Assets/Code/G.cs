@@ -22,6 +22,10 @@ public class G : MonoBehaviour
 {
     public static G inst;
 
+    public static string SCENE_INTERMEDIATE = "Intermediate";
+    public static string SCENE_META = "End";
+    public static string SCENE_MAIN = "SampleScene";
+
     // Equipped buildings
     public static List<Building.BuildingType> equippedBuildings;
     public static int equippedBuildingsSize;
@@ -30,6 +34,8 @@ public class G : MonoBehaviour
 
     public static int bonesSpent;
     public static int maxBonesSpent = 100;
+
+    public static int blobPurchasedCount;
 
 
     public static BuildingState[] buildingStates;
@@ -77,6 +83,7 @@ public class G : MonoBehaviour
     }
 
 
+
     public static void InitBuildingStates()
     {
         buildingStates = new BuildingState[(int)Building.BuildingType.Count];
@@ -92,6 +99,11 @@ public class G : MonoBehaviour
                 buildingStates[i].upgradeLvlUnlocked = PlayerPrefs.GetInt($"building_updrade_{DataStorage.allBuildings[(int)i].title}");
             }
         }
+    }
+
+    public static void InitBlobStates()
+    {
+        blobPurchasedCount = 0;
     }
 
 

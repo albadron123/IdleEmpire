@@ -52,12 +52,19 @@ public class CoreGame : MonoBehaviour
     public static string TAG_BOMB = "Bomb";
     public static string TAG_BUILDING = "Building";
 
+
     public static string BLOB_ICON_STR = "<sprite=1>";
 
     public static Color BLOBPLACE_DEFAULT_COLOR = new Color(0.27f, 0.71f, 0.79f);
     public static Color YELLOW_COLOR = new Color(0.99f, 0.73f, 0);
 
-    //public static string[] BUILDING_NAMES = new string[(int)Building.BuildingType.Count] { "Tawa", "Cubo", "Bubil", "Major", "Tumba", "Flawa", "Magnik", "Plomo", "Bombik", "Cacti"};
+
+    // === EVENTS SECTION
+
+    [HideInInspector] public System.Action OnBlobAquired = null;
+    [HideInInspector] public System.Action OnCuboChanged = null;
+    [HideInInspector] public System.Action OnBubilChanged = null;
+    [HideInInspector] public System.Action OnBonesChanged = null;
 
     public List<Building> allBuidlings = new List<Building>();
 
@@ -74,6 +81,7 @@ public class CoreGame : MonoBehaviour
     public GameObject sliderPfb;
     public GameObject moreResourcePfb;
     public GameObject ruinPfb;
+    public GameObject fakeHutkaPfb;
     public GameObject destructionEffect;
 
     float specialLrThikness = 0.1f;
@@ -112,6 +120,7 @@ public class CoreGame : MonoBehaviour
     [Header("Stuff")]
     public Material allWhiteMaterial;
     public Material spriteDefaultMaterial;
+    [SerializeField] SpriteRenderer overlaySr;
     [Header("Projectiles")]
     public GameObject projectilePfb;
     public GameObject healingProjectilePfb;
@@ -119,10 +128,9 @@ public class CoreGame : MonoBehaviour
     public GameObject bombPfb;
     public GameObject projectileDeathPlacePfb;
 
-    //Remove later
-    float personPrice = 5;
-    [SerializeField] TMPro.TMP_Text personPriceTe;
-    [SerializeField] GameObject blobPfb;
+    
+    //[SerializeField] TMPro.TMP_Text personPriceTe;
+    [SerializeField] GameObject[] blobPfbs;
 
 
 
@@ -183,8 +191,13 @@ public class CoreGame : MonoBehaviour
 
     public static bool autoGatherResource;
 
-    public static int bobbyDmg;
-    public static float bobbyVelocity;
+    public static int karlDmg;
+    public static float karlVelocity;
+
+    public static int joniTechnique;
+    public static float joniVelocity;
+
+    public static float bobbyMultiplier;
 
     public static float bombRadius;
     public static int bombDamage;
@@ -204,18 +217,18 @@ public class CoreGame : MonoBehaviour
         clickHeal = DataStorage.clickHealAmountPerLevel[G.GetUpgradeLvl(UpgradeHandle.ClickHeal)];
         clickHealRadius = DataStorage.clickHealRadiusPerLevel[G.GetUpgradeLvl(UpgradeHandle.ClickHealRange)];
 
-        bobbyDmg = DataStorage.bobbyDmgPerLevel[G.GetUpgradeLvl(UpgradeHandle.BobbyAttackDamage)];
-        bobbyVelocity = DataStorage.bobbyVelocityPerLevel[G.GetUpgradeLvl(UpgradeHandle.BobbyMovementVelocity)];
+        karlDmg = DataStorage.karlDamagePerLevel[G.GetUpgradeLvl(UpgradeHandle.AttackerBlobDmg)];
+        karlVelocity = DataStorage.karlVelocityPerLevel[G.GetUpgradeLvl(UpgradeHandle.AttackerBlobVelocity)];
+
+        joniTechnique = DataStorage.joniTechniquePerLevel[G.GetUpgradeLvl(UpgradeHandle.CollectorBlobTechnique)];
+        joniVelocity = DataStorage.joniVelocityPerLevel[G.GetUpgradeLvl(UpgradeHandle.CollectorBlobVelocity)];
+
+        bobbyMultiplier = DataStorage.basicBlobMultiplierPerLevel[G.GetUpgradeLvl(UpgradeHandle.BasicBlobMultiplier)];
 
         bombRadius = DataStorage.bombRadiusPerLevel[G.GetUpgradeLvl(UpgradeHandle.BombikRange)];
         bombDamage = DataStorage.bombDamagePerLevel[G.GetUpgradeLvl(UpgradeHandle.BombikDamage)];
 
         autoGatherResource = (G.GetUpgradeLvl(UpgradeHandle.AutoResourceGather) > 0);
-
-        //REMOVE THIS LATER
-        //BOBBY BUY PRICE
-        personPrice = 5;
-        personPriceTe.text = BLOB_ICON_STR + ((int)personPrice).ToString();
     }
 
     void InitCursorButtons()
@@ -312,6 +325,7 @@ public class CoreGame : MonoBehaviour
         InitEnemyGroups();
         InitRunFromUpgrades();
         G.InitBuildingStates();
+        G.InitBlobStates();
 
         StartCoroutine(WaitForAttack());
         StartCoroutine(ResourceGenerationLogic(Resource.ResourceType.Cubo));
@@ -327,6 +341,9 @@ public class CoreGame : MonoBehaviour
         CreateContactEffectsPool();
 
         StartCoroutine(DayNightCycle());
+
+        overlaySr.gameObject.SetActive(true);
+        overlaySr.DOFade(0, 1);
     }
 
 
@@ -487,7 +504,7 @@ public class CoreGame : MonoBehaviour
         for (int i = G.equippedBuildingsSize; i < G.equippedBuildingsCapacity; ++i)
         {
             buyBuildingButtons[i].SetActive(false);
-            buyBuildingButtonPlaceholders[i].SetActive(false);
+            buyBuildingButtonPlaceholders[i].SetActive(true);
         }
     }
 
@@ -508,24 +525,27 @@ public class CoreGame : MonoBehaviour
 
 
 
-    public void PressBuyPersonButton(Interactable interactable)
+    public void PressBuyPersonButton(BlobButton bb)
     {
-        if ((int)personPrice <= allResources[(int)Resource.ResourceType.Bubil].value)
+        int blobPrice = DataStorage.CalculateBlobPrice();
+        if (blobPrice <= allResources[(int)Resource.ResourceType.Bubil].value)
         {
             // Pay for the person
-            ChangeResource(Resource.ResourceType.Bubil, -(int)personPrice);
+            ChangeResource(Resource.ResourceType.Bubil, -blobPrice);
             //Create person
-            Instantiate(blobPfb,
+            Instantiate(blobPfbs[(int)bb.handle],
                 mainTower.transform.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0).normalized *
                 Random.Range(-1, 1),
                 Quaternion.identity);
             //Inflate price
-            personPrice *= 1.3f;
-            personPriceTe.text = BLOB_ICON_STR + ((int)personPrice).ToString();
+            ++G.blobPurchasedCount;
+
+            OnBlobAquired?.Invoke();
+            //personPriceTe.text = BLOB_ICON_STR + ((int)blobPrice).ToString();
         }
         else
         {
-            interactable.PerformCancelAction();
+            bb.PerformCancelAction();
         }
     }
 
@@ -988,7 +1008,43 @@ public class CoreGame : MonoBehaviour
 
         PlayerPrefs.Save();
 
-        SceneManager.LoadScene("End");
+        StartCoroutine(EndRunCoroutine());
+
+        //SceneManager.LoadScene("End");
+    }
+
+    
+    IEnumerator EndRunCoroutine()
+    {
+        AsyncOperation ao = SceneManager.LoadSceneAsync(G.SCENE_INTERMEDIATE, LoadSceneMode.Additive);
+        ao.allowSceneActivation = false;
+
+        Camera.main.DOShakePosition(3, 1, 50, 90, false);
+        yield return new WaitForSeconds(1);
+        Debug.Log(ao.progress);
+        
+
+        while (ao.progress < 0.9f)
+            yield return null;
+
+        overlaySr.DOFade(1, 1);
+
+        yield return new WaitForSeconds(1);
+
+        ao.allowSceneActivation = true;
+
+        yield return ao;
+
+        Scene oldScene = SceneManager.GetActiveScene();
+
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(G.SCENE_INTERMEDIATE));
+
+        // Unload old scene asynchronously (no freeze)
+        AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(oldScene);
+
+        // Optional: Force garbage collection after unload
+        System.GC.Collect();
+
     }
 
 

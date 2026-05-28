@@ -5,25 +5,20 @@ using UnityEngine;
 
 public class FriendCreature : Creature
 {
-    [SerializeField]
-    Sprite shokedSprite;
-    [SerializeField]
-    TMPro.TMP_Text shokedTe;
-    [SerializeField]
-    SpriteRenderer imageSr;
-
-    public bool shoked = false;
-
 
     public override void StartSimulation()
     {
-        activeVelocity = CoreGame.bobbyVelocity;
-        myDamage = CoreGame.bobbyDmg;
+        activeVelocity = CoreGame.karlVelocity;
+        myDamage = CoreGame.karlDmg;
 
-        Collider2D col = MaximUtils.GetNearestOverlappedWithTag2D(t.position, 3, CoreGame.TAG_ENEMY);
-        if (col != null)
+        ChangeState();
+    }
+
+    protected virtual void ChangeState()
+    {
+        if (DoSpecialActionCheck())
         {
-            simulation =  StartCoroutine(MoveToAttackTarget(col.gameObject));
+            simulation = StartCoroutine(DoSpecialAction());
         }
         else
         {
@@ -35,49 +30,22 @@ public class FriendCreature : Creature
     protected override void Update()
     {
         base.Update();
-        if(!shoked)
+        
+        List<Collider2D> cols = new List<Collider2D>();
+        Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), cols);
+        foreach (Collider2D col in cols)
         {
-            List<Collider2D> cols = new List<Collider2D>();
-            Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), cols);
-            foreach (Collider2D col in cols)
+            if (col.gameObject.tag == CoreGame.TAG_ENEMY_PROJECTILE)
             {
-                if (col.gameObject.tag == CoreGame.TAG_ENEMY_PROJECTILE)
+                Projectile proj = col.gameObject.GetComponent<Projectile>();
+                if (proj.doAffectBlobs && !proj.ignoreList.Contains(gameObject))
                 {
-                    Projectile proj = col.gameObject.GetComponent<Projectile>();
-                    if (proj.doAffectBlobs && !proj.ignoreList.Contains(gameObject))
-                    {
-                        int damage = proj.damage;
-                        Destroy(col.gameObject);
-                        Shock();
-                    }
+                    int damage = proj.damage;
+                    Destroy(col.gameObject);
                 }
             }
         }
-    }
-
-    void Shock()
-    {
-        StopAllCoroutines();
-        a.enabled = false;
-        shoked = true;
-        imageSr.sprite = shokedSprite;
-        shokedTe.enabled = true;   
-    }
-
-    void RemoveShock()
-    {
-        a.enabled = true;
-        shoked = false;
-        shokedTe.enabled = false;
-        StartSimulation();      
-    }
-
-    void OnMouseDown()
-    {
-        if(shoked)
-        {
-            RemoveShock();
-        }
+        
     }
 
     private void OnMouseExit()
@@ -91,6 +59,17 @@ public class FriendCreature : Creature
     private void OnMouseOver()
     {
         MaximUtils.RenderDashedCircle(CoreGame.inst.specialLrs2, t.position, 0.55f, Time.time, 7);
+    }
+
+
+    protected virtual bool DoSpecialActionCheck()
+    {
+        return false;
+    }
+
+    protected virtual IEnumerator DoSpecialAction()
+    {
+        yield break;
     }
 
     protected override IEnumerator IdleWalking()
@@ -108,12 +87,10 @@ public class FriendCreature : Creature
                 t.position = Vector3.MoveTowards(t.position, destination, Time.fixedDeltaTime * idleVelocity);
                 t.position = new Vector3(t.position.x, t.position.y, t.position.y);
                 destination.z = t.position.y;
-                
-                // Check for nearestEnemies to attack :                
-                Collider2D col = MaximUtils.GetNearestOverlappedWithTag2D(t.position, 3, CoreGame.TAG_ENEMY);
-                if (col != null)
+
+                if (DoSpecialActionCheck())
                 {
-                    StartCoroutine(MoveToAttackTarget(col.gameObject));
+                    StartCoroutine(DoSpecialAction());
                     yield break;
                 }
 

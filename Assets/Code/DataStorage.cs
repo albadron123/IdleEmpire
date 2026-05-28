@@ -19,6 +19,13 @@ public struct BuildingData
     public GameObject[] pfbs;
 };
 
+public enum BlobHandle 
+{
+    Basic, 
+    Collector,
+    Attacker
+}
+
 public enum UpgradeHandle
 {
     //Building upgrades
@@ -35,8 +42,16 @@ public enum UpgradeHandle
 
     AutoResourceGather,
 
-    BobbyAttackDamage,
-    BobbyMovementVelocity,
+    AttackerBlob,
+    AttackerBlobDmg,
+    AttackerBlobVelocity,
+
+    CollectorBlob,
+    CollectorBlobTechnique,
+    CollectorBlobVelocity,
+
+    BasicBlobMultiplier,
+
 
     SpawnMoreCubo,
     SpawnMoreBubil,
@@ -127,6 +142,8 @@ public class DataStorage : MonoBehaviour
     public static AudioClip SFX_CLICK_UPGRADE_BUTTON;
     [HideInInspector]
     public static AudioClip SFX_OVER_UPGRADE_BUTTON;
+    [HideInInspector]
+    public static AudioClip SFX_PIANO_LOW;
 
 
     public static AudioClip SOUND_BROWN_NOISE;
@@ -140,8 +157,13 @@ public class DataStorage : MonoBehaviour
     public static EnemyData[] allEnemies;
 
     //Special upgrade data structures
-    public static int[] bobbyDmgPerLevel;
-    public static float[] bobbyVelocityPerLevel;
+    public static int[] karlDamagePerLevel;
+    public static float[] karlVelocityPerLevel;
+
+    public static int[] joniTechniquePerLevel;
+    public static float[] joniVelocityPerLevel;
+
+    public static float[] basicBlobMultiplierPerLevel;
 
     public static int[] clickBaseAttackPerLevel;
     public static float[] clickAttackRadiusPerLevel;
@@ -156,6 +178,9 @@ public class DataStorage : MonoBehaviour
 
     public static float[] bombRadiusPerLevel;
     public static int[] bombDamagePerLevel;
+
+    public static int basicBlobPrice;
+    public static float blobPriceMultiplier;
 
     void Start()
     {
@@ -175,6 +200,7 @@ public class DataStorage : MonoBehaviour
         SFX_CLICK_UPGRADE = Resources.Load<AudioClip>("Sound/SFX/ClickUpgrade");
         SFX_CLICK_UPGRADE_BUTTON = Resources.Load<AudioClip>("Sound/SFX/ClickUpgradeButton");
         SFX_OVER_UPGRADE_BUTTON = Resources.Load<AudioClip>("Sound/SFX/OverUpgradeButton");
+        SFX_PIANO_LOW = Resources.Load<AudioClip>("Sound/Piano");
         SOUND_BROWN_NOISE = Resources.Load<AudioClip>("Sound/BrownNoise");
         SOUND_FIREPLACE = Resources.Load<AudioClip>("Sound/Fireplace");
         SOUND_FIREPLACE_MUSIC = Resources.Load<AudioClip>("Sound/FireplaceMusic");
@@ -187,8 +213,8 @@ public class DataStorage : MonoBehaviour
         data.allBuildings = allBuildings;
         data.allEnemies = allEnemies;
         data.allUpgrades = allUpgrades;
-        data.bobbyDmgPerLevel = bobbyDmgPerLevel;
-        data.bobbyVelocityPerLevel = bobbyVelocityPerLevel;
+        data.bobbyDmgPerLevel = karlDamagePerLevel;
+        data.bobbyVelocityPerLevel = karlVelocityPerLevel;
         data.clickBaseAttackPerLevel = clickBaseAttackPerLevel;
         data.clickAttackRadiusPerLevel = clickAttackRadiusPerLevel;
         data.clickHealAmountPerLevel = clickHealAmountPerLevel;
@@ -233,8 +259,8 @@ public class DataStorage : MonoBehaviour
         allBuildings = data.allBuildings;
         allUpgrades = data.allUpgrades;
         allEnemies = data.allEnemies;
-        bobbyDmgPerLevel = data.bobbyDmgPerLevel;
-        bobbyVelocityPerLevel = data.bobbyVelocityPerLevel;
+        karlDamagePerLevel = data.bobbyDmgPerLevel;
+        karlVelocityPerLevel = data.bobbyVelocityPerLevel;
         clickBaseAttackPerLevel = data.clickBaseAttackPerLevel;
         clickAttackRadiusPerLevel = data.clickAttackRadiusPerLevel;
         clickHealAmountPerLevel = data.clickHealAmountPerLevel;
@@ -245,6 +271,12 @@ public class DataStorage : MonoBehaviour
         bombRadiusPerLevel = data.bombRadiusPerLevel;
         bombDamagePerLevel = data.bombDamagePerLevel;
         return true;
+    }
+
+    public static void LoadVariables()
+    {
+        basicBlobPrice = 5;
+        blobPriceMultiplier = 1.3f;
     }
 
     public static void LoadBuildings()
@@ -518,29 +550,88 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        allUpgrades[(int)UpgradeHandle.BobbyAttackDamage] = new UpgradeData()
+        allUpgrades[(int)UpgradeHandle.CollectorBlob] = new UpgradeData()
         {
-            title = "Bobby killin damaga",
-            icon = sprites[(int)UpgradeHandle.BobbyAttackDamage],
-            maxLvls = 5,
-            pricePerLevel = new int[5] {10, 20, 100, 500, 10000},
+            title = "Joni\n(collect resources)",
+            icon = sprites[(int)UpgradeHandle.CollectorBlob],
+            maxLvls = 1,
+            pricePerLevel = new int[1] {100},
             isBuildingUpdrade = false,
             buildingHandle = null,
         };
 
-        bobbyDmgPerLevel = new int[6] {1, 3, 10, 20, 60, 100};
-
-        allUpgrades[(int)UpgradeHandle.BobbyMovementVelocity] = new UpgradeData()
+        allUpgrades[(int)UpgradeHandle.AttackerBlob] = new UpgradeData()
         {
-            title = "Bobby spiddin",
-            icon = sprites[(int)UpgradeHandle.BobbyMovementVelocity],
+            title = "Karl\n(attacks!)",
+            icon = sprites[(int)UpgradeHandle.AttackerBlob],
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 100 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        allUpgrades[(int)UpgradeHandle.AttackerBlobDmg] = new UpgradeData()
+        {
+            title = "Karl stronger",
+            icon = sprites[(int)UpgradeHandle.AttackerBlobDmg],
+            maxLvls = 3,
+            pricePerLevel = new int[5] { 20, 40, 100, 400, 500},
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        karlDamagePerLevel = new int[6] { 1, 3, 10, 20, 60, 100 };
+
+        allUpgrades[(int)UpgradeHandle.AttackerBlobVelocity] = new UpgradeData()
+        {
+            title = "Karl faster",
+            icon = sprites[(int)UpgradeHandle.AttackerBlobVelocity],
             maxLvls = 3,
             pricePerLevel = new int[3] { 20, 40, 500 },
             isBuildingUpdrade = false,
             buildingHandle = null,
         };
 
-        bobbyVelocityPerLevel = new float[4] {2, 3f, 4.5f, 5.5f };
+        karlVelocityPerLevel = new float[4] { 2, 3f, 4.5f, 5.5f };
+
+        allUpgrades[(int)UpgradeHandle.CollectorBlobTechnique] = new UpgradeData()
+        {
+            title = "Joni more effective",
+            icon = sprites[(int)UpgradeHandle.CollectorBlobTechnique],
+            maxLvls = 5,
+            pricePerLevel = new int[5] { 20, 40, 100, 400, 500 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        joniTechniquePerLevel = new int[6] { 1, 2, 5, 25, 50, 100};
+
+
+
+
+        allUpgrades[(int)UpgradeHandle.CollectorBlobVelocity] = new UpgradeData()
+        {
+            title = "Joni faster",
+            icon = sprites[(int)UpgradeHandle.CollectorBlobVelocity],
+            maxLvls = 3,
+            pricePerLevel = new int[3] { 20, 40, 500 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        joniVelocityPerLevel = new float[4] { 2, 3f, 4.5f, 5.5f };
+
+        allUpgrades[(int)UpgradeHandle.BasicBlobMultiplier] = new UpgradeData()
+        {
+            title = "Bobby Faster",
+            icon = sprites[(int)UpgradeHandle.BasicBlobMultiplier],
+            maxLvls = 3,
+            pricePerLevel = new int[3] { 20, 40, 500 },
+            isBuildingUpdrade = false,
+            buildingHandle = null,
+        };
+
+        basicBlobMultiplierPerLevel = new float[] {0, 1.5f, 2f, 5f};
 
         allUpgrades[(int)UpgradeHandle.SpawnMoreCubo] = new UpgradeData()
         {
@@ -720,6 +811,10 @@ public class DataStorage : MonoBehaviour
     }
 
     //=== HERE WE HAVE FORMULAS FOR OUR BALANCE COMPUTATIONS
+    public static int CalculateBlobPrice()
+    {
+        return basicBlobPrice * Mathf.FloorToInt(Mathf.Pow(blobPriceMultiplier, G.blobPurchasedCount));
+    }
 
     public static int CalculateBuildingPrice(Building.BuildingType type)
     {

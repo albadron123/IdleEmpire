@@ -229,6 +229,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
         CoreGame.inst.builtObjects.Remove(this);
         if (b.myType == Building.BuildingType.HutkaGrande)
         {
+            Instantiate(CoreGame.inst.fakeHutkaPfb, t.position, Quaternion.identity);
+            Destroy(gameObject);
             CoreGame.inst.EndRun();
         }
     }

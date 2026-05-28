@@ -42,9 +42,6 @@ public class Meta : MonoBehaviour
     Transform t;
 
     [SerializeField]
-    TMPro.TMP_Text devilsTe;
-
-    [SerializeField]
     TMPro.TMP_Text bonesSpentTe;
     [SerializeField]
     Transform bonesSpentArrow;
@@ -58,40 +55,6 @@ public class Meta : MonoBehaviour
 
 
 
-    void InitBonesSpentSlider()
-    {
-        bonesSpentSlider.localScale = new Vector3(0, bonesSpentSlider.localScale.y, bonesSpentSlider.localScale.z);
-        bonesSpentArrow.localPosition = new Vector3(0, bonesSpentArrow.transform.position.y, bonesSpentArrow.transform.position.z);
-        bonesSpentTe.text = $"{0}/{G.maxBonesSpent}";
-        
-        StartCoroutine(UpdateBonesSpentSlider(0));
-    }
-
-    public IEnumerator UpdateBonesSpentSlider(int newBonesSpent)
-    {
-        const float UPDATE_TIME = 0.75f;
-
-        int oldBonesSpent = G.bonesSpent;
-        G.bonesSpent = Mathf.Clamp(newBonesSpent, 0, G.maxBonesSpent);
-        float fraction = (float)G.bonesSpent / G.maxBonesSpent;
-        bonesSpentSlider.DOScale(new Vector3(fraction, bonesSpentSlider.localScale.y, bonesSpentSlider.localScale.z), UPDATE_TIME);
-        bonesSpentArrow.DOLocalMove(new Vector3(fraction, bonesSpentArrow.localPosition.y, bonesSpentArrow.localPosition.z), UPDATE_TIME);
-        float timer = 0;
-        while (timer < UPDATE_TIME)
-        {
-            yield return new WaitForEndOfFrame();
-            timer += Time.deltaTime;
-            if (timer >= UPDATE_TIME)
-            {
-                timer = UPDATE_TIME;
-                bonesSpentTe.text = $"{G.bonesSpent}/{G.maxBonesSpent}";
-            }
-            else
-            {
-                bonesSpentTe.text = $"{(int)(Mathf.Lerp(oldBonesSpent, G.bonesSpent, timer / UPDATE_TIME))}/{G.maxBonesSpent}";
-            }
-        }
-    }
 
 
     void ShowEquipmentList()
@@ -177,7 +140,7 @@ public class Meta : MonoBehaviour
         canResurrect = G.equippedBuildings.Count > 0;
         ShowEquipmentList();
 
-        InitBonesSpentSlider();
+        
         StartCoroutine(RenderEdges());
 
         StartCoroutine(SoundManager.inst.ChangeBackgroundProfile(new AudioClip[2] { DataStorage.SOUND_FIREPLACE, DataStorage.SOUND_FIREPLACE_MUSIC}, new float[]{0.35f,0.2f}, new float[]{1f,0.8f}));
@@ -270,7 +233,7 @@ public class Meta : MonoBehaviour
         {
             StartCoroutine(SoundManager.inst.ChangeBackgroundProfile(new AudioClip[2] { DataStorage.SOUND_FIREPLACE, DataStorage.SOUND_FIREPLACE_MUSIC }, new float[] { 0.35f, 0.2f }, new float[] { 1f, 0.8f }, 5));
         }
-        MaximUtils.RenderShakyText(devilsTe, 0.012f, 15);
+        
 
         float mousePositionYClamped = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).y, t.position.y - 5f, t.position.y + 5f);
         if (mousePositionYClamped > t.position.y + 4f)

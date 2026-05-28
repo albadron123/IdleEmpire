@@ -278,8 +278,6 @@ public class Node : MonoBehaviour
             return;
         }
 
-        StartCoroutine(Meta.inst.UpdateBonesSpentSlider(G.bonesSpent + currentPrice));
-
         int lvl = G.upgradeStates[(int)myHandle].upgradeLvl;
         int maxLvl = DataStorage.allUpgrades[(int)myHandle].maxLvls;
 

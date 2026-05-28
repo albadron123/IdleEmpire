@@ -59,14 +59,6 @@ public class Blob : MonoBehaviour, IDragInteraction
         
 
         CoreGame.inst.canBuild = true;
-        
-        FriendCreature fc = GetComponent<FriendCreature>();
-        if(fc.shoked)
-        {
-            t.position = new Vector3(t.position.x, t.position.y, initialZPosition);
-            outline.SetActive(false);
-            return;
-        }
 
         Collider2D foundPlaceCol = MaximUtils.GetNearestOverlappedWithTag2D(myCollider, CoreGame.TAG_BLOB_PLACE);
         GameObject foundPlace = null;

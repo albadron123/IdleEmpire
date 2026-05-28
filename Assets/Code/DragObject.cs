@@ -29,9 +29,6 @@ public class DragObject : MonoBehaviour
         {
             return;
         }
-                
-        FriendCreature fc = GetComponent<FriendCreature>();
-        if(fc != null && fc.shoked) return;
         
         if (CoreGame.inst.canDrag)
         {

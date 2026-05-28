@@ -33,6 +33,7 @@ public static class Bootloader
 
         //Load all the saved stuff & essential data
         DataStorage.LoadSound();
+        DataStorage.LoadVariables();
         DataStorage.LoadBuildings();
         DataStorage.LoadUpgrades();
         DataStorage.LoadEnemies();
@@ -47,6 +48,7 @@ public static class Bootloader
         G.bonesSpent = 0;
         G.InitBuildingStates();
         G.InitUpgradeStates();
+        G.InitBlobStates();
         G.LoadEquipmentListFromPlayerPrefs();
 
     }

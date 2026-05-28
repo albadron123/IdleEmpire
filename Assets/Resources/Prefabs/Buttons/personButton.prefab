@@ -438,6 +438,7 @@ GameObject:
   - component: {fileID: 3584680564714768885}
   - component: {fileID: 8808065348056983120}
   - component: {fileID: 2168100107951954969}
+  - component: {fileID: 1467299716506233258}
   m_Layer: 0
   m_Name: personButton
   m_TagString: Untagged
@@ -528,7 +529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInteractive: 1
-  canBeDescribed: 0
+  canBeDescribed: 1
   e:
     m_PersistentCalls:
       m_Calls:
@@ -599,3 +600,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.27, y: 1.57}
   m_EdgeRadius: 0
+--- !u!114 &1467299716506233258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7596988684662700352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02c773cb7015b0b4f803487f1c78dfb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeholderButton: {fileID: 0}
+  priceTe: {fileID: 8070620798571444080}
