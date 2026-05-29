@@ -85,7 +85,7 @@ public class Interactable : MonoBehaviour
     {
         if (canBeDescribed)
         {
-            G.describerT.position = (Vector3)G.mousePosition + Vector3.up * 1.5f;
+            G.describerT.position = (Vector3)MaximUtils.ClampToScreen((Vector3)G.mousePosition + Vector3.up * 1.5f, new Vector2(3.6f, 1.8f));
         }
     }
 

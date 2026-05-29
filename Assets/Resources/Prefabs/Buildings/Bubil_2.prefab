@@ -69,6 +69,10 @@ PrefabInstance:
       value: Bubil_2
       objectReference: {fileID: 0}
     - target: {fileID: 7211810504238387178, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
+      propertyPath: b.myLvl
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211810504238387178, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: baseProductionTime
       value: 1
       objectReference: {fileID: 0}
@@ -82,11 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7413472795690358650, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1.02
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 7413472795690358650, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1.07
+      value: 1.14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

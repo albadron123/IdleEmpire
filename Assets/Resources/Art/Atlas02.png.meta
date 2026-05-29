@@ -354,7 +354,7 @@ TextureImporter:
         width: 266
         height: 252
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -362,6 +362,27 @@ TextureImporter:
       bones: []
       spriteID: c0726a95b4010bd4681b3cb4eef40ddd
       internalID: 942323047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas02_12
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 361
+        width: 489
+        height: 362
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d19af598a1a4b924b87845116ca653e8
+      internalID: -1296999961
       vertices: []
       indices: 
       edges: []
@@ -380,6 +401,8 @@ TextureImporter:
       Atlas02_0: -911777798
       Atlas02_1: -1431511922
       Atlas02_10: 942323047
+      Atlas02_11: -1755697080
+      Atlas02_12: -1296999961
       Atlas02_2: 1581282160
       Atlas02_3: -1407827534
       Atlas02_4: -1349930527

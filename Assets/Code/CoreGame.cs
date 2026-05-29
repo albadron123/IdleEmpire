@@ -53,18 +53,21 @@ public class CoreGame : MonoBehaviour
     public static string TAG_BUILDING = "Building";
 
 
-    public static string BLOB_ICON_STR = "<sprite=1>";
+    public static string BUBIL_ICON_STR = "<sprite=1>";
+    public static string CUBO_ICON_STR = "<sprite=4>";
+    public static string BONES_ICON_STR = "<sprite=3>";
+    public static string BLOB_ICON_STR = "<sprite=0>";
+    public static string ENEMY_ICON_STR = "<sprite=1";
 
     public static Color BLOBPLACE_DEFAULT_COLOR = new Color(0.27f, 0.71f, 0.79f);
     public static Color YELLOW_COLOR = new Color(0.99f, 0.73f, 0);
+    public static Color CREAMY_YELLOW_COLOR = new Color(1f, 0.87f, 0.58f);
 
 
     // === EVENTS SECTION
 
     [HideInInspector] public System.Action OnBlobAquired = null;
-    [HideInInspector] public System.Action OnCuboChanged = null;
-    [HideInInspector] public System.Action OnBubilChanged = null;
-    [HideInInspector] public System.Action OnBonesChanged = null;
+    [HideInInspector] public System.Action[] OnResourceChanged = new System.Action[(int)Resource.ResourceType.Count];
 
     public List<Building> allBuidlings = new List<Building>();
 
@@ -128,19 +131,24 @@ public class CoreGame : MonoBehaviour
     public GameObject bombPfb;
     public GameObject projectileDeathPlacePfb;
 
-    
+
     //[SerializeField] TMPro.TMP_Text personPriceTe;
     [SerializeField] GameObject[] blobPfbs;
 
-
-
-
-    List<GameObject> upgradeButtons = null;
-    [SerializeField] Transform upgradesContainer;
-    [SerializeField] GameObject upgradeButtonPfb;
-
     [SerializeField] GameObject clickableBlockPfb;
     [SerializeField] GameObject clickableBlobPfb;
+
+
+    [Header("Building Upgrades")]
+    [SerializeField] GameObject upgradeGroup;
+    [SerializeField] TMPro.TMP_Text upgradeGroupTe;
+    [SerializeField] GameObject upgradeButton;
+    [SerializeField] GameObject boostButton;
+    [SerializeField] TMPro.TMP_Text upgradeButtonTe;
+    [SerializeField] TMPro.TMP_Text boostButtonTe;
+    [SerializeField] TMPro.TMP_Text upgradePrice;
+    [SerializeField] TMPro.TMP_Text boostPrice;
+
 
     [Header("Cursor")]
     [SerializeField] Sprite basicCursorSpr;
@@ -352,7 +360,7 @@ public class CoreGame : MonoBehaviour
     IEnumerator DayNightCycle()
     {
 
-     
+
         DOTween.Sequence()
             .Append(dayNightBaseColorSr.DOFade(0.5f, 1.5f))
             .Append(lightingsSr.material.DOFade(0.1f, 0))
@@ -727,7 +735,7 @@ public class CoreGame : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !MaximUtils.DoSquareOverlapAny(mousePosition, new Vector2(0.05f, 0.05f)))
         {
-            HideUpgrades();
+            DeselectBuilding();
         }
 
 
@@ -838,6 +846,7 @@ public class CoreGame : MonoBehaviour
     {
         allResources[(int)type].value += delta;
         allResources[(int)type].te.text = $"{allResources[(int)type].value}";
+        OnResourceChanged[(int)type]?.Invoke();
     }
 
     struct PooledPopup
@@ -926,58 +935,99 @@ public class CoreGame : MonoBehaviour
     }
 
     // --- Upgrades sections --- 
-
-
-    public void ShowUpgrades(List<UpgradeType> upgradeTypes, BuildingObject buildingToUpgrade)
+    public void DecorateBuildingAsSelected(GameObject b)
     {
-        const float BUTTON_OFFSET = 0.1F;
-        HideUpgrades();
-        // Outlining the building
-        selectedBuilding = buildingToUpgrade;
         selectedBuilding.sr.material.SetFloat("_Strength", 0.0035f);
         selectedBuilding.sr.material.SetColor("_Color", YELLOW_COLOR);
+
         foreach (var blobPlace in selectedBuilding.blobPlaces)
         {
             blobPlace.GetComponent<SpriteRenderer>().color = YELLOW_COLOR;
         }
+    }
+
+    public void SelectBuilding(Building.BuildingType type, int currentLvl, bool isBoosed, BuildingObject buildingToUpgrade)
+    {
+        DeselectBuilding();
+
+
+        upgradeGroup.transform.DOKill();
+        DOTween.Sequence()
+            .Append(upgradeGroup.transform.DOMoveY(-8, 0))
+            .Append(upgradeGroup.transform.DOMoveY(-4.5f, 0.45f).SetEase(Ease.OutCubic));
+
+        // Outlining the building (cosmetic styling)
+        selectedBuilding = buildingToUpgrade;
+        DecorateBuildingAsSelected(buildingToUpgrade.gameObject);
+
         // Showing buttons
-        upgradeButtons = new List<GameObject>();
-        for (int i = 0; i < upgradeTypes.Count; ++i)
+
+        upgradeGroup.SetActive(true);
+        upgradeGroupTe.text = $"{DataStorage.allBuildings[(int)type].title}\n<size=30>lvl {currentLvl + 1}</size>";
+        if (BuidingCanBeUpgraded(buildingToUpgrade.b))
         {
-            // Setting the correct params 
-            // need to do that before the creating so that the button correctly reflects its state on start
-            var ub = upgradeButtonPfb.GetComponent<UpgradeButton>();
-            ub.bObj = buildingToUpgrade;
-            ub.myType = upgradeTypes[i];
+            upgradeButtonTe.text = $"Upgrade";
+            upgradePrice.text = $"{DataStorage.CalculateBuildingPrice(type, currentLvl + 1)} <size=45>{CUBO_ICON_STR}</size>";
+        }
+        else
+        {
+            upgradeButtonTe.text = $"Max level";
+            upgradePrice.text = "";
+        }
 
-            // Instantiating
-            GameObject buttonInst = Instantiate(upgradeButtonPfb, Vector3.zero, Quaternion.identity, upgradesContainer);
-            buttonInst.transform.localPosition = new Vector3(0, i * (buttonInst.transform.localScale.y + BUTTON_OFFSET), 0);
-
-            upgradeButtons.Add(buttonInst);
+        if (isBoosed)
+        {
+            boostButtonTe.text = "Boosted (00:10)";
+            boostPrice.text = "";
+        }
+        else
+        {
+            boostButtonTe.text = "Boost";
+            boostPrice.text = $"10 <size=65>{BUBIL_ICON_STR}</size>";
         }
     }
 
-    public void HideUpgrades()
+    public void DeselectBuilding()
     {
-        if (upgradeButtons != null)
+
+        if (selectedBuilding != null)
         {
-            if (selectedBuilding != null)
+            selectedBuilding.sr.material.SetFloat("_Strength", 0f);
+            selectedBuilding.sr.material.SetColor("_Color", new Color(0, 0, 0, 0));
+            foreach (var blobPlace in selectedBuilding.blobPlaces)
             {
-                selectedBuilding.sr.material.SetFloat("_Strength", 0f);
-                selectedBuilding.sr.material.SetColor("_Color", new Color(0, 0, 0, 0));
-                foreach (var blobPlace in selectedBuilding.blobPlaces)
-                {
-                    blobPlace.GetComponent<SpriteRenderer>().color = BLOBPLACE_DEFAULT_COLOR;
-                }
-                selectedBuilding = null;
+                blobPlace.GetComponent<SpriteRenderer>().color = BLOBPLACE_DEFAULT_COLOR;
             }
-            for (int i = 0; i < upgradeButtons.Count; ++i)
-            {
-                Destroy(upgradeButtons[i]);
-            }
+            selectedBuilding = null;
         }
-        upgradeButtons = null;
+
+        upgradeGroup.SetActive(false);
+    }
+
+    bool BuidingCanBeUpgraded(Building b)
+    {
+        return G.buildingStates[(int)b.myType].upgradeLvlUnlocked > b.myLvl;
+    }
+
+    bool BuildingUpgradeCanBePurchased(Building b)
+    {
+        return true;
+    }
+
+    public void UpgradeSelectedBuilding(Interactable i)
+    {
+        if (!BuidingCanBeUpgraded(selectedBuilding.b) || !BuidingCanBeUpgraded(selectedBuilding.b))
+        {
+            i.PerformCancelAction();
+            return;
+        }
+        // Заплатить
+        ChangeResource(Resource.ResourceType.Cubo, -1);
+        // Выставить новое здание на место старого 
+        GameObject newPrefab = DataStorage.allBuildings[(int)selectedBuilding.b.myType].pfbs[selectedBuilding.b.myLvl+1];
+        selectedBuilding.UpgradeInto(newPrefab);
+        // * vfx  & sfx
+        // Обновить интерфейсы (reuse what was done is select building
     }
 
 

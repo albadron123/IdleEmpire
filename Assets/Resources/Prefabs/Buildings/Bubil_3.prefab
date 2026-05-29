@@ -289,7 +289,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.24}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: 0.014206708}
     oldSize: {x: 0.45, y: 0.47}
     newSize: {x: 0.625, y: 0.6527778}
     adaptiveTilingThreshold: 0.5
@@ -404,6 +404,10 @@ PrefabInstance:
       value: Bubil_3
       objectReference: {fileID: 0}
     - target: {fileID: 7211810504238387178, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
+      propertyPath: b.myLvl
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211810504238387178, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: baseProductionTime
       value: 1
       objectReference: {fileID: 0}
@@ -425,11 +429,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7413472795690358650, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1.06
+      value: 1.11
       objectReference: {fileID: 0}
     - target: {fileID: 7413472795690358650, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1.26
+      value: 1.37
       objectReference: {fileID: 0}
     - target: {fileID: 7519028706482816707, guid: 2d0b763c5b3aa7c40b3404b4f5846c54, type: 3}
       propertyPath: m_LocalPosition.x

@@ -310,6 +310,20 @@ public class MaximUtils : MonoBehaviour
         return new UnityEngine.Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)).normalized * magnitude * ((Random.value > 0.5f)?1:-1);
     }
 
+    public static Vector2 ClampToScreen(Vector2 position, Vector2 size, float extraPadding = 0.05f)
+    {
+        Vector2 cameraHalfDimentions = Camera.main.ScreenToWorldPoint(new Vector2(Camera.main.pixelWidth, Camera.main.pixelHeight));
+        Vector2 cameraPosition = Camera.main.transform.position;
+        float left = cameraPosition.x - cameraHalfDimentions.x - extraPadding;
+        float right = cameraPosition.x + cameraHalfDimentions.x + extraPadding;
+        float top = cameraPosition.y + cameraHalfDimentions.y + extraPadding;
+        float bottom = cameraPosition.y - cameraHalfDimentions.y - extraPadding;
+
+        Vector2 clamped = new Vector2(Mathf.Clamp(position.x, left + 0.5f * size.x, right - 0.5f * size.x),
+                                      Mathf.Clamp(position.y, bottom + 0.5f * size.y, top - 0.5f * size.y));
+        return clamped;
+    }
+
     public static void RenderWavyText(TMPro.TMP_Text te, float amplitude)
     {
         te.ForceMeshUpdate(); // Ensure the mesh is updated

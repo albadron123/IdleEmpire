@@ -612,5 +612,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c773cb7015b0b4f803487f1c78dfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handle: 0
+  upgradeNeeded: 0
   placeholderButton: {fileID: 0}
   priceTe: {fileID: 8070620798571444080}
+  backgroundSr: {fileID: 3584680564714768885}

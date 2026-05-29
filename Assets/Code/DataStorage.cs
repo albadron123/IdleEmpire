@@ -23,7 +23,8 @@ public enum BlobHandle
 {
     Basic, 
     Collector,
-    Attacker
+    Attacker,
+    Count
 }
 
 public enum UpgradeHandle
@@ -181,6 +182,13 @@ public class DataStorage : MonoBehaviour
 
     public static int basicBlobPrice;
     public static float blobPriceMultiplier;
+
+    public static string[] blobDescriptions = new string[(int)BlobHandle.Count]
+    {
+        "<align=\"center\"><b>Bobby</b></align>\nPlace on buildings, work good there!",
+        "<align=\"center\"><b>Joni</b></align>\nJoni likes to collect <sprite=4> & <sprite=1> from grass for you",
+        "<align=\"center\"><b>Karl</b></align>\nAll <sprite=2> afraid of Karl! Karl kill 'em with bare hands!",
+    };
 
     void Start()
     {
@@ -813,7 +821,7 @@ public class DataStorage : MonoBehaviour
     //=== HERE WE HAVE FORMULAS FOR OUR BALANCE COMPUTATIONS
     public static int CalculateBlobPrice()
     {
-        return basicBlobPrice * Mathf.FloorToInt(Mathf.Pow(blobPriceMultiplier, G.blobPurchasedCount));
+        return Mathf.FloorToInt(basicBlobPrice * Mathf.Pow(blobPriceMultiplier, G.blobPurchasedCount));
     }
 
     public static int CalculateBuildingPrice(Building.BuildingType type)

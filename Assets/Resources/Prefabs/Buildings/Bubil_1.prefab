@@ -205,8 +205,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.24}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.1807208}
-    oldSize: {x: 0.68, y: 0.71}
+    pivot: {x: 0.5, y: 0.014206708}
+    oldSize: {x: 0.45, y: 0.47}
     newSize: {x: 0.625, y: 0.6527778}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -738,13 +738,13 @@ MonoBehaviour:
   zDivider: {fileID: 0}
   healthText: {fileID: 4049728758168299903}
   destroyedBuildingSpr: {fileID: -911777798, guid: 9174e5fb818e74748a53aedccf185b07, type: 3}
+  sr: {fileID: 0}
   b:
     myType: 2
     buildingPfb: {fileID: 0}
     myLvl: 0
   blobPlaces:
   - {fileID: 2294802544568611431}
-  outline: {fileID: 3700940302479778908}
   rotationPart: {fileID: 0}
   baseProjectileSize: 1.15
   baseShootingSpeed: 0.9

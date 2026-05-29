@@ -82,13 +82,26 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
     void Start()
     {
+        if (!isInitialized)
+        {
+            Initialize();
+        }
+    }
+
+
+    private bool isInitialized = false;
+    public void Initialize()
+    {
         sr = GetComponent<SpriteRenderer>();
         dObj = GetComponent<DestructableObject>();
-        
+
+        sr.material.SetFloat("_Strength", 0f);
+        sr.material.SetColor("_Color", new Color(0, 0, 0, 0));
+
         dObj.maxHealth = DataStorage.allBuildings[(int)b.myType].maxHealthPerLevel[(int)b.myLvl];
         dObj.health = dObj.maxHealth;
         dObj.InitHealth();
-         
+
         RegisterBuilding();
 
         t = transform;
@@ -118,6 +131,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
         {
             StartCoroutine(FunctionCoroutine(0));
         }
+
+        isInitialized = true;
     }
 
     // Update is called once per frame
@@ -213,6 +228,58 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sr.sprite = cacti3Spr;
             }
         }
+    }
+
+    public void UpgradeInto(GameObject pfb)
+    {
+        GameObject newBuildingInstance = Instantiate(pfb, t.position, Quaternion.identity);
+
+        BuildingObject newBuildingObject = newBuildingInstance.GetComponent<BuildingObject>();
+        newBuildingObject.Initialize();
+
+        if (blobs != null)
+        {
+            //transfer blobs 
+            for (int processId = 0; processId < blobs.Length; ++processId)
+            {
+                if (blobs[processId] == null)
+                {
+                    continue;
+                }
+
+                Blob b = blobs[processId];
+                b.transform.parent = null;
+
+
+                if (processes[processId] != null)
+                {
+                    StopCoroutine(processes[processId]);
+                    processes[processId] = null;
+                }
+                if (sliders[processId] != null)
+                {
+                    Destroy(sliders[processId]);
+                    sliders[processId] = null;
+                }
+
+                newBuildingObject.AddBlob(b, newBuildingObject.blobPlaces[processId]);
+            }
+        }
+
+        //preserve health
+
+        //preserve state of different objects
+
+        //change the specifics
+
+        //preserve selected building
+        CoreGame.inst.selectedBuilding = newBuildingObject;
+        CoreGame.inst.DecorateBuildingAsSelected(newBuildingObject.gameObject);
+
+        //remove outselves
+        StopAllCoroutines();
+        CoreGame.inst.builtObjects.Remove(this);
+        Destroy(gameObject);
     }
 
     public void Die()
@@ -505,11 +572,11 @@ public class BuildingObject : MonoBehaviour, IDestructable
         {
             if (CoreGame.inst.selectedBuilding == this)
             {
-                CoreGame.inst.HideUpgrades();
+                CoreGame.inst.DeselectBuilding();
             }
             else
             {
-                CoreGame.inst.ShowUpgrades(upgradeTypes, this);
+                CoreGame.inst.SelectBuilding(b.myType, b.myLvl, false, this);
             }
         }
     }
