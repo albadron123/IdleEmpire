@@ -61,7 +61,7 @@ public class CoreGame : MonoBehaviour
 
     public static Color BLOBPLACE_DEFAULT_COLOR = new Color(0.27f, 0.71f, 0.79f);
     public static Color YELLOW_COLOR = new Color(0.99f, 0.73f, 0);
-    public static Color CREAMY_YELLOW_COLOR = new Color(1f, 0.87f, 0.58f);
+    public static Color CREAMY_YELLOW_COLOR = new Color(1f, 0.8f, 0.39f);
 
 
     // === EVENTS SECTION
@@ -72,6 +72,7 @@ public class CoreGame : MonoBehaviour
     public List<Building> allBuidlings = new List<Building>();
 
     public Resource[] allResources;
+    public float runStartedAt = 0;
 
     [SerializeField] BuildingObject mainTower;
     public List<BuildingObject> builtObjects;
@@ -144,6 +145,8 @@ public class CoreGame : MonoBehaviour
     [SerializeField] TMPro.TMP_Text upgradeGroupTe;
     [SerializeField] GameObject upgradeButton;
     [SerializeField] GameObject boostButton;
+    [SerializeField] SpriteRenderer upgradeButtonSr;
+    [SerializeField] SpriteRenderer boostButtonSr;
     [SerializeField] TMPro.TMP_Text upgradeButtonTe;
     [SerializeField] TMPro.TMP_Text boostButtonTe;
     [SerializeField] TMPro.TMP_Text upgradePrice;
@@ -350,8 +353,12 @@ public class CoreGame : MonoBehaviour
 
         StartCoroutine(DayNightCycle());
 
+        upgradeGroup.SetActive(false);
+        upgradeGroup.SetActive(false);
         overlaySr.gameObject.SetActive(true);
         overlaySr.DOFade(0, 1);
+
+        runStartedAt = Time.time;
     }
 
 
@@ -946,7 +953,7 @@ public class CoreGame : MonoBehaviour
         }
     }
 
-    public void SelectBuilding(Building.BuildingType type, int currentLvl, bool isBoosed, BuildingObject buildingToUpgrade)
+    public void SelectBuilding(Building.BuildingType type, int currentLvl, bool isBoosted, BuildingObject buildingToUpgrade)
     {
         DeselectBuilding();
 
@@ -960,20 +967,48 @@ public class CoreGame : MonoBehaviour
         selectedBuilding = buildingToUpgrade;
         DecorateBuildingAsSelected(buildingToUpgrade.gameObject);
 
-        // Showing buttons
-
+        // Showing UI
         upgradeGroup.SetActive(true);
-        upgradeGroupTe.text = $"{DataStorage.allBuildings[(int)type].title}\n<size=30>lvl {currentLvl + 1}</size>";
-        if (BuidingCanBeUpgraded(buildingToUpgrade.b))
+
+        OnResourceChanged[(int)Resource.ResourceType.Cubo] += ColorUpgradeButton;
+        OnResourceChanged[(int)Resource.ResourceType.Bubil] += ColorBoostButton;
+
+        ViewSelectedTitle();
+        ViewUpgradeButton();
+        ViewBoostButton(isBoosted);
+    }
+
+    private void ColorUpgradeButton()
+    {
+        upgradeButtonSr.color = (selectedBuilding != null && BuidingCanBeUpgraded(selectedBuilding.b) && BuildingUpgradeCanBePurchased(selectedBuilding.b)) ? YELLOW_COLOR : Color.white;
+    }
+
+    private void ColorBoostButton()
+    {
+    }
+
+    private void ViewUpgradeButton()
+    {
+        if (BuidingCanBeUpgraded(selectedBuilding.b))
         {
             upgradeButtonTe.text = $"Upgrade";
-            upgradePrice.text = $"{DataStorage.CalculateBuildingPrice(type, currentLvl + 1)} <size=45>{CUBO_ICON_STR}</size>";
+            upgradePrice.text = $"{DataStorage.CalculateBuildingPrice(selectedBuilding.b.myType, selectedBuilding.b.myLvl + 1)} <size=45>{CUBO_ICON_STR}</size>";
         }
         else
         {
             upgradeButtonTe.text = $"Max level";
             upgradePrice.text = "";
         }
+        ColorUpgradeButton();
+    }
+
+    private void ViewSelectedTitle() 
+    {
+        upgradeGroupTe.text = $"{DataStorage.allBuildings[(int)selectedBuilding.b.myType].title}\n<size=30>lvl {selectedBuilding.b.myLvl + 1}</size>";
+    }
+
+    private void ViewBoostButton(bool isBoosed)
+    {
 
         if (isBoosed)
         {
@@ -1001,6 +1036,8 @@ public class CoreGame : MonoBehaviour
             selectedBuilding = null;
         }
 
+        OnResourceChanged[(int)Resource.ResourceType.Cubo] -= ColorUpgradeButton;
+        OnResourceChanged[(int)Resource.ResourceType.Bubil] -= ColorBoostButton;
         upgradeGroup.SetActive(false);
     }
 
@@ -1011,52 +1048,38 @@ public class CoreGame : MonoBehaviour
 
     bool BuildingUpgradeCanBePurchased(Building b)
     {
-        return true;
+        return DataStorage.CalculateBuildingPrice(b.myType, b.myLvl + 1) <= allResources[(int)Resource.ResourceType.Cubo].value;
     }
 
     public void UpgradeSelectedBuilding(Interactable i)
     {
-        if (!BuidingCanBeUpgraded(selectedBuilding.b) || !BuidingCanBeUpgraded(selectedBuilding.b))
+        
+        if (!BuidingCanBeUpgraded(selectedBuilding.b) || !BuildingUpgradeCanBePurchased(selectedBuilding.b))
         {
             i.PerformCancelAction();
             return;
         }
-        // Заплатить
-        ChangeResource(Resource.ResourceType.Cubo, -1);
-        // Выставить новое здание на место старого 
+        // Pay & Inflate the prices
+        ChangeResource(Resource.ResourceType.Cubo, -DataStorage.CalculateBuildingPrice(selectedBuilding.b.myType, selectedBuilding.b.myLvl + 1));
+        G.buildingStates[(int)selectedBuilding.b.myType].purchasedCount[selectedBuilding.b.myLvl+1]++;
+
         GameObject newPrefab = DataStorage.allBuildings[(int)selectedBuilding.b.myType].pfbs[selectedBuilding.b.myLvl+1];
-        selectedBuilding.UpgradeInto(newPrefab);
+        selectedBuilding = selectedBuilding.UpgradeInto(newPrefab);
+
         // * vfx  & sfx
-        // Обновить интерфейсы (reuse what was done is select building
+
+
+        // Update UI
+        ViewSelectedTitle();
+        ViewUpgradeButton();
     }
 
 
     public void EndRun()
     {
-        int lastRecord = 0;
         int bones = allResources[2].value;
-        int totalBones = 0;
 
-        if (PlayerPrefs.HasKey("recordBones"))
-        {
-            lastRecord = PlayerPrefs.GetInt("recordBones");
-        }
-
-        PlayerPrefs.SetInt("currentBones", bones);
-
-        if (bones > lastRecord)
-        {
-            PlayerPrefs.SetInt("recordBones", bones);
-        }
-
-        if (PlayerPrefs.HasKey("totalBones"))
-        {
-            totalBones += PlayerPrefs.GetInt("totalBones");
-        }
-        totalBones += bones;
-        PlayerPrefs.SetInt("totalBones", totalBones);
-
-        PlayerPrefs.Save();
+        G.SaveRunInfo(bones, (int)(Time.time - runStartedAt));
 
         StartCoroutine(EndRunCoroutine());
 

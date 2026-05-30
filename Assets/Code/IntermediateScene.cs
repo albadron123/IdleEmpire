@@ -14,7 +14,8 @@ public class IntermediateScene : MonoBehaviour
     [SerializeField] TMPro.TMP_Text dialogueTe;
     [SerializeField] GameObject upgradeTreeButton;
     [SerializeField] GameObject retryAgain;
-    [SerializeField] TMPro.TMP_Text stats;
+    [SerializeField] TMPro.TMP_Text timeStats;
+    [SerializeField] TMPro.TMP_Text bonesStats;
 
     [Header("Bones Slider")]
     [SerializeField] Transform bonesSpentSlider;
@@ -24,6 +25,8 @@ public class IntermediateScene : MonoBehaviour
 
 
     [SerializeField] SpriteRenderer fadeOut;
+
+    enum Status { normal, dialogue, sign};
 
 
     void Start()
@@ -40,7 +43,10 @@ public class IntermediateScene : MonoBehaviour
 
         dialogueSr.color = new Color(dialogueSr.color.r, dialogueSr.color.g, dialogueSr.color.b, 0);
         dialogueTe.color = new Color(dialogueTe.color.r, dialogueTe.color.g, dialogueTe.color.b, 0);
-        dialogueWindow.localScale = Vector3.zero; 
+        dialogueWindow.localScale = Vector3.zero;
+
+        ViewTimeStats(G.lastRoundLength);
+        ViewBonesStats(G.lastRoundBones);
 
         InitBonesSpentSlider();
 
@@ -50,7 +56,7 @@ public class IntermediateScene : MonoBehaviour
 
         scroll.transform.DOMoveY(-0.15f, 2).SetEase(Ease.OutQuint);
         yield return new WaitForSeconds(0.1f);
-        StartCoroutine(UpdateBonesSpentSlider(57));
+        StartCoroutine(UpdateBonesSpentSlider());
 
         yield return new WaitForSeconds(0.75f);
         DOTween.Sequence()
@@ -70,9 +76,7 @@ public class IntermediateScene : MonoBehaviour
     {
         bonesSpentSlider.localScale = new Vector3(0, bonesSpentSlider.localScale.y, bonesSpentSlider.localScale.z);
         bonesSpentArrow.localPosition = new Vector3(0, bonesSpentArrow.transform.localPosition.y, bonesSpentArrow.transform.localPosition.z);
-        bonesSpentTe.text = $"{G.bonesSpent} <sprite=3>";
-
-        //StartCoroutine(UpdateBonesSpentSlider(0));
+        bonesSpentTe.text = $"{G.lastRoundBones} <sprite=3>";
     }
 
     public void PressRetry()
@@ -83,6 +87,13 @@ public class IntermediateScene : MonoBehaviour
     public void PressCampfire()
     {   
         StartCoroutine(LoadScene(G.SCENE_META));
+        
+    }
+
+
+    IEnumerator PressAssignButton()
+    {
+        yield return new WaitForSeconds(0.1f);
         
     }
 
@@ -100,13 +111,17 @@ public class IntermediateScene : MonoBehaviour
         yield return ao;
     }
 
-    public IEnumerator UpdateBonesSpentSlider(int newBonesSpent)
+    public IEnumerator UpdateBonesSpentSlider()
     {
         const float UPDATE_TIME = 0.75f;
 
-        int oldBonesSpent = G.bonesSpent;
-        G.bonesSpent = Mathf.Clamp(newBonesSpent, 0, G.maxBonesSpent);
-        float fraction = (float)G.bonesSpent / G.maxBonesSpent;
+
+        int difference = G.lastRoundBones;
+        int oldBonesSpent = G.bonesInProgressBar;
+        int maxBones = DataStorage.metagameVariables.bonesPerContract[G.contractNo];
+        int newBones = Mathf.Clamp(oldBonesSpent+difference, 0, maxBones);
+        G.SaveBonesInProgressbar(newBones);
+        float fraction = (float)newBones / maxBones;
         bonesSpentSlider.DOScale(new Vector3(fraction, bonesSpentSlider.localScale.y, bonesSpentSlider.localScale.z), UPDATE_TIME).SetEase(Ease.OutSine);
         bonesSpentArrow.DOLocalMoveX(4.55f*fraction, UPDATE_TIME).SetEase(Ease.OutSine);
         float timer = 0;
@@ -117,20 +132,33 @@ public class IntermediateScene : MonoBehaviour
             if (timer >= UPDATE_TIME)
             {
                 timer = UPDATE_TIME;
-                bonesSpentTe.text = $"{G.bonesSpent} <sprite=3>";
-                if (G.maxBonesSpent != G.bonesSpent)
+                bonesSpentTe.text = $"{newBones} <sprite=3>";
+                if (newBones != maxBones)
                 {
-                    bonesTillMaxTe.text = $"Sign <size=3>(need {G.maxBonesSpent - G.bonesSpent} <sprite=3> more)</size>";
+                    bonesTillMaxTe.text = $"Sign <size=3>(need {maxBones - newBones} <sprite=3> more)</size>";
                 }
             }
             else
             {
-                bonesSpentTe.text = $"{(int)(Mathf.Lerp(oldBonesSpent, G.bonesSpent, timer / UPDATE_TIME))} <sprite=3>";
-                if (G.maxBonesSpent != G.bonesSpent)
+                bonesSpentTe.text = $"{(int)(Mathf.Lerp(oldBonesSpent, newBones, timer / UPDATE_TIME))} <sprite=3>";
+                if (newBones != maxBones)
                 {
-                    bonesTillMaxTe.text = $"Sign <size=3>(need {(int)Mathf.Lerp(G.maxBonesSpent - oldBonesSpent, G.maxBonesSpent - G.bonesSpent, timer / UPDATE_TIME)} <sprite=3> more)</size>";
+                    bonesTillMaxTe.text = $"Sign <size=3>(need {(int)Mathf.Lerp(maxBones - oldBonesSpent, maxBones - newBones, timer / UPDATE_TIME)} <sprite=3> more)</size>";
                 }
             }
         }
+    }
+
+    private void ViewTimeStats(int timeInSeconds)
+    {
+        int minutes = (int)((float)timeInSeconds / 60);
+        int seconds = timeInSeconds - minutes * 60;
+        timeStats.text = $"<size=9>{minutes}:{seconds}</size> min. survived";
+    }
+
+    private void ViewBonesStats(int bonesCount)
+    {
+        G.ShortenBigNumber(bonesCount);
+        bonesStats.text = $"<size=9>+{G.ShortenBigNumber(bonesCount)}</size>  <sprite=3> aquired";
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
 
 public class BuildingObject : MonoBehaviour, IDestructable
 {
@@ -230,7 +231,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
         }
     }
 
-    public void UpgradeInto(GameObject pfb)
+    public BuildingObject UpgradeInto(GameObject pfb)
     {
         GameObject newBuildingInstance = Instantiate(pfb, t.position, Quaternion.identity);
 
@@ -249,7 +250,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
                 Blob b = blobs[processId];
                 b.transform.parent = null;
-
+                b.transform.localScale = Vector3.one;
 
                 if (processes[processId] != null)
                 {
@@ -263,6 +264,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 }
 
                 newBuildingObject.AddBlob(b, newBuildingObject.blobPlaces[processId]);
+                b.RegisterOnBuilding(newBuildingObject);
             }
         }
 
@@ -280,6 +282,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
         StopAllCoroutines();
         CoreGame.inst.builtObjects.Remove(this);
         Destroy(gameObject);
+
+        return newBuildingObject;
     }
 
     public void Die()
@@ -306,7 +310,9 @@ public class BuildingObject : MonoBehaviour, IDestructable
     {
         int processId = blobPlaces.LastIndexOf(blobPlace);
         blobs[processId] = blob;
+        blob.transform.position = new Vector3(blobPlace.transform.position.x, blobPlace.transform.position.y+0.2f, blob.transform.position.z);
         blob.transform.parent = t;
+        blob.RegisterOnBuilding(this);
 
         
         //TOWER SPECIFIC
@@ -326,11 +332,16 @@ public class BuildingObject : MonoBehaviour, IDestructable
         processes[processId] = StartCoroutine(FunctionCoroutine(processId));
     }
 
-    public void RemoveBlob(Blob blob, GameObject blobPlace)
+    public void RemoveBlob(Blob blob)
     {
-        int processId = blobPlaces.LastIndexOf(blobPlace);
+        int processId = System.Array.IndexOf(blobs, blob);
+        GameObject blobPlace = blobPlaces[processId];
+        blobPlace.GetComponent<SpriteRenderer>().enabled = true;
+
         blobs[processId] = null;
         blob.transform.parent = null;
+        blob.transform.localScale = Vector3.one;
+        blob.UnregisterFromBuilding();
 
         if (processes[processId] != null)
         {   
@@ -355,6 +366,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
             Blob b = blobs[processId];
             b.transform.parent = null;
+            b.transform.localScale = Vector3.one;
+            b.UnregisterFromBuilding();
 
             DOTween.Sequence()
                 .Append(b.transform.DOJump(t.position - 0.3f * Vector3.up + (Vector3)MaximUtils.RandomVector2(0.4f), Random.Range(0.7f, 0.9f), 1, 0.6f))

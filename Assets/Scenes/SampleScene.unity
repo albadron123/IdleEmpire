@@ -551,7 +551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3240849574553956672, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5960163534539080421, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -600,7 +600,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6965420631728554571, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
 --- !u!1001 &91483204
 PrefabInstance:
@@ -1974,7 +1977,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3240849574553956672, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5960163534539080421, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -2023,7 +2026,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6965420631728554571, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
 --- !u!1 &536664453
 GameObject:
@@ -2539,6 +2545,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 677823343}
     m_Modifications:
+    - target: {fileID: 3787798709913158472, guid: 6e574e4f467883d468ec89e735e2c722, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3926101377042342996, guid: 6e574e4f467883d468ec89e735e2c722, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.32036972
@@ -2618,6 +2628,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 6e574e4f467883d468ec89e735e2c722, type: 3}
+--- !u!212 &826850833 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3787798709913158472, guid: 6e574e4f467883d468ec89e735e2c722, type: 3}
+  m_PrefabInstance: {fileID: 826850832}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &828281240 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7690983257786840435, guid: 6e574e4f467883d468ec89e735e2c722, type: 3}
@@ -3583,7 +3598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3240849574553956672, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5960163534539080421, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -3632,7 +3647,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6965420631728554571, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
 --- !u!1 &1104218365
 GameObject:
@@ -4318,7 +4336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3240849574553956672, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5960163534539080421, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -4367,7 +4385,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6965420631728554571, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
 --- !u!1 &1174494063
 GameObject:
@@ -4552,6 +4573,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 6e574e4f467883d468ec89e735e2c722, type: 3}
+--- !u!212 &1228027435 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3787798709913158472, guid: 6e574e4f467883d468ec89e735e2c722, type: 3}
+  m_PrefabInstance: {fileID: 1228027434}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1252822643
 GameObject:
   m_ObjectHideFlags: 0
@@ -4814,7 +4840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3240849574553956672, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5960163534539080421, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -4863,7 +4889,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6965420631728554571, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 9aa2a687fe2cbdf4887ecd58f6510911, type: 3}
 --- !u!1001 &1314282722
 PrefabInstance:
@@ -5945,6 +5974,8 @@ MonoBehaviour:
   upgradeGroupTe: {fileID: 1774952719}
   upgradeButton: {fileID: 996157113}
   boostButton: {fileID: 906765952}
+  upgradeButtonSr: {fileID: 1228027435}
+  boostButtonSr: {fileID: 826850833}
   upgradeButtonTe: {fileID: 2016351585}
   boostButtonTe: {fileID: 836376266}
   upgradePrice: {fileID: 544531491}

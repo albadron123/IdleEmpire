@@ -12,7 +12,8 @@ public class Blob : MonoBehaviour, IDragInteraction
     Collider2D myCollider;
 
     BuildingObject currentBuilding = null;
-    GameObject currentPlace = null;
+    //GameObject currentPlace = null;
+    
 
     [SerializeField]
     Creature meCreature;
@@ -47,12 +48,22 @@ public class Blob : MonoBehaviour, IDragInteraction
         {
             CoreGame.inst.canBuild = false;
 
-            currentBuilding.RemoveBlob(this, currentPlace);
-            currentPlace.GetComponent<SpriteRenderer>().enabled = true;
-            currentPlace = null;
-            currentBuilding = null;
+            currentBuilding.RemoveBlob(this);
+            
+            UnregisterFromBuilding();
         }
     }
+
+    public void UnregisterFromBuilding()
+    {
+        currentBuilding = null;
+    }
+
+    public void RegisterOnBuilding(BuildingObject bo)
+    {
+        currentBuilding = bo;
+    }
+
 
     public void FinishDrag()
     {
@@ -74,9 +85,7 @@ public class Blob : MonoBehaviour, IDragInteraction
             {
                 foundPlace.GetComponent<SpriteRenderer>().enabled = false;
                 t.position = foundPlace.transform.position + new Vector3(0, 0.25f, -1);
-                currentPlace = foundPlace;
-                currentBuilding = currentPlace.transform.parent.GetComponent<BuildingObject>();
-                currentBuilding.AddBlob(this, currentPlace);
+                foundPlace.transform.parent.GetComponent<BuildingObject>()?.AddBlob(this, foundPlace);
             }
             else
             {

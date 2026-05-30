@@ -31,9 +31,13 @@ public class G : MonoBehaviour
     public static int equippedBuildingsSize;
     public static int equippedBuildingsCapacity;
 
+    public static int contractNo = 0;
+    public static int lastRoundBones = 0;
+    public static int lastRoundLength = 0;
+    public static int bonesOnBalance = 0;
+    public static int bonesInProgressBar = 0;
+    public static bool watchedInitialDialogueWithDevil = false;
 
-    public static int bonesSpent;
-    public static int maxBonesSpent = 100;
 
     public static int blobPurchasedCount;
 
@@ -168,6 +172,52 @@ public class G : MonoBehaviour
         }
     }
 
+    public static void InitGeneralProgressVariables()
+    {
+        watchedInitialDialogueWithDevil = false;
+        bonesInProgressBar = 0;
+        lastRoundBones = 0;
+        bonesOnBalance = 0;
+        contractNo = 0;
+
+        if (PlayerPrefs.HasKey("watchedInitialDialogueWithDevil"))
+        {
+            watchedInitialDialogueWithDevil = true;
+        }
+        if (PlayerPrefs.HasKey("bonesInProgressBar"))
+        {
+            bonesInProgressBar = PlayerPrefs.GetInt("bonesInProgressBar");
+        }
+        if (PlayerPrefs.HasKey("bonesOnBalance"))
+        {
+            bonesOnBalance = PlayerPrefs.GetInt("bonesOnBalance");
+        }
+        if (PlayerPrefs.HasKey("contractNo"))
+        {
+            contractNo = PlayerPrefs.GetInt("contractNo");
+        }
+    }
+
+    public static void SaveRunInfo(int bones, int runLength)
+    {
+        bonesOnBalance += bones;
+        lastRoundBones = bones;
+        lastRoundLength = runLength;
+        PlayerPrefs.SetInt("bonesOnBalance", bones);
+    }
+
+    public static void SaveBonesInProgressbar(int newBonesInProgressbar)
+    {
+        bonesInProgressBar = newBonesInProgressbar;
+        PlayerPrefs.SetInt("bonesInProgressBar", bonesInProgressBar);
+    }
+
+    public static void SaveContractNo(int newContractNo)
+    {
+        contractNo = newContractNo;
+        PlayerPrefs.SetInt("contractNo", contractNo);
+    }
+
 
     public static void AquireUpgrade(UpgradeHandle h, List<UpgradeHandle> connectedUpgrades)
     {
@@ -266,6 +316,13 @@ public class G : MonoBehaviour
     public static int GetUpgradeLvl(UpgradeHandle h)
     {
         return upgradeStates[(int)h].upgradeLvl;
+    }
+
+    public static string ShortenBigNumber(int number)
+    {
+        if (number < 1000) return number.ToString();
+        if (number < 1_000_000) return (int)((float)number / 1000) + "K";
+        return (int)((float)number / 1_000_000) + "M";
     }
 
 }

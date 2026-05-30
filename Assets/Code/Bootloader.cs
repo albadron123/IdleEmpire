@@ -37,6 +37,8 @@ public static class Bootloader
         DataStorage.LoadBuildings();
         DataStorage.LoadUpgrades();
         DataStorage.LoadEnemies();
+        DataStorage.LoadMetagameVariables();
+
         /*
         if (!DataStorage.DeserializeAll())
         {
@@ -45,11 +47,12 @@ public static class Bootloader
         */
 
         G.equippedBuildingsCapacity = 6;
-        G.bonesSpent = 0;
+        
         G.InitBuildingStates();
         G.InitUpgradeStates();
         G.InitBlobStates();
         G.LoadEquipmentListFromPlayerPrefs();
+        G.InitGeneralProgressVariables();
 
     }
     

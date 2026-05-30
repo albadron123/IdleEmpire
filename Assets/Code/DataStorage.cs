@@ -109,6 +109,14 @@ public struct EnemyData
     public int simpleDamage;
 };
 
+[System.Serializable]
+public struct MetagameVariables
+{
+    public int contractsCount;
+    public int[] bonesPerContract;
+    // add dialogue lines later???
+}
+
 public class DataStorage : MonoBehaviour
 {
     [System.Serializable]
@@ -156,6 +164,7 @@ public class DataStorage : MonoBehaviour
     public static BuildingData[] allBuildings;
     public static UpgradeData[] allUpgrades;
     public static EnemyData[] allEnemies;
+    public static MetagameVariables metagameVariables;
 
     //Special upgrade data structures
     public static int[] karlDamagePerLevel;
@@ -285,6 +294,13 @@ public class DataStorage : MonoBehaviour
     {
         basicBlobPrice = 5;
         blobPriceMultiplier = 1.3f;
+    }
+
+    public static void LoadMetagameVariables()
+    {
+        metagameVariables = new MetagameVariables();
+        metagameVariables.contractsCount = 3;
+        metagameVariables.bonesPerContract = new int[3] { 100, 1000, 10000 };
     }
 
     public static void LoadBuildings()
