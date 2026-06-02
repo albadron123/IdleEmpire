@@ -16627,7 +16627,7 @@ GameObject:
   - component: {fileID: 1165124942}
   - component: {fileID: 1165124941}
   m_Layer: 0
-  m_Name: PressToContinueArea (1)
+  m_Name: PressToContinueAreaTemp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23213,6 +23213,7 @@ MonoBehaviour:
   retryButton: {fileID: 1396179717}
   timeStats: {fileID: 83258727}
   bonesStats: {fileID: 1568095574}
+  tempInteractableArea: {fileID: 1165124939}
   bonesSpentSlider: {fileID: 296945947}
   bonesSpentArrow: {fileID: 1586115233}
   bonesSpentTe: {fileID: 707513310}
