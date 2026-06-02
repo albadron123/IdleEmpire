@@ -199,6 +199,25 @@ public class DataStorage : MonoBehaviour
         "<align=\"center\"><b>Karl</b></align>\nAll <sprite=2> afraid of Karl! Karl kill 'em with bare hands!",
     };
 
+    public static string[] introDevilLines = new string[]
+    {
+        "So... <color=red>you died</color>!",
+        "The great king in life...",
+        "...now lies in ashes.",
+        "There is the solution though...",
+        "I want more <color=white><b>bones<sprite=3></b></color>!",
+        "They are needed for construction work in hell",
+        "And <i>you</i> can become my supplier...",
+        "If you'll give me <color=white>\n<b><i>B-O-N-E-S<sprite=3></i></b></color> ...",
+        "...I will give you eternal live",
+        "And <color=red><b><i>INFINITE POWER</i></b></color>",
+        "Now, I will take what you have.",
+        "Later you will return for more\n<color=red><b><i>D-E-V-I-L P-O-W-E-R-S</i></b></color>",
+        "Then you'll need way more <b><i>B-O-N-E-S<sprite=3></i></b>",
+        "The rules are simple",
+        "Just sign the contract now!"
+    };
+
     void Start()
     {
         if (inst != null)
@@ -647,7 +666,7 @@ public class DataStorage : MonoBehaviour
 
         allUpgrades[(int)UpgradeHandle.BasicBlobMultiplier] = new UpgradeData()
         {
-            title = "Bobby Faster",
+            title = "Bobby works harder",
             icon = sprites[(int)UpgradeHandle.BasicBlobMultiplier],
             maxLvls = 3,
             pricePerLevel = new int[3] { 20, 40, 500 },

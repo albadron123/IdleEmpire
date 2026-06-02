@@ -218,6 +218,12 @@ public class G : MonoBehaviour
         PlayerPrefs.SetInt("contractNo", contractNo);
     }
 
+    public static void SavePassedInitialScene()
+    {
+        watchedInitialDialogueWithDevil = true;
+        PlayerPrefs.SetInt("watchedInitialDialogueWithDevil", 1);
+    }
+
 
     public static void AquireUpgrade(UpgradeHandle h, List<UpgradeHandle> connectedUpgrades)
     {
@@ -321,8 +327,8 @@ public class G : MonoBehaviour
     public static string ShortenBigNumber(int number)
     {
         if (number < 1000) return number.ToString();
-        if (number < 1_000_000) return (int)((float)number / 1000) + "K";
-        return (int)((float)number / 1_000_000) + "M";
+        if (number < 1_000_000) return $"{(float)(number / 1000f):F2}K";
+        return $"{(float)(number / 1_000_000f):F2}M";
     }
 
 }

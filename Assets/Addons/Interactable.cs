@@ -14,6 +14,7 @@ public class StringContainer
 public class Interactable : MonoBehaviour
 {
     public bool isInteractive = true;
+    public bool preventDefault = false;
     public bool canBeDescribed = false;
     
     [SerializeField]
@@ -76,9 +77,11 @@ public class Interactable : MonoBehaviour
         {
             lastTween.Kill();
         }
-        lastTween = DOTween.Sequence();
-        lastTween.Append(t.DOScale(1.03f * initialScale, 0.2f));
-
+        if (!preventDefault)
+        {
+            lastTween = DOTween.Sequence();
+            lastTween.Append(t.DOScale(1.03f * initialScale, 0.2f));
+        }
         mouseEnterCustomEvent.Invoke();
     }
     private void OnMouseOver()
@@ -99,8 +102,11 @@ public class Interactable : MonoBehaviour
         {
             lastTween.Kill();
         }
-        lastTween = DOTween.Sequence();
-        lastTween.Append(t.DOScale(1f * initialScale, 0.2f));
+        if (!preventDefault)
+        {
+            lastTween = DOTween.Sequence();
+            lastTween.Append(t.DOScale(1f * initialScale, 0.2f));
+        }
 
         mouseExitCustomEvent.Invoke();
     }
@@ -115,10 +121,12 @@ public class Interactable : MonoBehaviour
             {
                 lastTween.Kill();
             }
-            lastTween = DOTween.Sequence();
-            lastTween.Append(t.DOScale(0.95f * initialScale, 0.1f));
-            lastTween.Append(t.DOScale(1.03f * initialScale, 0.1f));
-        
+            if (!preventDefault)
+            {
+                lastTween = DOTween.Sequence();
+                lastTween.Append(t.DOScale(0.95f * initialScale, 0.1f));
+                lastTween.Append(t.DOScale(1.03f * initialScale, 0.1f));
+            }
             //Logic
             e.Invoke();
         }
