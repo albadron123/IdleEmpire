@@ -13,7 +13,7 @@ public class ArcherEnemy : EnemyCreature
 
     public override void StartSimulation()
     {
-        GameObject targetObj = CoreGame.inst.builtObjects[Random.Range(0,CoreGame.inst.builtObjects.Count)].gameObject;
+        GameObject targetObj = ChooseTargetObject();
         simulation = StartCoroutine(GetOnDistanceFromTarget(targetObj));
     }
 
@@ -23,7 +23,7 @@ public class ArcherEnemy : EnemyCreature
 
         if(targetObj == null)
         {
-            targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
+            targetObj = ChooseTargetObject();
         }
 
         
@@ -37,7 +37,7 @@ public class ArcherEnemy : EnemyCreature
         }
         if(attempt >= 100)
         {
-            targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
+            targetObj = ChooseTargetObject();
             StartCoroutine(GetOnDistanceFromTarget(targetObj));
             yield break;
         }
@@ -49,7 +49,7 @@ public class ArcherEnemy : EnemyCreature
 
             if (targetObj == null)
             {
-                targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
+                targetObj = ChooseTargetObject();
                 StartCoroutine(GetOnDistanceFromTarget(targetObj));
                 yield break;
             }
@@ -72,7 +72,7 @@ public class ArcherEnemy : EnemyCreature
             if (targetObj == null)
             {
                 a.SetBool("attack", false);
-                targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
+                targetObj = ChooseTargetObject();
                 StartCoroutine(GetOnDistanceFromTarget(targetObj));
                 yield break;
             }
@@ -96,7 +96,7 @@ public class ArcherEnemy : EnemyCreature
 
         if (targetObj == null)
         {
-            targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
+            targetObj = ChooseTargetObject();
             StartCoroutine(GetOnDistanceFromTarget(targetObj));
             yield break;
         }

@@ -213,6 +213,8 @@ public class CoreGame : MonoBehaviour
     public static float bombRadius;
     public static int bombDamage;
 
+    Sequence weatherTween = null;
+
     void InitRunFromUpgrades()
     {
         InitCursorButtons();
@@ -330,8 +332,13 @@ public class CoreGame : MonoBehaviour
         mediumEnemyGroups.AddRange(Resources.LoadAll<GameObject>("Prefabs/Groups/Medium"));
     }
 
+    
+
     void Start()
     {
+        //init the weather 
+        //weatherTween = DOTween.Sequence().Append(dayNightBaseColorSr.DOFade(0.1f, 0));
+
 
         InitEnemyGroups();
         InitRunFromUpgrades();
@@ -351,8 +358,6 @@ public class CoreGame : MonoBehaviour
         CreatePopupPool();
         CreateContactEffectsPool();
 
-        StartCoroutine(DayNightCycle());
-
         upgradeGroup.SetActive(false);
         upgradeGroup.SetActive(false);
         overlaySr.gameObject.SetActive(true);
@@ -361,32 +366,42 @@ public class CoreGame : MonoBehaviour
         runStartedAt = Time.time;
     }
 
-
-
-    [SerializeField] Transform testSquare;
-    IEnumerator DayNightCycle()
+    IEnumerator DayFading(int dayTime)
     {
-
-
-        DOTween.Sequence()
-            .Append(dayNightBaseColorSr.DOFade(0.5f, 1.5f))
-            .Append(lightingsSr.material.DOFade(0.1f, 0))
-            .Append(dayNightOutlinedSr.material.DOFade(0.88f, 3))
-            .Join(dayNightBaseColorSr.DOFade(0.5f, 3))
-            .AppendInterval(10)
-            .Append(lightingsSr.material.DOFade(0, 0))
-            .Append(dayNightBaseColorSr.DOFade(0.2f, 3f))
-            .Join(dayNightOutlinedSr.material.DOFade(0f, 3f))
-            .Append(dayNightBaseColorSr.DOFade(0, 1.5f))
-            .AppendInterval(3)
-            .SetLoops(-1, LoopType.Restart);
-        yield return new WaitForSeconds(0.5f);
+        weatherTween?.Kill(true);
+        weatherTween = null;
+        yield return dayNightBaseColorSr.DOFade(0, dayTime / 2f).WaitForCompletion();
+        yield return dayNightBaseColorSr.DOFade(0.1f, dayTime / 2f).WaitForCompletion();
     }
 
+    IEnumerator TransitionToNight()
+    {
+        weatherTween?.Kill(true);
+        weatherTween = DOTween.Sequence()
+            .Append(dayNightBaseColorSr.DOFade(0.5f, 1f))
+            .Append(lightingsSr.material.DOFade(0.1f, 0))
+            .Append(dayNightOutlinedSr.material.DOFade(0.88f, 1.5f))
+            .Join(dayNightBaseColorSr.DOFade(0.5f, 1.5f));
+        yield return weatherTween.WaitForCompletion();
+    }
+
+    IEnumerator TransitionToDay()
+    {
+        weatherTween?.Kill(true);
+        weatherTween = DOTween.Sequence()
+            .Append(lightingsSr.material.DOFade(0, 0))
+            .Append(dayNightBaseColorSr.DOFade(0.2f, 1.5f))
+            .Join(dayNightOutlinedSr.material.DOFade(0f, 1.5f))
+            .Append(dayNightBaseColorSr.DOFade(0.1f, 1f));
+        yield return weatherTween.WaitForCompletion();
+    }
 
     IEnumerator WaitForAttack()
     {
+        yield return StartCoroutine(TransitionToDay());
+
         attackTimer = 30;
+        StartCoroutine(DayFading(30));
         do
         {
             attackTe.text = $"Next attack in {attackTimer} seconds";
@@ -417,6 +432,8 @@ public class CoreGame : MonoBehaviour
         {
             StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, $"WAVE {attackCount + 1} BEGINS!!!", 0.05f, 1, 0.5f));
         }
+
+        yield return StartCoroutine(TransitionToNight());
 
 
         for (int i = 0; i < groupsCount; ++i)
@@ -470,6 +487,7 @@ public class CoreGame : MonoBehaviour
     IEnumerator PrepareTheNextAttack()
     {
         const int EXTRA_TIME_FOR_DEFENCE_SEC = 30;
+        
         for (int i = 0; i < EXTRA_TIME_FOR_DEFENCE_SEC; ++i)
         {
             if (MaximUtils.CountGameObjectsWithTag(TAG_ENEMY) <= 0)

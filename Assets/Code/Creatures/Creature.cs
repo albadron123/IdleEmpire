@@ -11,24 +11,11 @@ public interface IDestructable
 
 public class Creature : MonoBehaviour, IDestructable
 {
-    public enum CreatureType
-    {
-        normal,
-        tinyEnemy,
-        archerEnemy,
-        summonerEnemy,
-        bossEnemy,
-    };
-
-
     protected Animator a;
     protected Animation an;
     protected Transform t;
     protected Coroutine simulation = null;
 
-
-    [SerializeField]
-    protected CreatureType myType;
     [SerializeField]
     protected float idleVelocity = 1f;
     [SerializeField]

@@ -16,14 +16,13 @@ public class Boss : EnemyCreature
 
     public override void StartSimulation()
     {
+        GameObject targetObj = ChooseTargetObject();
         if (Random.value > 0.5f)
         {
-            GameObject targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
             simulation = StartCoroutine(GetOnDistanceFromTarget(targetObj));
         }
         else
         {
-            GameObject targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)].gameObject;
             simulation = StartCoroutine(MoveToAttackTarget(targetObj));
         }
     }
@@ -172,11 +171,12 @@ public class Boss : EnemyCreature
         a.SetBool("attack1", true);
         a.SetBool("attack2", false);
 
+        Vector3 targetPos = targetObj.transform.position;
         for (int i = 0; i < bulletCount; ++i)
         {
             GameObject projectileInst = Instantiate(projectilePrefab, shootingPlace.position + (Vector3)MaximUtils.RandomVector2(0.1f), Quaternion.identity);
             Projectile projectile = projectileInst.GetComponent<Projectile>();
-            Vector2 directionToTargetNormalized = ((Vector2)targetObj.transform.position - (Vector2)t.position).normalized;
+            Vector2 directionToTargetNormalized = ((Vector2)targetPos - (Vector2)t.position).normalized;
             Vector2 projectileDirection = (directionToTargetNormalized + MaximUtils.RandomVector2FixMagnitude(0.3f)).normalized;
             projectile.direction = (Vector3)projectileDirection;
             projectile.damage = myDamage;

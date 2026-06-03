@@ -2,14 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AttackGoalTag
+{
+    MainTower,
+    CuboProduction,
+    BubilProduction,
+    Any
+}
+
 public class EnemyCreature : Creature
 {
+    public AttackGoalTag attackGoalTag = AttackGoalTag.MainTower;
+
     [SerializeField]
     int rewardBones;
     [SerializeField]
     int rewardBonesCritical;
     [SerializeField]
     float criticalChance = 0.15f;
+
 
     [SerializeField]
     EnemyHandle myHandle;
@@ -77,9 +88,51 @@ public class EnemyCreature : Creature
 
     public override void StartSimulation()
     {
-        
-        GameObject targetObj = CoreGame.inst.builtObjects.Find(x => x.b.myType == Building.BuildingType.HutkaGrande).gameObject;
+
+        GameObject targetObj = ChooseTargetObject();
         simulation = StartCoroutine(MoveToAttackTarget(targetObj));
         
+    }
+
+    protected GameObject ChooseTargetObject()
+    {
+        GameObject targetObj = null;
+        int attempts = 0;
+        do
+        {
+            switch (attackGoalTag)
+            {
+                case AttackGoalTag.MainTower:
+                    targetObj = CoreGame.inst.builtObjects.Find(x => x.b.myType == Building.BuildingType.HutkaGrande)?.gameObject;
+                    if (targetObj == null)
+                    {
+                        attackGoalTag = AttackGoalTag.Any;
+                    }
+                    break;
+                case AttackGoalTag.CuboProduction:
+                    targetObj = CoreGame.inst.builtObjects.Find(x => x.b.myType == Building.BuildingType.CuboProduction)?.gameObject;
+                    if (targetObj == null)
+                    {
+                        attackGoalTag = AttackGoalTag.MainTower;
+                    }
+                    break;
+                case AttackGoalTag.BubilProduction:
+                    targetObj = CoreGame.inst.builtObjects.Find(x => x.b.myType == Building.BuildingType.BubilProduction || x.b.myType == Building.BuildingType.Custik)?.gameObject;
+                    if (targetObj == null)
+                    {
+                        attackGoalTag = AttackGoalTag.MainTower;
+                    }
+                    break;
+                default:
+                    targetObj = CoreGame.inst.builtObjects[Random.Range(0, CoreGame.inst.builtObjects.Count)]?.gameObject;
+                    break;
+            }
+            ++attempts;
+        } while (targetObj == null && attempts < 10);
+        if (targetObj == null)
+        {
+            Debug.LogError("Cant find the correct building to attack!!!!");
+        }
+        return targetObj;
     }
 }
