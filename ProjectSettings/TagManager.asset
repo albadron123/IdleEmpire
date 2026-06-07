@@ -12,6 +12,8 @@ TagManager:
   - EnemyProjectile
   - Bomb
   - Building
+  - BuildingArea
+  - Towerpoint
   layers:
   - Default
   - TransparentFX

@@ -447,6 +447,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tawa_3
       objectReference: {fileID: 0}
+    - target: {fileID: 9103846054441210594, guid: 762ba903c64370c419691d53d63461c9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

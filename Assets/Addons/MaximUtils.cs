@@ -30,6 +30,14 @@ public class MaximUtils : MonoBehaviour
 
         return permutations;
     }
+    public static float Gaussian(float mean = 0.0f, float stdDev = 1.0f)
+    {        
+        float u1 = 1.0f - Random.value;
+        float u2 = 1.0f - Random.value;
+        float randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);
+        return mean + stdDev * randStdNormal;
+    }
+
     public static List<int> RandomIndicesUnique(int indexMax, int count)
     {
         List<int> randomIds = new List<int>();
@@ -296,7 +304,7 @@ public class MaximUtils : MonoBehaviour
 
     public static UnityEngine.Vector2 RandomVector2(float maxMagnitude)
     {
-        return new UnityEngine.Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized * Random.Range(-maxMagnitude, maxMagnitude);
+        return new UnityEngine.Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)).normalized * Random.Range(-maxMagnitude, maxMagnitude);
     }
 
     public static UnityEngine.Vector2 RandomVector2RandomMagnitudeRange(float minMagitude, float maxMagnitude)

@@ -70,7 +70,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
     [SerializeField]
     List<UpgradeType> upgradeTypes;
 
-    
+    [SerializeField]
+    GameObject canBeUpgradedSign = null;
 
     void RegisterBuilding()
     {
@@ -79,14 +80,34 @@ public class BuildingObject : MonoBehaviour, IDestructable
             CoreGame.inst.builtObjects = new List<BuildingObject>();
         }
         CoreGame.inst.builtObjects.Add(this);
+        CoreGame.inst.OnResourceChanged[(int)Resource.ResourceType.Cubo] += ShowIfCanBeUpgraded;
     }
 
     void Start()
     {
+        canBeUpgradedSign = transform.Find("upgradeMeSign").gameObject;
         if (!isInitialized)
         {
             Initialize();
         }
+        ShowIfCanBeUpgraded();
+    }
+
+    public void ShowIfCanBeUpgraded()
+    {
+        if(CoreGame.inst.BuidingCanBeUpgraded(b) && CoreGame.inst.BuildingUpgradeCanBePurchased(b))
+        {
+            canBeUpgradedSign?.SetActive(true);
+        }
+        else
+        {
+            canBeUpgradedSign?.SetActive(false);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        CoreGame.inst.OnResourceChanged[(int)Resource.ResourceType.Cubo] -= ShowIfCanBeUpgraded;
     }
 
 

@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1700457648, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
+  m_Sprite: {fileID: 1284901793, guid: c1389bd5548610c46a9a57df9497649a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -144,10 +144,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c3c9b4230ff104bb88aa45034cb705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myType: 0
   idleVelocity: 0
   activeVelocity: 0
   myDamage: 1
+  attackGoalTag: 0
   rewardBones: 0
   rewardBonesCritical: 0
   criticalChance: 0.15
@@ -187,7 +187,7 @@ BoxCollider2D:
   m_Offset: {x: 0.007054448, y: 0.5432098}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.460673, y: 0.13034223}
+    pivot: {x: 0.439493, y: 0.15712786}
     oldSize: {x: 1.5058824, y: 1.5}
     newSize: {x: 1.5, y: 1.5}
     adaptiveTilingThreshold: 0.5
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: da02dcc35e302574eb6335588a8d5082, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 55c0c9ae9fcbfcb4dbb50c3e50d8481f, type: 3}
 --- !u!114 &8811811881529810462
 MonoBehaviour:
   m_ObjectHideFlags: 0

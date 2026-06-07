@@ -368,6 +368,7 @@ Transform:
   - {fileID: 2093662892069929340}
   - {fileID: 8809146820789678836}
   - {fileID: 8539673718027566587}
+  - {fileID: 7920765039245335380}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1399421373100553905
@@ -385,13 +386,13 @@ MonoBehaviour:
   zDivider: {fileID: 0}
   healthText: {fileID: 8162713578792205376}
   destroyedBuildingSpr: {fileID: 267618618, guid: 9174e5fb818e74748a53aedccf185b07, type: 3}
+  sr: {fileID: 0}
   b:
     myType: 7
     buildingPfb: {fileID: 5983912854912321416}
     myLvl: 0
   blobPlaces:
   - {fileID: 0}
-  outline: {fileID: 2935866533900984141}
   rotationPart: {fileID: 0}
   baseProjectileSize: 1.15
   baseShootingSpeed: 3
@@ -406,6 +407,7 @@ MonoBehaviour:
   cacti3Spr: {fileID: 0}
   specialPurposeCol: {fileID: 0}
   upgradeTypes: 01000000
+  canBeUpgradedSign: {fileID: 0}
 --- !u!61 &4162994522542841726
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -441,8 +443,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.41949627, y: 0.0868855}
-    oldSize: {x: 1.12, y: 1.25}
+    pivot: {x: 0.41034427, y: 0.112104625}
+    oldSize: {x: 1.24, y: 1.35}
     newSize: {x: 0.62, y: 0.82}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -622,6 +624,72 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1001 &7773064061119002699
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3248163245313414943}
+    m_Modifications:
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.039
+      objectReference: {fileID: 0}
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.377
+      objectReference: {fileID: 0}
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4719315963045609404, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_Name
+      value: upgradeMeSign
+      objectReference: {fileID: 0}
+    - target: {fileID: 4719315963045609404, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+--- !u!4 &7920765039245335380 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 446785737440322335, guid: bcba67b4f51dec348b822a6582c7f87a, type: 3}
+  m_PrefabInstance: {fileID: 7773064061119002699}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8357233238723198464
 PrefabInstance:
   m_ObjectHideFlags: 0

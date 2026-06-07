@@ -121,7 +121,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: 0.014206708}
     oldSize: {x: 0.45, y: 0.47}
     newSize: {x: 0.625, y: 0.6527778}
     adaptiveTilingThreshold: 0.5
@@ -161,7 +161,7 @@ Transform:
   m_LocalScale: {x: 1.2500001, y: 1.2500001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6171749509292535967}
+  m_Father: {fileID: 1741495529526763681}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7783767156617874667
 SpriteRenderer:
@@ -369,11 +369,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2298632488442670943, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.92
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 2298632488442670943, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1.37
+      value: 1.44
       objectReference: {fileID: 0}
     - target: {fileID: 2478032620623911350, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_Sprite
@@ -423,6 +423,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cubo_3
       objectReference: {fileID: 0}
+    - target: {fileID: 7178476065206181525, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8534595610195519360, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.16
@@ -457,7 +461,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 375450553915771895, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       insertIndex: 2
       addedObject: {fileID: 6326688262839096250}
-    - targetCorrespondingSourceObject: {fileID: 5240118235492424649, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 375450553915771895, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8937155727314538299}
     m_AddedComponents: []
@@ -465,10 +469,5 @@ PrefabInstance:
 --- !u!4 &1741495529526763681 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 375450553915771895, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
-  m_PrefabInstance: {fileID: 2098350593025256278}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6171749509292535967 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5240118235492424649, guid: 4567fe529e4875e4e9f40e259079bff8, type: 3}
   m_PrefabInstance: {fileID: 2098350593025256278}
   m_PrefabAsset: {fileID: 0}

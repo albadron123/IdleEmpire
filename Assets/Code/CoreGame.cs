@@ -51,6 +51,7 @@ public class CoreGame : MonoBehaviour
     public static string TAG_BUILDING_PLACEMENT = "BuildingPlacement";
     public static string TAG_BOMB = "Bomb";
     public static string TAG_BUILDING = "Building";
+    public static string TAG_BUILDING_AREA = "BuildingArea";
 
 
     public static string BUBIL_ICON_STR = "<sprite=1>";
@@ -119,6 +120,8 @@ public class CoreGame : MonoBehaviour
     float attackTimeScale = 1;
 
     [SerializeField] TMPro.TMP_Text attackTe;
+    [SerializeField] GameObject attackTePanel;
+    Vector3 attackTePanelInitialPosition;
     [SerializeField] TMPro.TMP_Text attantionTe;
 
     [Header("Stuff")]
@@ -185,6 +188,11 @@ public class CoreGame : MonoBehaviour
     SpriteRenderer dayNightOutlinedSr;
     [SerializeField]
     SpriteRenderer lightingsSr;
+
+    [Header("Level-patterns")]
+    [SerializeField] List<GameObject> grassPatterns;
+    [SerializeField] List<Transform> towerpoints;
+
 
 
 
@@ -291,6 +299,17 @@ public class CoreGame : MonoBehaviour
     }
 
 
+    private void InitLevelWithGrassPattern()
+    {
+        int patternId = Random.Range(0, grassPatterns.Count);
+        for (int i = 0; i < grassPatterns.Count; ++i)
+        {
+            grassPatterns[i].SetActive(false);
+        }
+        grassPatterns[patternId].SetActive(true);
+        mainTower.transform.position = new Vector3(towerpoints[patternId].position.x, towerpoints[patternId].position.y, towerpoints[patternId].position.y);
+    }
+
     private void Awake()
     {
         // We are booting the game here. 
@@ -313,14 +332,20 @@ public class CoreGame : MonoBehaviour
         {
             builtObjects = new List<BuildingObject>();
         }
+
+        attackTePanelInitialPosition = attackTePanel.transform.position;
     }
 
-
+    
 
     List<GameObject> easyEnemyGroups = new List<GameObject>();
     List<GameObject> mediumEnemyGroups = new List<GameObject>();
+    List<GameObject> easyEnemyGroupsResource = new List<GameObject>();
+    List<GameObject> mediumEnemyGroupsResource = new List<GameObject>();
     [SerializeField] GameObject bossGroup;
     [SerializeField] GameObject enemyHutPfb;
+    [SerializeField] GameObject enemyHutResourcePfb;
+    [SerializeField] List<GameObject> specialPlacings;
 
 
     void InitEnemyGroups()
@@ -330,17 +355,23 @@ public class CoreGame : MonoBehaviour
         mediumEnemyGroups = new List<GameObject>();
         mediumEnemyGroups.AddRange(easyEnemyGroups);
         mediumEnemyGroups.AddRange(Resources.LoadAll<GameObject>("Prefabs/Groups/Medium"));
+
+        easyEnemyGroupsResource = new List<GameObject>();
+        easyEnemyGroupsResource.AddRange(Resources.LoadAll<GameObject>("Prefabs/Groups/EasyResource"));
+        mediumEnemyGroupsResource = new List<GameObject>();
+        mediumEnemyGroupsResource.AddRange(easyEnemyGroupsResource);
+        mediumEnemyGroupsResource.AddRange(Resources.LoadAll<GameObject>("Prefabs/Groups/MediumResource"));
+
+        specialPlacings = new List<GameObject>();
+        specialPlacings.AddRange(Resources.LoadAll<GameObject>("Prefabs/Groups/Special"));
     }
 
-    
+
 
     void Start()
     {
-        //init the weather 
-        //weatherTween = DOTween.Sequence().Append(dayNightBaseColorSr.DOFade(0.1f, 0));
-
-
         InitEnemyGroups();
+        InitLevelWithGrassPattern();
         InitRunFromUpgrades();
         G.InitBuildingStates();
         G.InitBlobStates();
@@ -398,9 +429,14 @@ public class CoreGame : MonoBehaviour
 
     IEnumerator WaitForAttack()
     {
-        yield return StartCoroutine(TransitionToDay());
 
+        StartCoroutine(TransitionToDay());
+        
         attackTimer = 30;
+        attackTe.text = $"Next attack in {attackTimer} seconds";
+        attackTePanel.transform.position = attackTePanelInitialPosition + Vector3.up * 2;
+        attackTePanel.transform.DOMove(attackTePanelInitialPosition, 0.8f);
+
         StartCoroutine(DayFading(30));
         do
         {
@@ -408,6 +444,9 @@ public class CoreGame : MonoBehaviour
             yield return new WaitForSeconds(1f / attackTimeScale);
             --attackTimer;
         } while (attackTimer >= 0);
+
+        yield return attackTePanel.transform.DOMove(attackTePanelInitialPosition+2*Vector3.up, 0.5f).WaitForCompletion();
+
         StartCoroutine(StartAttack());
     }
 
@@ -418,10 +457,15 @@ public class CoreGame : MonoBehaviour
         int groupsCount = Mathf.Clamp(Mathf.CeilToInt(Mathf.Pow(1.7f, attackCount)), 1, 200);
         float waitingTime = Mathf.Clamp(0.5f - 0.06f * attackCount, 0.1f, 0.5f);
         List<GameObject> correctPool = (attackCount > 3) ? mediumEnemyGroups : easyEnemyGroups;
+        List<GameObject> correctPoolResources = (attackCount > 3) ? mediumEnemyGroupsResource : easyEnemyGroupsResource;
+        attackTePanel.transform.DOMove(attackTePanelInitialPosition, 0.4f);
         // boss 
         if (attackCount == 5)
         {
-            StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, "THE BLOB-BOSS COMES!!!", 0.05f, 1, 0.5f));
+            DOTween.Sequence()
+                .AppendCallback(()=>StartCoroutine(MaximUtils.AppearAndClearWavyText(attackTe, "THE BLOB-BOSS COMES!", 0.05f, 1, 0.5f)))
+                .AppendInterval(1.75f)
+                .Append(attackTePanel.transform.DOMove(attackTePanelInitialPosition+2*Vector3.up, 0.4f));
 
             float angle = 0;
             Instantiate(bossGroup,
@@ -430,38 +474,71 @@ public class CoreGame : MonoBehaviour
         }
         else
         {
-            StartCoroutine(MaximUtils.AppearAndClearWavyText(attantionTe, $"WAVE {attackCount + 1} BEGINS!!!", 0.05f, 1, 0.5f));
+            DOTween.Sequence()
+                .AppendCallback(() => StartCoroutine(MaximUtils.AppearAndClearWavyText(attackTe, $"NIGHT {attackCount + 1} STARTS!", 0.05f, 1, 0.5f)))
+                .AppendInterval(1.75f)
+                .Append(attackTePanel.transform.DOMove(attackTePanelInitialPosition + 2 * Vector3.up, 0.4f));
         }
 
         yield return StartCoroutine(TransitionToNight());
 
-
+        // attempt to place a special group
+        float specialGroupChange = 1;
+        
+        if (Random.value <= specialGroupChange)
+        {
+            GameObject specialGroup = specialPlacings[Random.Range(0, specialPlacings.Count)];
+            int specialEnemyGroupSize = specialGroup.GetComponent<SpecialEnemyGroup>().groupSize;
+            if(specialEnemyGroupSize <= groupsCount)
+            {
+                Instantiate(specialGroup, specialGroup.transform.position, Quaternion.identity);
+                groupsCount -= specialEnemyGroupSize;
+            }
+        }
+        // fill with other groups
         for (int i = 0; i < groupsCount; ++i)
         {
-            Vector2 randomPos = Vector2.zero;
-
-            GameObject enemyHutInstance = Instantiate(enemyHutPfb, new Vector3(randomPos.x, randomPos.y, randomPos.y), Quaternion.identity);
-            enemyHutInstance.GetComponent<EnemyHut>().enemyGroup = correctPool[Random.Range(0, correctPool.Count)];
+            bool isResourceHut = false;
+            GameObject prefabToPlace = enemyHutPfb;
+            if (i != 0)
+            {
+                if ((Random.value >= 0.5f))
+                {
+                    prefabToPlace = enemyHutResourcePfb;
+                    isResourceHut = true;
+                }
+            }
+            
+            GameObject enemyHutInstance = Instantiate(prefabToPlace, Vector3.zero, Quaternion.identity);
+            enemyHutInstance.GetComponent<EnemyHut>().enemyGroup = isResourceHut ?
+                correctPoolResources[Random.Range(0, correctPoolResources.Count)] :
+                correctPool[Random.Range(0, correctPool.Count)];
 
             Transform enemyHutT = enemyHutInstance.transform;
             BoxCollider2D enemyHutCol = enemyHutInstance.GetComponent<BoxCollider2D>();
 
-            bool overlapped = false;
-            int attempts = 0;
-            do
-            {
-                randomPos = MaximUtils.RandomPositionInsideFrame(innerAttackRect, outerAttackRect);
-                overlapped = MaximUtils.DoSquareOverlapAny(randomPos - enemyHutCol.offset, enemyHutCol.size);
-                ++attempts;
-            } while (overlapped && attempts < 500);
-
+            Vector2 randomPos = GetPositionToPlaceHut(enemyHutCol);
             enemyHutT.position = new Vector3(randomPos.x, randomPos.y, randomPos.y);
-
+            
 
             yield return new WaitForSeconds(waitingTime);
         }
         ++attackCount;
         StartCoroutine(PrepareTheNextAttack());
+    }
+
+    private Vector2 GetPositionToPlaceHut(BoxCollider2D enemyHutCol)
+    {
+        Vector2 randomPos;
+        bool overlapped;
+        int attempts = 0;
+        do
+        {
+            randomPos = MaximUtils.RandomPositionInsideFrame(innerAttackRect, outerAttackRect);
+            overlapped = MaximUtils.DoSquareOverlapAny(randomPos - enemyHutCol.offset, enemyHutCol.size);
+            ++attempts;
+        } while (overlapped && attempts < 500);
+        return randomPos;
     }
 
     private void OnDrawGizmos()
@@ -651,25 +728,7 @@ public class CoreGame : MonoBehaviour
     public bool CanBuildHere()
     {
         Collider2D col = currentlyPlacingBuilding.transform.Find("BuildingCollider").GetComponent<Collider2D>();
-
-        Vector2 colPosition = col.transform.position;
-        if (colPosition.x > 8 || colPosition.x < -5 || colPosition.y > 4.5 || colPosition.y < -4.5)
-        {
-            return false;
-        }
-
-        return !MaximUtils.DoIOverlapTag2D(col, TAG_BUILDING_PLACEMENT);
-        /*
-        List<Collider2D> overlapped = new List<Collider2D>();
-        Physics2D.OverlapCollider(col, new ContactFilter2D().NoFilter(), overlapped);
-        
-        if (overlapped.Count > 0)
-        {
-            return false;
-        }
-
-        return true;
-        */
+        return !MaximUtils.DoIOverlapTag2D(col, TAG_BUILDING_PLACEMENT) && MaximUtils.DoIOverlapTag2D(col, TAG_BUILDING_AREA);
     }
 
     public void CancelBuilding()
@@ -1059,12 +1118,12 @@ public class CoreGame : MonoBehaviour
         upgradeGroup.SetActive(false);
     }
 
-    bool BuidingCanBeUpgraded(Building b)
+    public bool BuidingCanBeUpgraded(Building b)
     {
         return G.buildingStates[(int)b.myType].upgradeLvlUnlocked > b.myLvl;
     }
 
-    bool BuildingUpgradeCanBePurchased(Building b)
+    public bool BuildingUpgradeCanBePurchased(Building b)
     {
         return DataStorage.CalculateBuildingPrice(b.myType, b.myLvl + 1) <= allResources[(int)Resource.ResourceType.Cubo].value;
     }
