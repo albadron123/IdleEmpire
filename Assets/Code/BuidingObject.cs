@@ -508,8 +508,8 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sliders[processId] = sliderInst;
                 yield return new WaitForSeconds(shootingSpeed);
 
-
-                GameObject nearestEnemy = MaximUtils.GetNearestWithTag(t.position, CoreGame.TAG_ENEMY);
+                //important: WORKS ONLY FOR TUMBO WITH 1 GUY!!!
+                GameObject nearestEnemy = MaximUtils.GetNearestWithTag(blobPlaces[0].transform.position, CoreGame.TAG_ENEMY);
 
                 bool waiting = false;
                 while (nearestEnemy == null)
@@ -521,7 +521,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
                     }
                     sliderInst.transform.DOShakePosition(shootingSpeed, 0.05f, 100, 90, false, false, ShakeRandomnessMode.Harmonic);
                     yield return new WaitForSeconds(shootingSpeed);
-                    nearestEnemy = MaximUtils.GetNearestWithTag(t.position, CoreGame.TAG_ENEMY);
+                    nearestEnemy = MaximUtils.GetNearestWithTag(blobPlaces[0].transform.position, CoreGame.TAG_ENEMY);
                 }
 
                 Destroy(sliderInst);
@@ -559,10 +559,18 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 Destroy(sliderInst);
                 sliders[processId] = null;
 
-
-                SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_BUBIL);
-                CoreGame.inst.ChangeResource(Resource.ResourceType.Bubil, productionAmount);
-                CoreGame.inst.CreateIconPopUp(transform.position + new Vector3(0, 1.4f, 0), $"+{productionAmount}", CoreGame.inst.allResources[1].icon);
+                if (Random.value > 0.5f)
+                {
+                    SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_BUBIL);
+                    CoreGame.inst.ChangeResource(Resource.ResourceType.Bubil, productionAmount);
+                    CoreGame.inst.CreateIconPopUp(transform.position + new Vector3(0, 1.4f, 0), $"+{productionAmount}", CoreGame.inst.allResources[(int)Resource.ResourceType.Bubil].icon);
+                }
+                else
+                {
+                    SoundManager.inst.PlaySfx(DataStorage.SFX_PRODUCE_CUBO);
+                    CoreGame.inst.ChangeResource(Resource.ResourceType.Cubo, productionAmount);
+                    CoreGame.inst.CreateIconPopUp(transform.position + new Vector3(0, 1.4f, 0), $"+{productionAmount}", CoreGame.inst.allResources[(int)Resource.ResourceType.Cubo].icon);
+                }
             }
         }
         else if (b.myType == Building.BuildingType.Magno)
@@ -615,22 +623,11 @@ public class BuildingObject : MonoBehaviour, IDestructable
         }
     }
 
-    private void ShootProjectile(GameObject projectilePfb, Vector3 projectilePosition, Vector3 direction, float destroyTime, Quaternion rotation, bool doAffectBlobs = true)
+    void ShootProjectile(GameObject projectilePfb, Vector3 projectilePosition, Vector3 direction, float destroyTime, Quaternion rotation, bool doAffectBlobs = true)
     {
         float projectileSize = GetProjectileSize();
         int damage = GetDamage();
-
-        SoundManager.inst.PlaySfx(DataStorage.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
-        GameObject inst = Instantiate(projectilePfb, projectilePosition, rotation);
-        //inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
-        Projectile pr = inst.GetComponent<Projectile>();
-        pr.damage = damage;
-        pr.ignoreList.Add(gameObject);
-        pr.size = projectileSize;
-        pr.doAffectBlobs = doAffectBlobs;
-        pr.direction = direction;
-
-        pr.StartCoroutine(pr.ProjectileLifeCycle(destroyTime));
+        CoreGame.inst.ShootProjectile(projectilePfb, projectilePosition, direction, destroyTime, rotation, damage, projectileSize, doAffectBlobs);
     }
 
     public int GetProductionAmount()

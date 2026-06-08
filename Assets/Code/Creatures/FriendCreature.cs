@@ -18,10 +18,12 @@ public class FriendCreature : Creature
     {
         if (DoSpecialActionCheck())
         {
+            StopAllCoroutines();
             simulation = StartCoroutine(DoSpecialAction());
         }
         else
         {
+            StopAllCoroutines();
             simulation = StartCoroutine(IdleWalking());
         }
     }

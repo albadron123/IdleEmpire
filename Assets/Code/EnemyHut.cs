@@ -27,6 +27,10 @@ class EnemyHut : MonoBehaviour
     private TMPro.TMP_Text timerText;
     private Animator a;
 
+    [Header("Shooting variables")]
+    [SerializeField] Transform shootingPoint;
+    [SerializeField] GameObject projectilePrefab;
+
 
     private void Start()
     {
@@ -65,10 +69,35 @@ class EnemyHut : MonoBehaviour
 
     IEnumerator Shooting()
     {
+        float projectileSize = 1.25f;
+        int damage = 10;
         while (true)
         {
-            yield return timeToAttack;
-            Debug.Log("Shoot something");
+            GameObject nearestTower = null;
+            do
+            {
+                yield return new WaitForSeconds(timeToAttack);
+                nearestTower = MaximUtils.GetNearestWithTag(shootingPoint.position, CoreGame.TAG_BUILDING);
+            } while (nearestTower == null);
+
+            Collider2D enemyCollider = nearestTower.GetComponent<Collider2D>();
+            if (enemyCollider == null)
+            {
+                Debug.LogError("Tower Doesnt have a collider");
+            }
+            Vector2 enemyShootingPosition = enemyCollider.offset + (Vector2)nearestTower.transform.position;
+            Vector3 position = shootingPoint.position + new Vector3(0, 0, -9);
+            Vector3 direction = (enemyShootingPosition - (Vector2)position).normalized;
+            Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+            CoreGame.inst.ShootProjectile(
+                            projectilePfb: projectilePrefab,
+                            projectilePosition: shootingPoint.position + new Vector3(0, 0, -9),
+                            destroyTime: 2f,
+                            direction: direction,
+                            rotation: rotation,
+                            damage: damage,
+                            projectileSize: projectileSize,
+                            doAffectBlobs: false);
         }
     }
 

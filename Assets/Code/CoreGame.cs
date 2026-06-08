@@ -938,8 +938,9 @@ public class CoreGame : MonoBehaviour
         public Transform t;
         public TMPro.TMP_Text te;
         public SpriteRenderer sr;
+        public Sequence seq;
     };
-    const int POOL_CAPACITY = 500;
+    const int POOL_CAPACITY = 100;
     PooledPopup[] popupPool;
     int nextPoolId = 0;
     private void CreatePopupPool()
@@ -955,67 +956,47 @@ public class CoreGame : MonoBehaviour
             current.t = inst.transform;
             current.te = te;
             current.sr = sr;
+            current.seq = null;
             popupPool[i] = current;
         }
+        nextPoolId = POOL_CAPACITY - 1;
     }
 
 
 
-    public void CreateIconPopUp(Vector2 initialPosition, string text, Sprite icon, float fading = 1.5f, bool doPool = true)
+    public void CreateIconPopUp(Vector2 initialPosition, string text, Sprite icon, float fading = 1.5f)
     {
-        if (doPool)
+        if (popupPool[nextPoolId].seq != null && popupPool[nextPoolId].seq.active)
         {
-            DOTween.Kill(popupPool[nextPoolId].t);
-            popupPool[nextPoolId].t.gameObject.SetActive(true);
-
-            popupPool[nextPoolId].t.position = (Vector3)initialPosition + new Vector3(-1.2f, 0.7f, -9);
-            popupPool[nextPoolId].te.text = text;
-            popupPool[nextPoolId].sr.sprite = icon;
-            popupPool[nextPoolId].sr.color = Color.white;
-            popupPool[nextPoolId].te.color = Color.white;
-
-            DOTween.Sequence()
-               .Append(popupPool[nextPoolId].t.DOJump(popupPool[nextPoolId].t.position + new Vector3(Random.Range(-0.4f, 0.4f), 0.15f, 0), Random.Range(0.3f, 0.6f), 1, fading * 0.66f))
-               .Join(popupPool[nextPoolId].t.DOScale(0.12f, fading * 0.66f))
-               .Join(
-                   DOTween.Sequence()
-                   .AppendInterval(0.5f * fading)
-                   .Join(popupPool[nextPoolId].sr.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
-                   .Join(popupPool[nextPoolId].te.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
-               )
-               .Join(popupPool[nextPoolId].t.DOMoveZ(1, fading))
-               .JoinCallback(() => popupPool[nextPoolId].t.gameObject.SetActive(false))
-               .OnComplete(() => popupPool[nextPoolId].t.gameObject.SetActive(false))
-               .OnKill(() => popupPool[nextPoolId].t.gameObject.SetActive(false));
-            //.SetRecyclable(true);
-            nextPoolId = (nextPoolId + 1) % POOL_CAPACITY;
+            DOTween.Kill(popupPool[nextPoolId].seq, true);
         }
-        /*
-        else
-        {
-            GameObject inst = Instantiate(moreResourcePfb, (Vector3)initialPosition + new Vector3(-1.2f, 0.7f, -9), Quaternion.identity);
-            TMPro.TMP_Text te = inst.GetComponent<TMPro.TMP_Text>();
-            te.text = text;
-            SpriteRenderer sr = inst.transform.GetChild(0).GetComponent<SpriteRenderer>();
-            sr.sprite = icon;
+        popupPool[nextPoolId].t.gameObject.SetActive(true);
+
+        popupPool[nextPoolId].t.position = (Vector3)initialPosition + new Vector3(-1.2f, 0.7f, -9);
+        popupPool[nextPoolId].te.text = text;
+        popupPool[nextPoolId].sr.sprite = icon;
+        popupPool[nextPoolId].sr.color = Color.white;
+        popupPool[nextPoolId].te.color = Color.white;
 
 
+        int id = nextPoolId;
+        popupPool[id].seq = 
             DOTween.Sequence()
-                .Append(inst.transform.DOJump(inst.transform.position + new Vector3(Random.Range(-0.4f, 0.4f), 0.15f, 0), Random.Range(0.3f, 0.6f), 1, fading * 0.66f))
-                .Join(inst.transform.DOScale(0.12f, fading * 0.66f))
-                .Join(
-                    DOTween.Sequence()
-                    .AppendInterval(0.5f * fading)
-                    .Join(sr.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
-                    .Join(te.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
-                )
-                .Join(inst.transform.DOMoveZ(1, fading))
-                .SetRecyclable(true);
-
-            Destroy(inst, fading);
-        }
-        */
-
+            .Append(popupPool[id].t.DOJump(popupPool[id].t.position + new Vector3(Random.Range(-0.4f, 0.4f), 0.15f, 0), Random.Range(0.3f, 0.6f), 1, fading * 0.66f))
+            .Join(popupPool[id].t.DOScale(0.12f, fading * 0.66f))
+            .Join(
+                DOTween.Sequence()
+                .AppendInterval(0.5f * fading)
+                .Join(popupPool[id].sr.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
+                .Join(popupPool[id].te.DOFade(0, 0.5f * fading).SetEase(Ease.InCirc))
+            )
+            .Join(popupPool[id].t.DOMoveZ(1, fading))
+            /*
+            .JoinCallback(() => popupPool[id].t.gameObject.SetActive(false))*/
+            .OnComplete(() => popupPool[id].t.gameObject.SetActive(false))
+            .OnKill(() => popupPool[id].t.gameObject.SetActive(false));
+        //.SetRecyclable(true);
+        nextPoolId = (nextPoolId + 1) % POOL_CAPACITY;
     }
 
     // --- Upgrades sections --- 
@@ -1209,8 +1190,27 @@ public class CoreGame : MonoBehaviour
 
     public void PlayContactEffect(Vector3 pos)
     {
-        contactEffectsPool[contactEffectId].gameObject.transform.position = pos;
-        contactEffectsPool[contactEffectId].Play();
-        contactEffectId = (contactEffectId + 1) % contactEffectsPool.Length;
+        if (contactEffectsPool[contactEffectId] != null)
+        {
+            contactEffectsPool[contactEffectId].gameObject.transform.position = pos;
+            contactEffectsPool[contactEffectId].Play();
+            contactEffectId = (contactEffectId + 1) % contactEffectsPool.Length;
+        }
+    }
+
+    public void ShootProjectile(GameObject projectilePfb, Vector3 projectilePosition, Vector3 direction, float destroyTime, Quaternion rotation, int damage, float projectileSize, bool doAffectBlobs = true)
+    {
+
+        SoundManager.inst.PlaySfx(DataStorage.SFX_SHOOT, minPitch: 0.95f, maxPitch: 1.05f);
+        GameObject inst = Instantiate(projectilePfb, projectilePosition, rotation);
+        //inst.transform.localScale = new Vector3(projectileSize, projectileSize, 1);
+        Projectile pr = inst.GetComponent<Projectile>();
+        pr.damage = damage;
+        pr.ignoreList.Add(gameObject);
+        pr.size = projectileSize;
+        pr.doAffectBlobs = doAffectBlobs;
+        pr.direction = direction;
+
+        pr.StartCoroutine(pr.ProjectileLifeCycle(destroyTime));
     }
 }

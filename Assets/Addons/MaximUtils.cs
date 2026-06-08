@@ -247,18 +247,14 @@ public class MaximUtils : MonoBehaviour
         return nearest;
     }
 
-    public static GameObject GetNearestWithTag(UnityEngine.Vector2 point, string tag)
+    public static GameObject GetNearestWithTag(Vector2 point, string tag)
     {
         List<GameObject> objs = GameObject.FindGameObjectsWithTag(tag).ToList<GameObject>();
         if(objs == null || objs.Count == 0)
         {
             return null;
         }
-        objs.Sort(
-            (GameObject x, GameObject y) =>  
-                UnityEngine.Vector2.Distance(x.transform.position, point)>
-                UnityEngine.Vector2.Distance(x.transform.position, point)?
-                1:-1);
+        objs.Sort((GameObject x, GameObject y) => Vector2.Distance(x.transform.position, point) > Vector2.Distance(y.transform.position, point) ? 1 : -1);
         return objs[0];
     }
 
