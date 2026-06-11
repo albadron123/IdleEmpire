@@ -8,9 +8,6 @@ public class FriendCreature : Creature
 
     public override void StartSimulation()
     {
-        activeVelocity = CoreGame.karlVelocity;
-        myDamage = CoreGame.karlDmg;
-
         ChangeState();
     }
 

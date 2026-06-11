@@ -21,6 +21,8 @@ public class Blob : MonoBehaviour, IDragInteraction
     [SerializeField]
     GameObject outline;
 
+    public bool isBobby = false;
+
 
 
 

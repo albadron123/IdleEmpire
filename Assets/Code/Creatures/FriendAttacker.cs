@@ -8,6 +8,14 @@ public class FriendAttacker : FriendCreature
 
     private Collider2D col;
 
+    public override void StartSimulation()
+    {
+        activeVelocity = CoreGame.karlVelocity;
+        myDamage = CoreGame.karlDmg;
+
+        base.StartSimulation();
+    }
+
     protected override bool DoSpecialActionCheck()
     {
         col = MaximUtils.GetNearestOverlappedWithTag2D(t.position, viewDistance, CoreGame.TAG_ENEMY);

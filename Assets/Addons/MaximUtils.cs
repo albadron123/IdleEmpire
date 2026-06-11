@@ -353,6 +353,14 @@ public class MaximUtils : MonoBehaviour
         }
     }
 
+    public static void RecolorLineRendererBatch(IEnumerable<LineRenderer> lrs, Color c)
+    {
+        foreach (var lr in lrs)
+        {
+            lr.startColor = c;
+            lr.endColor = c;
+        }
+    }
 
     public static LineRenderer[] CreateLineRendererBatch(string objectName, int count, Color c, Material m, float howThin, string sortingLayerName = "FORWARD")
     {

@@ -7,6 +7,12 @@ using System.Linq;
 public class BuildingObject : MonoBehaviour, IDestructable
 {
     [SerializeField]
+    ParticleSystem upgradeEffectPfb;
+    [SerializeField]
+    ParticleSystem upgradeEffectInst = null;
+
+
+    [SerializeField]
     Transform zDivider;
 
     [SerializeField]
@@ -67,11 +73,41 @@ public class BuildingObject : MonoBehaviour, IDestructable
     [SerializeField] Collider2D specialPurposeCol;
     List<GameObject> inCollision = new List<GameObject>();
 
+    [Header("Buffo Variables")]
+    [SerializeField] float buffoRadius;
+    [HideInInspector] public List<BuildingObject> affectedBy = new List<BuildingObject>();
+    //destroy on Die
+    LineRenderer[] lineRendererBatch;
+    private float timeElapsed = 0;
+    private bool buffoIsActive = false;
+
     [SerializeField]
     List<UpgradeType> upgradeTypes;
 
     [SerializeField]
     GameObject canBeUpgradedSign = null;
+
+    public void Buff(BuildingObject byWhom)
+    {
+        if (!affectedBy.Contains(byWhom))
+        {
+            affectedBy.Add(byWhom);
+            if (upgradeEffectInst == null)
+            {
+                upgradeEffectInst = Instantiate(CoreGame.inst.upgradeEffectPfb, t.position, Quaternion.Euler(new Vector3(-90,0,0)));
+            }
+            upgradeEffectInst.Play();
+        }
+    }
+
+    public void Debuff(BuildingObject byWhom)
+    {
+        if (affectedBy.Contains(byWhom))
+        {
+            affectedBy.Remove(byWhom);
+            upgradeEffectInst?.Stop();
+        }
+    }
 
     void RegisterBuilding()
     {
@@ -91,6 +127,13 @@ public class BuildingObject : MonoBehaviour, IDestructable
             Initialize();
         }
         ShowIfCanBeUpgraded();
+
+        if (b.myType == Building.BuildingType.Buffo)
+        {
+            lineRendererBatch = MaximUtils.CreateLineRendererBatch("BOMB_OUTLINE", 17, new Color(0.3f, 0.3f, 0.3f, 0.8f), CoreGame.inst.spriteDefaultMaterial, 0.08f, "Default");
+            MaximUtils.RenderDashedCircle(lineRendererBatch, transform.position + 0.15f * Vector3.up + Vector3.forward * 10, buffoRadius, 0.6f * Time.time, 16);
+        }
+
     }
 
     public void ShowIfCanBeUpgraded()
@@ -207,6 +250,12 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 }
             }
 
+        }
+
+        if (b.myType == Building.BuildingType.Buffo && buffoIsActive && lineRendererBatch != null)
+        {
+            timeElapsed += Time.deltaTime;
+            MaximUtils.RenderDashedCircle(lineRendererBatch, transform.position + 0.15f * Vector3.up + Vector3.forward * 10, buffoRadius, 0.6f * Time.time, 16);
         }
     }
 
@@ -325,6 +374,14 @@ public class BuildingObject : MonoBehaviour, IDestructable
             Destroy(gameObject);
             CoreGame.inst.EndRun();
         }
+        if (b.myType == Building.BuildingType.Buffo)
+        {
+            foreach (var lr in lineRendererBatch)
+            {
+                Destroy(lr.gameObject);
+                lineRendererBatch = null;
+            }
+        }
     }
 
     public void AddBlob(Blob blob, GameObject blobPlace)
@@ -334,7 +391,6 @@ public class BuildingObject : MonoBehaviour, IDestructable
         blob.transform.position = new Vector3(blobPlace.transform.position.x, blobPlace.transform.position.y+0.2f, blob.transform.position.z);
         blob.transform.parent = t;
         blob.RegisterOnBuilding(this);
-
         
         //TOWER SPECIFIC
         towerAnglePerPlace[processId]++;
@@ -348,9 +404,41 @@ public class BuildingObject : MonoBehaviour, IDestructable
         {
             rotationPart.transform.rotation = Quaternion.Euler(0, 0, 90 * towerAnglePerPlace[processId]);
         }
-        //
 
         processes[processId] = StartCoroutine(FunctionCoroutine(processId));
+    }
+
+
+    private void BuffoAddAffected()
+    {
+        buffoIsActive = true;
+        MaximUtils.RecolorLineRendererBatch(lineRendererBatch, CoreGame.YELLOW_COLOR);
+        
+        List<Collider2D> cols = MaximUtils.GetAllOverlappedWithTag2D(t.position, buffoRadius, CoreGame.TAG_BUILDING);
+        foreach (var col in cols)
+        {
+            BuildingObject current = col.gameObject.GetComponent<BuildingObject>();
+            if (current.b.myType != Building.BuildingType.Buffo)
+            {
+                current.Buff(this);
+            }
+        }
+    }
+
+    private void BuffoRemoveAffected()
+    {
+        buffoIsActive = false;
+        MaximUtils.RecolorLineRendererBatch(lineRendererBatch, new Color(0.3f, 0.3f, 0.3f, 0.8f));
+
+        List<Collider2D> cols = MaximUtils.GetAllOverlappedWithTag2D(t.position, buffoRadius, CoreGame.TAG_BUILDING);
+        foreach (var col in cols)
+        {
+            BuildingObject current = col.gameObject.GetComponent<BuildingObject>();
+            if (current.b.myType != Building.BuildingType.Buffo)
+            {
+                current.Debuff(this);
+            }
+        }
     }
 
     public void RemoveBlob(Blob blob)
@@ -373,6 +461,11 @@ public class BuildingObject : MonoBehaviour, IDestructable
         {
             Destroy(sliders[processId]);
             sliders[processId] = null;
+        }
+
+        if (b.myType == Building.BuildingType.Buffo)
+        {
+            BuffoRemoveAffected();
         }
     }
 
@@ -405,6 +498,11 @@ public class BuildingObject : MonoBehaviour, IDestructable
                 sliders[processId] = null;
             }
         }
+
+        if (b.myType == Building.BuildingType.Buffo)
+        {
+            BuffoRemoveAffected();
+        }
     }
 
     public IEnumerator FunctionCoroutine(int processId)
@@ -414,7 +512,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
             while (true)
             {
-                float productionTime = GetProductionTime();
+                float productionTime = GetProductionTime(blobs[processId]);
                 int productionAmount = GetProductionAmount();
 
                 DOTween.Sequence()
@@ -440,7 +538,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
 
             while (true)
             {
-                float productionTime = GetProductionTime();
+                float productionTime = GetProductionTime(blobs[processId]);
                 int productionAmount = GetProductionAmount();
 
                 DOTween.Sequence()
@@ -475,7 +573,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
             }
             while (true)
             {
-                float shootingSpeed = GetShootingSpeed(); 
+                float shootingSpeed = GetShootingSpeed(blobs[processId]);
                 Vector3 direction = towerAnglePerPlace[processId] switch
                 {
                     0 => Vector3.right,
@@ -497,7 +595,7 @@ public class BuildingObject : MonoBehaviour, IDestructable
         {
             while (true)
             {
-                float shootingSpeed = GetShootingSpeed();
+                float shootingSpeed = GetShootingSpeed(blobs[processId]);
 
                 float projectileSize = GetProjectileSize();
                 int damage = GetDamage();
@@ -577,16 +675,26 @@ public class BuildingObject : MonoBehaviour, IDestructable
         {
 
         }
+        else if (b.myType == Building.BuildingType.Buffo)
+        {
+            while (true)
+            {
+                BuffoAddAffected();
+                yield return new WaitForSeconds(1);
+                //postfx?
+                //sfx?
+            }
+        }
         else if (b.myType == Building.BuildingType.Bombo)
         {
             while (true)
             {
-                while(MaximUtils.GetAnyOverlappedWithTag2D(specialPurposeCol, CoreGame.TAG_BOMB) != null) {
+                while (MaximUtils.GetAnyOverlappedWithTag2D(specialPurposeCol, CoreGame.TAG_BOMB) != null) {
                     //wait for the bomb to be taken
                     yield return new WaitForSeconds(0.2f);
                 }
 
-                float productionTime = GetProductionTime();
+                float productionTime = GetProductionTime(blobs[processId]);
 
                 DOTween.Sequence()
                     .Append(t.DOScale(new Vector3(1.1f, 1.1f, 1), 0.25f * productionTime))
@@ -635,24 +743,40 @@ public class BuildingObject : MonoBehaviour, IDestructable
         return productionAmountLevel + 1;
     }
 
-    public float GetProductionTime()
+    public float GetProductionTime(Blob b)
     {
-        return baseProductionTime - productionTimeLevel * 0.3f;
+        float totalBuffoEffect = GetBuffoSpeedMutiplier();
+        return b.isBobby? (baseProductionTime / (CoreGame.bobbyMultiplier * totalBuffoEffect)) : (baseProductionTime / totalBuffoEffect);
     }
 
-    public float GetShootingSpeed()
+    private float GetBuffoSpeedMutiplier()
     {
+        int buffoEffectPower = affectedBy.Count;
+        float buffoEffectBase = 2f;
+        return Mathf.Pow(buffoEffectBase, buffoEffectPower);
+    }
+
+    private float GetTotalSpeedMultiplier(Blob blob)
+    {
+        float totalBuffoEffect = GetBuffoSpeedMutiplier();
+        float bobbyMultiplier = blob.isBobby ? CoreGame.bobbyMultiplier : 1;
+        return totalBuffoEffect * bobbyMultiplier;
+    }
+
+    public float GetShootingSpeed(Blob blob)
+    {
+        float totalMutiplier = GetTotalSpeedMultiplier(blob);
         if (b.myType == Building.BuildingType.Tawa)
         {
-            return baseShootingSpeed - shootingSpeedLevel * 0.15f;
+            return (baseShootingSpeed - shootingSpeedLevel * 0.15f) / totalMutiplier;
         }
         if (b.myType == Building.BuildingType.Tumbo)
         {
-            return baseShootingSpeed - shootingSpeedLevel * 0.15f;
+            return (baseShootingSpeed - shootingSpeedLevel * 0.15f) / totalMutiplier;
         }
         if (b.myType == Building.BuildingType.Flawa)
         {
-            return baseShootingSpeed - shootingSpeedLevel * 0.15f;
+            return (baseShootingSpeed - shootingSpeedLevel * 0.15f) / totalMutiplier;
         }
         //Unreachable
         Debug.LogError("Unreachable area of code!");

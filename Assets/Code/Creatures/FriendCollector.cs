@@ -5,7 +5,6 @@ using UnityEngine;
 public class FriendCollector : FriendCreature
 {
     [SerializeField] float viewDistance = 4;
-    [SerializeField] int resourceGain = 1;
 
     private Collider2D col;
 
@@ -44,7 +43,7 @@ public class FriendCollector : FriendCreature
             destination = targetObj.transform.position;
             destination.z = t.position.y;
 
-            t.position = Vector3.MoveTowards(t.position, destination, Time.fixedDeltaTime * activeVelocity);
+            t.position = Vector3.MoveTowards(t.position, destination, CoreGame.joniVelocity > 0? Time.fixedDeltaTime * CoreGame.joniVelocity : 1);
             t.position = new Vector3(t.position.x, t.position.y, t.position.y);
 
         } while (Vector3.Distance(t.position, destination) >= 0.05f);
@@ -53,8 +52,8 @@ public class FriendCollector : FriendCreature
         a.SetBool("attack", true);
 
         Resource.ResourceType type = targetObj.GetComponent<ClickableResource>().type;
-        CoreGame.inst.ChangeResource(type, resourceGain);
-        CoreGame.inst.CreateIconPopUp(t.position, $"+{resourceGain}", CoreGame.inst.allResources[(int)type].icon);
+        CoreGame.inst.ChangeResource(type, CoreGame.joniTechnique);
+        CoreGame.inst.CreateIconPopUp(t.position, $"+{CoreGame.joniTechnique}", CoreGame.inst.allResources[(int)type].icon);
 
         Destroy(targetObj.gameObject);
 

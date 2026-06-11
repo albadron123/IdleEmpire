@@ -40,6 +40,7 @@ public enum UpgradeHandle
     Custik,
     Bombo,
     Cacti,
+    Buffo,
 
     AutoResourceGather,
 
@@ -466,6 +467,21 @@ public class DataStorage : MonoBehaviour
             }
         };
 
+        allBuildings[(int)Building.BuildingType.Buffo] = new BuildingData()
+        {
+            title = "Buffo",
+            description = $"<align=\"center\"><b>Buffo</b></align>\nBuffs all buildings in the area.",
+            icon = sprites[(int)Building.BuildingType.Buffo],
+            maxLevels = 1,
+            initialPricePerLevel = new int[1] { 15 },
+            priceMultiplierPerLevel = new float[1] { 2 },
+            maxHealthPerLevel = new int[1] { 100 },
+
+            pfbs = new GameObject[] {
+                Resources.Load<GameObject>("Prefabs/Buildings/Buffo_1"),
+            }
+        };
+
         Debug.Log(JsonUtility.ToJson(allBuildings[0]));
     }
 
@@ -576,13 +592,23 @@ public class DataStorage : MonoBehaviour
             buildingHandle = Building.BuildingType.Cacti,
         };
 
+        allUpgrades[(int)UpgradeHandle.Buffo] = new UpgradeData()
+        {
+            title = "Buffo",
+            icon = sprites[(int)UpgradeHandle.Buffo],
+            maxLvls = 1,
+            pricePerLevel = new int[1] { 1000 },
+            isBuildingUpdrade = true,
+            buildingHandle = Building.BuildingType.Buffo,
+        };
+
 
         /// ============EFFECT UPGRADES=========
         /// ============EFFECT UPGRADES=========
         /// ============EFFECT UPGRADES=========
         /// ============EFFECT UPGRADES=========
 
-        
+
         allUpgrades[(int)UpgradeHandle.AutoResourceGather] = new UpgradeData()
         {
             title = "Gather Resources without clicking",
@@ -662,7 +688,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        joniVelocityPerLevel = new float[4] { 2, 3f, 4.5f, 5.5f };
+        joniVelocityPerLevel = new float[4] { 1, 3f, 4.5f, 5.5f };
 
         allUpgrades[(int)UpgradeHandle.BasicBlobMultiplier] = new UpgradeData()
         {
@@ -674,7 +700,7 @@ public class DataStorage : MonoBehaviour
             buildingHandle = null,
         };
 
-        basicBlobMultiplierPerLevel = new float[] {0, 1.5f, 2f, 5f};
+        basicBlobMultiplierPerLevel = new float[] {1f, 1.5f, 2f, 5f};
 
         allUpgrades[(int)UpgradeHandle.SpawnMoreCubo] = new UpgradeData()
         {

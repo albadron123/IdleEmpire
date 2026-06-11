@@ -723,6 +723,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: UpgradeIcons_28
+      rect:
+        serializedVersion: 2
+        x: 2800
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8d62e0e90fa6264e85aafbda3cdbecd
+      internalID: 1655566499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -755,6 +776,7 @@ TextureImporter:
       UpgradeIcons_25: -1116763520
       UpgradeIcons_26: -979319811
       UpgradeIcons_27: -1701956984
+      UpgradeIcons_28: 1655566499
       UpgradeIcons_3: -734570962
       UpgradeIcons_4: 1240271008
       UpgradeIcons_5: 1964564662

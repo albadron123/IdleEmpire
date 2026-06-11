@@ -19,6 +19,7 @@ public class Building
         Custik,
         Bombo,
         Cacti,
+        Buffo,
         Count
     };
     public BuildingType myType;
@@ -179,7 +180,9 @@ public class CoreGame : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] ParticleSystem contactEffect;
+    public ParticleSystem upgradeEffectPfb;
     ParticleSystem[] contactEffectsPool = new ParticleSystem[10];
+
 
     [Header("Day-night cycle")]
     [SerializeField]
@@ -387,7 +390,7 @@ public class CoreGame : MonoBehaviour
 
 
         CreatePopupPool();
-        CreateContactEffectsPool();
+        CreateEffectPool(contactEffect, contactEffectsPool);
 
         upgradeGroup.SetActive(false);
         upgradeGroup.SetActive(false);
@@ -1180,21 +1183,27 @@ public class CoreGame : MonoBehaviour
 
 
     private int contactEffectId = 0;
-    private void CreateContactEffectsPool()
+    private int upgradeEffectId = 0;
+    private void CreateEffectPool(ParticleSystem effect, ParticleSystem[] storage)
     {
-        for (int i = 0; i < contactEffectsPool.Length; ++i)
+        for (int i = 0; i < storage.Length; ++i)
         {
-            contactEffectsPool[i] = Instantiate(contactEffect, new Vector3(100, 100), Quaternion.identity);
+            storage[i] = Instantiate(effect, new Vector3(100, 100), Quaternion.identity);
         }
     }
 
     public void PlayContactEffect(Vector3 pos)
     {
-        if (contactEffectsPool[contactEffectId] != null)
+        PlayEffect(pos, contactEffectsPool, ref contactEffectId);
+    }
+
+    private void PlayEffect(Vector3 pos, ParticleSystem[] pool, ref int effectId)
+    {
+        if (pool[effectId] != null)
         {
-            contactEffectsPool[contactEffectId].gameObject.transform.position = pos;
-            contactEffectsPool[contactEffectId].Play();
-            contactEffectId = (contactEffectId + 1) % contactEffectsPool.Length;
+            pool[effectId].gameObject.transform.position = pos;
+            pool[effectId].Play();
+            effectId = (effectId + 1) % pool.Length;
         }
     }
 

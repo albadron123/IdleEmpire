@@ -209,10 +209,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1e6ff790e5e6494da896179a2a43144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   enemyGroup: {fileID: 4623396104363826558, guid: bc79866ebe29f464ab8b9cb19599bc6f, type: 3}
   timeToAttack: 5
   timerText: {fileID: 6760663696517396727}
+  shootingPoint: {fileID: 0}
+  projectilePrefab: {fileID: 0}
 --- !u!114 &2870844866511334587
 MonoBehaviour:
   m_ObjectHideFlags: 0

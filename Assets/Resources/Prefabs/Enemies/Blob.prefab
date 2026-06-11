@@ -408,6 +408,7 @@ MonoBehaviour:
   initialZPosition: 0
   meCreature: {fileID: 2648771898266249679}
   outline: {fileID: 6883667957360578570}
+  isBobby: 1
 --- !u!95 &7883150363378630851
 Animator:
   serializedVersion: 5
@@ -476,14 +477,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42cee1e531e9d64282a2a483c59f424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myType: 0
   idleVelocity: 1
   activeVelocity: 2
   myDamage: 7
-  shokedSprite: {fileID: 711960208, guid: f4f59f5f05b583b49b0b2cf5bc759e6a, type: 3}
-  shokedTe: {fileID: 4861535772032171545}
-  imageSr: {fileID: 623964719823480432}
-  shoked: 0
 --- !u!1 &5453154270044197133
 GameObject:
   m_ObjectHideFlags: 0

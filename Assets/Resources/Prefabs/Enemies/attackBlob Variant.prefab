@@ -29,6 +29,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -876546973899608171, guid: 973da6636b680d244b9d3880a722c1f8, type: 3}
     - target: {fileID: 2649454412288557387, guid: 4fdd0f4a6663afe4a8691fc9d62e95a9, type: 3}
+      propertyPath: isBobby
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2649454412288557387, guid: 4fdd0f4a6663afe4a8691fc9d62e95a9, type: 3}
       propertyPath: meCreature
       value: 
       objectReference: {fileID: 0}
@@ -106,7 +110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31caa7b868efb9846bf8194ed11e971b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myType: 0
   idleVelocity: 1
   activeVelocity: 5
   myDamage: 7
