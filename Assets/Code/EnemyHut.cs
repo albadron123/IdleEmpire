@@ -14,9 +14,17 @@ public enum EnemyBuildingType
     Static
 }
 
+public enum EnemyBuildingSpawnerType
+{
+    Classic,
+    Resource,
+    Mixed
+}
+
 class EnemyHut : MonoBehaviour
 {
     public EnemyBuildingType type;
+    public EnemyBuildingSpawnerType spawnerType = EnemyBuildingSpawnerType.Classic;
 
     public GameObject enemyGroup = null;
 

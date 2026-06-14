@@ -8,6 +8,21 @@ using DG.Tweening;
 public class MaximUtils : MonoBehaviour
 {
 
+    public static int RandomNonUniforIndex(List<float> chances)
+    {
+        float rnd = Random.value;
+        float sum = 0;
+        for(int i = 0; i < chances.Count-1; ++i)
+        {
+            sum += chances[i];
+            if (sum > rnd)
+            {
+                return i;
+            }
+        }
+        return chances.Count - 1;
+    }
+
     public static List<int> RandomPermutations(int from, int to)
     {
         //Shuffles a list of numbers [from, from+1, ..., to-1, to]
@@ -126,6 +141,19 @@ public class MaximUtils : MonoBehaviour
         foreach (Collider2D other in overlapped)
         {
             if (predicate(other))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static bool CircleOverlapAndMatch(Vector2 pos, float rad, System.Predicate<Collider2D> predicate)
+    {
+        Collider2D[] cols = Physics2D.OverlapCircleAll(pos, rad);
+        foreach (Collider2D col in cols.ToList())
+        {
+            if (predicate(col))
             {
                 return true;
             }
@@ -266,7 +294,51 @@ public class MaximUtils : MonoBehaviour
         return GameObject.FindGameObjectsWithTag(tag).Length;
     }
 
+    public static List<GameObject> DrawGrid(GameObject pfb, Transform container, Vector3 bottomLeft, float delta, float heightMult, int limitY, int count)
+    {
+        List<GameObject> instances = new List<GameObject>();
 
+        float difference = pfb.transform.localScale.y * heightMult + delta;
+
+        Vector3 currentPosition = bottomLeft;
+        int counter = 0;
+
+        while (counter < count)
+        {
+            for (int y = 0; y < limitY; ++y)
+            {
+                GameObject inst = Instantiate(pfb, Vector3.zero, Quaternion.identity, container);
+                inst.transform.localPosition = currentPosition;
+                instances.Add(inst);
+                currentPosition += Vector3.up * difference;
+                ++counter;
+                if (counter == count) break;
+            }
+            currentPosition = new Vector3(currentPosition.x + difference, bottomLeft.y, bottomLeft.z);
+        }
+        return instances;
+    }
+
+    /// <summary>
+    /// WARNING: May be in an error state!!!
+    /// </summary>
+    public static List<GameObject> DrawCenteredListVert(GameObject pfb, Transform container, UnityEngine.Vector3 center, float delta, int count, float heightMult)
+    {
+        List<GameObject> instances = new List<GameObject>();
+
+        float height= pfb.transform.localScale.y * heightMult;
+        float length = count * height + (count - 1) * delta;
+        Vector3 begin = center + new Vector3(0, -length / 2f + height / 2f, 0);
+        Vector3 diff = new Vector3(0, height + delta, 0);
+
+        for (int i = 0; i < count; ++i)
+        {
+            GameObject inst = Instantiate(pfb, Vector3.zero, Quaternion.identity, container);
+            inst.transform.localPosition = begin + diff * i;
+            instances.Add(inst);
+        }
+        return instances;
+    }
 
     public static List<GameObject> DrawCenteredListHor(GameObject obj, Transform container, UnityEngine.Vector3 center, float delta, int count, float widthMult)
     {

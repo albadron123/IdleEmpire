@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 using System.IO;
 using System;
+using System.Linq;
 
 [System.Serializable]
 public struct BuildingData
@@ -140,6 +141,7 @@ public class DataStorage : MonoBehaviour
         //public int[] hutsPerLevel;
     }
 
+
     [HideInInspector]
     public static AudioClip SFX_PRODUCE_CUBO;
     [HideInInspector]
@@ -218,6 +220,9 @@ public class DataStorage : MonoBehaviour
         "The rules are simple",
         "Just sign the contract now!"
     };
+
+    public static List<KeyValuePair<UpgradeHandle, UpgradeHandle>> nodeConnections;
+    public static Dictionary<UpgradeHandle, Vector2> nodePositions;
 
     void Start()
     {
@@ -901,5 +906,10 @@ public class DataStorage : MonoBehaviour
     {
         int lvl = G.upgradeStates[(int)handle].upgradeLvl;
         return allUpgrades[(int)handle].pricePerLevel[lvl];
+    }
+
+    public static UpgradeHandle GetUpgradeHandleByTitle(string title)
+    {
+        return (UpgradeHandle)Array.FindIndex(allUpgrades, x => x.title == title);
     }
 }

@@ -113,8 +113,7 @@ public class CoreGame : MonoBehaviour
     Vector2 mousePosition;
 
     [Header("Attack params")]
-    [SerializeField] Rect outerAttackRect;
-    [SerializeField] Rect innerAttackRect;
+    [SerializeField] Rect playableRect;
 
     float attackTimer = 0;
     float attackCount = 0;
@@ -348,6 +347,8 @@ public class CoreGame : MonoBehaviour
     [SerializeField] GameObject bossGroup;
     [SerializeField] GameObject enemyHutPfb;
     [SerializeField] GameObject enemyHutResourcePfb;
+    [SerializeField] GameObject shootingTowerPfb;
+    [SerializeField] GameObject enemyTowerPfb;
     [SerializeField] List<GameObject> specialPlacings;
 
 
@@ -457,10 +458,10 @@ public class CoreGame : MonoBehaviour
     {
         attackTe.text = "";
 
-        int groupsCount = Mathf.Clamp(Mathf.CeilToInt(Mathf.Pow(1.7f, attackCount)), 1, 200);
+        int groupsCount = Mathf.Clamp(Mathf.CeilToInt(Mathf.Pow(1.7f, attackCount)), 1, 100);
         float waitingTime = Mathf.Clamp(0.5f - 0.06f * attackCount, 0.1f, 0.5f);
-        List<GameObject> correctPool = (attackCount > 3) ? mediumEnemyGroups : easyEnemyGroups;
-        List<GameObject> correctPoolResources = (attackCount > 3) ? mediumEnemyGroupsResource : easyEnemyGroupsResource;
+        List<GameObject> correctPool = (attackCount > 2) ? mediumEnemyGroups : easyEnemyGroups;
+        List<GameObject> correctPoolResources = (attackCount > 2) ? mediumEnemyGroupsResource : easyEnemyGroupsResource;
         attackTePanel.transform.DOMove(attackTePanelInitialPosition, 0.4f);
         // boss 
         if (attackCount == 5)
@@ -492,37 +493,54 @@ public class CoreGame : MonoBehaviour
         {
             GameObject specialGroup = specialPlacings[Random.Range(0, specialPlacings.Count)];
             int specialEnemyGroupSize = specialGroup.GetComponent<SpecialEnemyGroup>().groupSize;
+            
             if(specialEnemyGroupSize <= groupsCount)
             {
-                Instantiate(specialGroup, specialGroup.transform.position, Quaternion.identity);
-                groupsCount -= specialEnemyGroupSize;
-            }
-        }
-        // fill with other groups
-        for (int i = 0; i < groupsCount; ++i)
-        {
-            bool isResourceHut = false;
-            GameObject prefabToPlace = enemyHutPfb;
-            if (i != 0)
-            {
-                if ((Random.value >= 0.5f))
-                {
-                    prefabToPlace = enemyHutResourcePfb;
-                    isResourceHut = true;
+                if (CheckIfGroupCanBePlaced(specialGroup))
+                { 
+                    GameObject instGroup = Instantiate(specialGroup, specialGroup.transform.position, Quaternion.identity);
+                    InitializeGroupWithEnemies(instGroup, correctPool, correctPoolResources);
+                    groupsCount -= specialEnemyGroupSize;
                 }
             }
+        }
+
+        // fill with other groups
+        List<GameObject> buildingOptions = new List<GameObject> 
+        {
+            enemyHutPfb,
+            enemyHutResourcePfb,
+            enemyTowerPfb,
+            shootingTowerPfb
+        };
+        List<float> chances = new List<float>
+        {
+            0.3f, 
+            0.3f,
+            0.2f,
+            0.2f
+        };
+        for (int i = 0; i < groupsCount; ++i)
+        {
+            GameObject prefabToPlace;
+            if (i == 0 && attackCount == 0)
+            {
+                prefabToPlace = enemyHutPfb;
+            }
+            else
+            {
+                prefabToPlace = buildingOptions[MaximUtils.RandomNonUniforIndex(chances)];
+            }
             
-            GameObject enemyHutInstance = Instantiate(prefabToPlace, Vector3.zero, Quaternion.identity);
-            enemyHutInstance.GetComponent<EnemyHut>().enemyGroup = isResourceHut ?
-                correctPoolResources[Random.Range(0, correctPoolResources.Count)] :
-                correctPool[Random.Range(0, correctPool.Count)];
+            GameObject enemyHutInstance = Instantiate(prefabToPlace, new Vector3(1000,1000), Quaternion.identity);
+
+            InitializeEnemyBuilding(enemyHutInstance.GetComponent<EnemyHut>(), correctPool, correctPoolResources);
 
             Transform enemyHutT = enemyHutInstance.transform;
             BoxCollider2D enemyHutCol = enemyHutInstance.GetComponent<BoxCollider2D>();
 
             Vector2 randomPos = GetPositionToPlaceHut(enemyHutCol);
             enemyHutT.position = new Vector3(randomPos.x, randomPos.y, randomPos.y);
-            
 
             yield return new WaitForSeconds(waitingTime);
         }
@@ -530,37 +548,91 @@ public class CoreGame : MonoBehaviour
         StartCoroutine(PrepareTheNextAttack());
     }
 
+    private void InitializeGroupWithEnemies(GameObject group, List<GameObject> pool, List<GameObject> poolResources)
+    {
+        EnemyHut[] huts = group.GetComponentsInChildren<EnemyHut>();
+        foreach (var hut in huts)
+        {
+            InitializeEnemyBuilding(hut, pool, poolResources);
+        }
+    }
+
+    private void InitializeEnemyBuilding(EnemyHut hut, List<GameObject> pool, List<GameObject> resourcePool)
+    {
+        if (hut.type == EnemyBuildingType.Tower && attackCount < 3)
+        {
+            //will use the default enemy group
+            return;
+        }
+        switch (hut.spawnerType)
+        {
+            case EnemyBuildingSpawnerType.Classic:
+                hut.enemyGroup = pool[Random.Range(0, pool.Count)];
+                return;
+            case EnemyBuildingSpawnerType.Resource:
+                hut.enemyGroup = resourcePool[Random.Range(0, resourcePool.Count)];
+                return;
+            case EnemyBuildingSpawnerType.Mixed:
+                if (Random.value > 0.5f)
+                {
+                    hut.enemyGroup = pool[Random.Range(0, pool.Count)];
+                }
+                else
+                {
+                    hut.enemyGroup = resourcePool[Random.Range(0, resourcePool.Count)];
+                }
+                return;
+        }
+    }
+
+    private bool CheckIfGroupCanBePlaced(GameObject specialGroup)
+    {
+        Collider2D[] cols = specialGroup.GetComponentsInChildren<Collider2D>();
+        foreach (var col in cols)
+        {
+            if (!CheckIfEnemyBuildingCanBePlaced(col))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool CheckIfEnemyBuildingCanBePlaced(Collider2D col)
+    {
+        Vector2 position = col.transform.position;
+        return !MaximUtils.DoIOverlapAndMatch(col, x => (x.CompareTag(TAG_BUILDING_AREA) || (x.CompareTag(TAG_ENEMY) && x != col))) && playableRect.Contains(position);
+    }
+
+    private bool CheckIfEnemyBuildingCanBePlaced(Vector2 position, float radius)
+    {
+        return !MaximUtils.CircleOverlapAndMatch(position, radius, x => (x.CompareTag(TAG_BUILDING_AREA) || (x.CompareTag(TAG_ENEMY)))) && playableRect.Contains(position);
+    }
+
     private Vector2 GetPositionToPlaceHut(BoxCollider2D enemyHutCol)
     {
         Vector2 randomPos;
-        bool overlapped;
+        bool cantBePlaced;
         int attempts = 0;
         do
         {
-            randomPos = MaximUtils.RandomPositionInsideFrame(innerAttackRect, outerAttackRect);
-            overlapped = MaximUtils.DoSquareOverlapAny(randomPos - enemyHutCol.offset, enemyHutCol.size);
+            randomPos = new Vector2(Random.Range(playableRect.x, playableRect.x + playableRect.width),
+                                    Random.Range(playableRect.y, playableRect.y + playableRect.height));
+            cantBePlaced = !CheckIfEnemyBuildingCanBePlaced(randomPos, 0.25f);
             ++attempts;
-        } while (overlapped && attempts < 500);
+        } while (cantBePlaced && attempts < 500);
         return randomPos;
     }
 
     private void OnDrawGizmos()
     {
         //draw outer radius
-        Vector3[] outerAttackRadius = new Vector3[4];
-        outerAttackRadius[0] = new Vector3(outerAttackRect.x, outerAttackRect.y, -9);
-        outerAttackRadius[1] = new Vector3(outerAttackRect.x + outerAttackRect.width, outerAttackRect.y, -9);
-        outerAttackRadius[2] = new Vector3(outerAttackRect.x + outerAttackRect.width, outerAttackRect.y + outerAttackRect.height, -9);
-        outerAttackRadius[3] = new Vector3(outerAttackRect.x, outerAttackRect.y + outerAttackRect.height, -9);
-        Gizmos.DrawLineStrip(outerAttackRadius,
-                             true);
-        //draw inner radius
-        Vector3[] innerAttackRadius = new Vector3[4];
-        innerAttackRadius[0] = new Vector3(innerAttackRect.x, innerAttackRect.y, -9);
-        innerAttackRadius[1] = new Vector3(innerAttackRect.x + innerAttackRect.width, innerAttackRect.y, -9);
-        innerAttackRadius[2] = new Vector3(innerAttackRect.x + innerAttackRect.width, innerAttackRect.y + innerAttackRect.height, -9);
-        innerAttackRadius[3] = new Vector3(innerAttackRect.x, innerAttackRect.y + innerAttackRect.height, -9);
-        Gizmos.DrawLineStrip(innerAttackRadius,
+        Vector3[] PlayableField = new Vector3[4];
+        PlayableField[0] = new Vector3(playableRect.x, playableRect.y, -9);
+        PlayableField[1] = new Vector3(playableRect.x + playableRect.width, playableRect.y, -9);
+        PlayableField[2] = new Vector3(playableRect.x + playableRect.width, playableRect.y + playableRect.height, -9);
+        PlayableField[3] = new Vector3(playableRect.x, playableRect.y + playableRect.height, -9);
+        Gizmos.DrawLineStrip(PlayableField,
                              true);
     }
 
@@ -1010,7 +1082,10 @@ public class CoreGame : MonoBehaviour
 
         foreach (var blobPlace in selectedBuilding.blobPlaces)
         {
-            blobPlace.GetComponent<SpriteRenderer>().color = YELLOW_COLOR;
+            if (blobPlace != null)
+            {
+                blobPlace.GetComponent<SpriteRenderer>().color = YELLOW_COLOR;
+            }
         }
     }
 

@@ -6,6 +6,8 @@ using DG.Tweening;
 [DefaultExecutionOrder(-9999)]
 public static class Bootloader
 {
+    public const bool BUILD_WITH_EDITOR = true;
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void InitializeGame()
     {

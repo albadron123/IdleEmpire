@@ -5,10 +5,6 @@ using DG.Tweening;
 
 public class Node : MonoBehaviour
 {
-    
-    
-
-
 
     //Updrade View
     [Header("UpgradeView")]
@@ -53,13 +49,14 @@ public class Node : MonoBehaviour
     SpriteRenderer backgroundSr;
 
 
+    
+
 
     float[] omega = new float[8];
     float[] phi = new float[8];
     float[] alpha = new float[8];
 
     public UpgradeHandle myHandle;
-
 
     private void Awake()
     {
@@ -110,12 +107,13 @@ public class Node : MonoBehaviour
         else
         {
             SelectNode();
-        }
+        }   
     }
+
 
     void InitNode()
     {
-        
+
         if (DataStorage.allUpgrades[(int)myHandle].isBuildingUpdrade && G.equippedBuildings.Contains(DataStorage.allUpgrades[(int)myHandle].buildingHandle.Value))
         {
             equipButton.SetActive(true);
@@ -170,7 +168,6 @@ public class Node : MonoBehaviour
 
 
     }
-
 
 
     void ColorUpgradePoints()

@@ -23,8 +23,9 @@ public class G : MonoBehaviour
     public static G inst;
 
     public static string SCENE_INTERMEDIATE = "Intermediate";
-    public static string SCENE_META = "End";
+    public static string SCENE_META = "Campfire";
     public static string SCENE_MAIN = "SampleScene";
+    public static string SCENE_META_EDITOR = "MetaEditor";
 
     // Equipped buildings
     public static List<Building.BuildingType> equippedBuildings;

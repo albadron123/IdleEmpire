@@ -18,7 +18,7 @@ public class Interactable : MonoBehaviour
     public bool canBeDescribed = false;
     
     [SerializeField]
-    UnityEvent e;
+    public UnityEvent e;
 
     [SerializeField]
     UnityEvent mouseEnterCustomEvent;

@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/End.unity
+    path: Assets/Scenes/Campfire.unity
     guid: f353f6a3a0e5a9f44a798d7cf2718b82
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Intermediate.unity
     guid: 81c8b8ec277cbcf44892e7cde7228bb0
+  - enabled: 1
+    path: Assets/Scenes/MetaEditor.unity
+    guid: 3d8d620cee79c154994022384b7a984b
   m_configObjects: {}

@@ -53,7 +53,7 @@ public class Meta : MonoBehaviour
 
     bool canResurrect = true;
 
-
+    [SerializeField] Node nodePfb;
 
 
 
@@ -135,6 +135,9 @@ public class Meta : MonoBehaviour
             inst = this;
         }
 
+        InstantiateAllNodes();
+            
+
         G.SetCursor(defaultCursorSpr);
         
         canResurrect = G.equippedBuildings.Count > 0;
@@ -145,6 +148,39 @@ public class Meta : MonoBehaviour
 
         StartCoroutine(SoundManager.inst.ChangeBackgroundProfile(new AudioClip[2] { DataStorage.SOUND_FIREPLACE, DataStorage.SOUND_FIREPLACE_MUSIC}, new float[]{0.35f,0.2f}, new float[]{1f,0.8f}));
         SoundManager.inst.AddBackground(DataStorage.SOUND_BROWN_NOISE, 0.04f, 1, true);
+    }
+
+    private void InstantiateAllNodes()
+    {
+        if (DataStorage.nodeConnections == null)
+        {
+            DataStorage.nodeConnections = new List<KeyValuePair<UpgradeHandle, UpgradeHandle>>();
+        }
+        if (DataStorage.nodePositions == null)
+        {
+            DataStorage.nodePositions = new Dictionary<UpgradeHandle, Vector2>();
+        }
+        if (DataStorage.nodePositions.Count > 0 || DataStorage.nodeConnections.Count > 0)
+        {
+            nodePfb.gameObject.SetActive(false);
+            Dictionary<UpgradeHandle, Node> allNodes = new Dictionary<UpgradeHandle, Node>();
+            foreach (var element in DataStorage.nodePositions)
+            {
+                Node inst = Instantiate(nodePfb, new Vector3(element.Value.x, element.Value.y, nodePfb.transform.position.z), Quaternion.identity);
+                inst.myHandle = element.Key;
+                allNodes[element.Key] = inst;
+            }
+            edges = new List<Edge>();
+            foreach (var element in DataStorage.nodeConnections)
+            {
+                edges.Add(new Edge() { a = allNodes[element.Key], b = allNodes[element.Value] });
+            }
+            nodePfb.gameObject.SetActive(true);
+            foreach (var node in allNodes.Values)
+            {
+                node.gameObject.SetActive(true);
+            }
+        }
     }
 
 
@@ -229,12 +265,22 @@ public class Meta : MonoBehaviour
 
     private void Update()
     {
+        if (Bootloader.BUILD_WITH_EDITOR)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                SceneManager.LoadScene(G.SCENE_META_EDITOR);
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             StartCoroutine(SoundManager.inst.ChangeBackgroundProfile(new AudioClip[2] { DataStorage.SOUND_FIREPLACE, DataStorage.SOUND_FIREPLACE_MUSIC }, new float[] { 0.35f, 0.2f }, new float[] { 1f, 0.8f }, 5));
         }
-        
 
+
+        ScrollTheScreen();
+        /*
         float mousePositionYClamped = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).y, t.position.y - 5f, t.position.y + 5f);
         if (mousePositionYClamped > t.position.y + 4f)
         {
@@ -246,6 +292,50 @@ public class Meta : MonoBehaviour
             float dist = Mathf.Abs(t.position.y - 4.5f - mousePositionYClamped);
             t.position = Vector3.Lerp(t.position, new Vector3(t.position.x, mousePositionYClamped, t.position.z), 6f*Time.deltaTime * Mathf.Pow(dist, 2));
         }
+        t.position = new Vector3(t.position.x, Mathf.Clamp(t.position.y, scrollMinY, scrollMaxY), t.position.z);
+        */
+    }
+
+
+    bool pressedToScroll = false;
+    float initialScrollY = 0;
+    float initialMouseScrollY = 0;
+    private void ScrollTheScreen()
+    {
+        //The key way of scrolling
+        float scrollingVelocity = 7.5f;
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            t.position += scrollingVelocity * Time.deltaTime * Vector3.up;
+            
+        }
+
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            t.position += scrollingVelocity * Time.deltaTime * Vector3.down;
+        }
+
+        //The MousePress way of scrolling
+        if (Input.GetMouseButtonDown(0) && !MaximUtils.DoSquareOverlapAny(G.mousePosition, new Vector2(0.05f, 0.05f)))
+        {
+            pressedToScroll = true;
+            initialScrollY = t.position.y;
+            initialMouseScrollY = Input.mousePosition.y;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            pressedToScroll = false;
+        }
+
+        if (pressedToScroll)
+        {
+            float mouseDelta = initialMouseScrollY - Input.mousePosition.y;
+            float worldDeltaY = (mouseDelta / (float)Screen.height) * ((float)Camera.main.orthographicSize * 2f);
+            Debug.Log($"scroll: {Input.mousePosition.y }, {initialMouseScrollY} {Camera.main.ScreenToWorldPoint(new Vector3(0, Input.mousePosition.y - initialMouseScrollY, 0)).y}");
+            t.position = new Vector3(t.position.x, initialScrollY + worldDeltaY, t.position.z);
+        }
+
+        //Clamp the position
         t.position = new Vector3(t.position.x, Mathf.Clamp(t.position.y, scrollMinY, scrollMaxY), t.position.z);
     }
 }

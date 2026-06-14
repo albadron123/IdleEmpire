@@ -1448,6 +1448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInteractive: 1
+  preventDefault: 0
   canBeDescribed: 0
   e:
     m_PersistentCalls:
@@ -1674,6 +1675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInteractive: 1
+  preventDefault: 0
   canBeDescribed: 0
   e:
     m_PersistentCalls:
